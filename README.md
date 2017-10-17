@@ -1,4 +1,4 @@
-# Personal-Movie-Database-PMDb-
+# Personal-Movie-Database (PMDb)
 
 ## **Main task**
 
