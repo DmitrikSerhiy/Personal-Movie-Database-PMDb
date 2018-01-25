@@ -197,21 +197,11 @@
           "build/netstandard2.0/NETStandard.Library.targets": {}
         }
       },
-      "PMDb.Domain.Core/1.0.0": {
-        "type": "project",
-        "framework": ".NETCoreApp,Version=v2.0",
-        "compile": {
-          "bin/placeholder/PMDb.Domain.Core.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/PMDb.Domain.Core.dll": {}
-        }
-      },
       "PMDb.Services.Interfaces/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v2.0",
         "dependencies": {
-          "PMDb.Domain.Core": "1.0.0"
+          "C:\\Users\\DrVoo\\Desktop\\PMDb\\PMDb.Domain.Core\\PMDb.Domain.Core.csproj": "1.0.0"
         },
         "compile": {
           "bin/placeholder/PMDb.Services.Interfaces.dll": {}
@@ -680,11 +670,6 @@
         "netstandard.library.nuspec"
       ]
     },
-    "PMDb.Domain.Core/1.0.0": {
-      "type": "project",
-      "path": "../../PMDb.Domain.Core/PMDb.Domain.Core.csproj",
-      "msbuildProject": "../../PMDb.Domain.Core/PMDb.Domain.Core.csproj"
-    },
     "PMDb.Services.Interfaces/1.0.0": {
       "type": "project",
       "path": "../PMDb.Services.Interfaces/PMDb.Services.Interfaces.csproj",
@@ -693,8 +678,8 @@
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v2.0": [
+      "C:\\Users\\DrVoo\\Desktop\\PMDb\\PMDb.Domain.Core\\PMDb.Domain.Core.csproj",
       "Microsoft.NETCore.App >= 2.0.0",
-      "PMDb.Domain.Core >= 1.0.0",
       "PMDb.Services.Interfaces >= 1.0.0"
     ]
   },
@@ -763,5 +748,16 @@
         "warn": true
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "NU1104",
+      "level": "Error",
+      "message": "Unable to find project 'C:\\Users\\DrVoo\\Desktop\\PMDb\\PMDb.Domain.Core\\PMDb.Domain.Core.csproj'. Check that the project reference is valid and that the project file exists.",
+      "libraryId": "C:\\Users\\DrVoo\\Desktop\\PMDb\\PMDb.Domain.Core\\PMDb.Domain.Core.csproj",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v2.0"
+      ]
+    }
+  ]
 }
