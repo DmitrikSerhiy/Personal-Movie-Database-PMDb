@@ -196,19 +196,6 @@
         "build": {
           "build/netstandard2.0/NETStandard.Library.targets": {}
         }
-      },
-      "PMDb.Services.Interfaces/1.0.0": {
-        "type": "project",
-        "framework": ".NETCoreApp,Version=v2.0",
-        "dependencies": {
-          "C:\\Users\\DrVoo\\Desktop\\PMDb\\PMDb.Domain.Core\\PMDb.Domain.Core.csproj": "1.0.0"
-        },
-        "compile": {
-          "bin/placeholder/PMDb.Services.Interfaces.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/PMDb.Services.Interfaces.dll": {}
-        }
       }
     }
   },
@@ -669,18 +656,11 @@
         "netstandard.library.2.0.0.nupkg.sha512",
         "netstandard.library.nuspec"
       ]
-    },
-    "PMDb.Services.Interfaces/1.0.0": {
-      "type": "project",
-      "path": "../PMDb.Services.Interfaces/PMDb.Services.Interfaces.csproj",
-      "msbuildProject": "../PMDb.Services.Interfaces/PMDb.Services.Interfaces.csproj"
     }
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v2.0": [
-      "C:\\Users\\DrVoo\\Desktop\\PMDb\\PMDb.Domain.Core\\PMDb.Domain.Core.csproj",
-      "Microsoft.NETCore.App >= 2.0.0",
-      "PMDb.Services.Interfaces >= 1.0.0"
+      "Microsoft.NETCore.App >= 2.0.0"
     ]
   },
   "packageFolders": {
@@ -715,14 +695,7 @@
       },
       "frameworks": {
         "netcoreapp2.0": {
-          "projectReferences": {
-            "C:\\Users\\DrVoo\\Desktop\\PMDb\\PMDb.Domain.Core\\PMDb.Domain.Core.csproj": {
-              "projectPath": "C:\\Users\\DrVoo\\Desktop\\PMDb\\PMDb.Domain.Core\\PMDb.Domain.Core.csproj"
-            },
-            "C:\\Users\\DrVoo\\Desktop\\PMDb\\Personal-Movie-Database-PMDb\\PMDb.Services.Interfaces\\PMDb.Services.Interfaces.csproj": {
-              "projectPath": "C:\\Users\\DrVoo\\Desktop\\PMDb\\Personal-Movie-Database-PMDb\\PMDb.Services.Interfaces\\PMDb.Services.Interfaces.csproj"
-            }
-          }
+          "projectReferences": {}
         }
       },
       "warningProperties": {
@@ -748,16 +721,5 @@
         "warn": true
       }
     }
-  },
-  "logs": [
-    {
-      "code": "NU1104",
-      "level": "Error",
-      "message": "Unable to find project 'C:\\Users\\DrVoo\\Desktop\\PMDb\\PMDb.Domain.Core\\PMDb.Domain.Core.csproj'. Check that the project reference is valid and that the project file exists.",
-      "libraryId": "C:\\Users\\DrVoo\\Desktop\\PMDb\\PMDb.Domain.Core\\PMDb.Domain.Core.csproj",
-      "targetGraphs": [
-        ".NETCoreApp,Version=v2.0"
-      ]
-    }
-  ]
+  }
 }

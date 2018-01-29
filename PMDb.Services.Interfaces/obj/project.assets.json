@@ -660,7 +660,6 @@
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v2.0": [
-      "C:\\Users\\DrVoo\\Desktop\\PMDb\\PMDb.Domain.Core\\PMDb.Domain.Core.csproj",
       "Microsoft.NETCore.App >= 2.0.0"
     ]
   },
@@ -696,11 +695,7 @@
       },
       "frameworks": {
         "netcoreapp2.0": {
-          "projectReferences": {
-            "C:\\Users\\DrVoo\\Desktop\\PMDb\\PMDb.Domain.Core\\PMDb.Domain.Core.csproj": {
-              "projectPath": "C:\\Users\\DrVoo\\Desktop\\PMDb\\PMDb.Domain.Core\\PMDb.Domain.Core.csproj"
-            }
-          }
+          "projectReferences": {}
         }
       },
       "warningProperties": {
@@ -726,16 +721,5 @@
         "warn": true
       }
     }
-  },
-  "logs": [
-    {
-      "code": "NU1104",
-      "level": "Error",
-      "message": "Unable to find project 'C:\\Users\\DrVoo\\Desktop\\PMDb\\PMDb.Domain.Core\\PMDb.Domain.Core.csproj'. Check that the project reference is valid and that the project file exists.",
-      "libraryId": "C:\\Users\\DrVoo\\Desktop\\PMDb\\PMDb.Domain.Core\\PMDb.Domain.Core.csproj",
-      "targetGraphs": [
-        ".NETCoreApp,Version=v2.0"
-      ]
-    }
-  ]
+  }
 }

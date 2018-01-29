@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\PMDb.Domain.Core\PMDb.Domain.Core.csproj" />
+    <ProjectReference Include="..\PMDb.Domain.Core\PMDb.Domain.Core.csproj" />
   </ItemGroup>
 
 </Project>

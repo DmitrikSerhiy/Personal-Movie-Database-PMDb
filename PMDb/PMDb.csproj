@@ -10,6 +10,12 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.3" />
+    <PackageReference Include="StructureMap" Version="4.6.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Interfeces\PMDb.Domain.Interfeces.csproj" />
+    <ProjectReference Include="..\PMDb.Infrastucrure.Data\PMDb.Infrastucrure.Data.csproj" />
   </ItemGroup>
 
 </Project>

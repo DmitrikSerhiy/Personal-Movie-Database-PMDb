@@ -3,23 +3,27 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PMDb", "PMDb\PMDb.csproj", "{D2911F5E-A8BC-4F8E-A6AD-04D11EFDAF3F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PMDb", "PMDb\PMDb.csproj", "{D2911F5E-A8BC-4F8E-A6AD-04D11EFDAF3F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{9394E4BA-D399-4C5C-B3E4-F20F30CE7631}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PMDb.Domain.Core", "..\PMDb.Domain.Core\PMDb.Domain.Core.csproj", "{54B3CF8F-F715-4580-99C9-A075D5751AD3}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PMDb.Domain.Interfeces", "Interfeces\PMDb.Domain.Interfeces.csproj", "{18EC6DE0-7846-4DE5-A686-44C164B43EE6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PMDb.Domain.Interfeces", "Interfeces\PMDb.Domain.Interfeces.csproj", "{18EC6DE0-7846-4DE5-A686-44C164B43EE6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{02E88B34-D06E-4D03-953E-06F7B00CD1B4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PMDb.Services.Interfaces", "PMDb.Services.Interfaces\PMDb.Services.Interfaces.csproj", "{D07F1F5D-73BB-4734-814A-D170D37BAF55}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PMDb.Services.Interfaces", "PMDb.Services.Interfaces\PMDb.Services.Interfaces.csproj", "{D07F1F5D-73BB-4734-814A-D170D37BAF55}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{357DE1AA-85A6-45D6-B054-547B956ACDEE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PMDb.Infrastucrure.Data", "PMDb.Infrastucrure.Data\PMDb.Infrastucrure.Data.csproj", "{344C7C59-D167-4403-94CB-4BC3A0A558E8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PMDb.Infrastucrure.Data", "PMDb.Infrastucrure.Data\PMDb.Infrastucrure.Data.csproj", "{344C7C59-D167-4403-94CB-4BC3A0A558E8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PMDb.Infrastructure.Business", "PMDb.Infrastructure.Business\PMDb.Infrastructure.Business.csproj", "{5646A9F8-AC38-40A1-B865-483EF0275D8F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PMDb.Infrastructure.Business", "PMDb.Infrastructure.Business\PMDb.Infrastructure.Business.csproj", "{5646A9F8-AC38-40A1-B865-483EF0275D8F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PMDb.Domain.Core", "PMDb.Domain.Core\PMDb.Domain.Core.csproj", "{9750D570-1218-4057-AB8C-9DA40E7739FD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{8A0FF89F-3430-41AB-A676-4C037D87B832}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XUnitTestProject1", "XUnitTestProject1\XUnitTestProject1.csproj", "{22F0BD32-8D17-40B0-AC4A-E06D87FBD283}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,10 +35,6 @@ Global
 		{D2911F5E-A8BC-4F8E-A6AD-04D11EFDAF3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D2911F5E-A8BC-4F8E-A6AD-04D11EFDAF3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D2911F5E-A8BC-4F8E-A6AD-04D11EFDAF3F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{54B3CF8F-F715-4580-99C9-A075D5751AD3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{54B3CF8F-F715-4580-99C9-A075D5751AD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{54B3CF8F-F715-4580-99C9-A075D5751AD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{54B3CF8F-F715-4580-99C9-A075D5751AD3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{18EC6DE0-7846-4DE5-A686-44C164B43EE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{18EC6DE0-7846-4DE5-A686-44C164B43EE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{18EC6DE0-7846-4DE5-A686-44C164B43EE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -51,16 +51,25 @@ Global
 		{5646A9F8-AC38-40A1-B865-483EF0275D8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5646A9F8-AC38-40A1-B865-483EF0275D8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5646A9F8-AC38-40A1-B865-483EF0275D8F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9750D570-1218-4057-AB8C-9DA40E7739FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9750D570-1218-4057-AB8C-9DA40E7739FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9750D570-1218-4057-AB8C-9DA40E7739FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9750D570-1218-4057-AB8C-9DA40E7739FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22F0BD32-8D17-40B0-AC4A-E06D87FBD283}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22F0BD32-8D17-40B0-AC4A-E06D87FBD283}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22F0BD32-8D17-40B0-AC4A-E06D87FBD283}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22F0BD32-8D17-40B0-AC4A-E06D87FBD283}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{54B3CF8F-F715-4580-99C9-A075D5751AD3} = {9394E4BA-D399-4C5C-B3E4-F20F30CE7631}
 		{18EC6DE0-7846-4DE5-A686-44C164B43EE6} = {9394E4BA-D399-4C5C-B3E4-F20F30CE7631}
 		{D07F1F5D-73BB-4734-814A-D170D37BAF55} = {02E88B34-D06E-4D03-953E-06F7B00CD1B4}
 		{344C7C59-D167-4403-94CB-4BC3A0A558E8} = {357DE1AA-85A6-45D6-B054-547B956ACDEE}
 		{5646A9F8-AC38-40A1-B865-483EF0275D8F} = {357DE1AA-85A6-45D6-B054-547B956ACDEE}
+		{9750D570-1218-4057-AB8C-9DA40E7739FD} = {9394E4BA-D399-4C5C-B3E4-F20F30CE7631}
+		{22F0BD32-8D17-40B0-AC4A-E06D87FBD283} = {8A0FF89F-3430-41AB-A676-4C037D87B832}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5B38EA64-ADDC-4BB7-8711-B79C04592D45}

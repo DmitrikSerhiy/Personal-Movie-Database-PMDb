@@ -924,11 +924,21 @@
           "ref/netstandard1.3/System.Threading.Tasks.dll": {}
         }
       },
+      "PMDb.Domain.Core/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v2.0",
+        "compile": {
+          "bin/placeholder/PMDb.Domain.Core.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/PMDb.Domain.Core.dll": {}
+        }
+      },
       "PMDb.Domain.Interfeces/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v2.0",
         "dependencies": {
-          "C:\\Users\\DrVoo\\Desktop\\PMDb\\PMDb.Domain.Core\\PMDb.Domain.Core.csproj": "1.0.0"
+          "PMDb.Domain.Core": "1.0.0"
         },
         "compile": {
           "bin/placeholder/PMDb.Domain.Interfeces.dll": {}
@@ -3449,6 +3459,11 @@
         "system.threading.tasks.nuspec"
       ]
     },
+    "PMDb.Domain.Core/1.0.0": {
+      "type": "project",
+      "path": "../PMDb.Domain.Core/PMDb.Domain.Core.csproj",
+      "msbuildProject": "../PMDb.Domain.Core/PMDb.Domain.Core.csproj"
+    },
     "PMDb.Domain.Interfeces/1.0.0": {
       "type": "project",
       "path": "../Interfeces/PMDb.Domain.Interfeces.csproj",
@@ -3457,7 +3472,6 @@
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v2.0": [
-      "C:\\Users\\DrVoo\\Desktop\\PMDb\\PMDb.Domain.Core\\PMDb.Domain.Core.csproj",
       "Microsoft.EntityFrameworkCore.SqlServer >= 2.0.1",
       "Microsoft.EntityFrameworkCore.SqlServer.Design >= 1.1.5",
       "Microsoft.EntityFrameworkCore.Tools >= 2.0.1",
@@ -3498,9 +3512,6 @@
       "frameworks": {
         "netcoreapp2.0": {
           "projectReferences": {
-            "C:\\Users\\DrVoo\\Desktop\\PMDb\\PMDb.Domain.Core\\PMDb.Domain.Core.csproj": {
-              "projectPath": "C:\\Users\\DrVoo\\Desktop\\PMDb\\PMDb.Domain.Core\\PMDb.Domain.Core.csproj"
-            },
             "C:\\Users\\DrVoo\\Desktop\\PMDb\\Personal-Movie-Database-PMDb\\Interfeces\\PMDb.Domain.Interfeces.csproj": {
               "projectPath": "C:\\Users\\DrVoo\\Desktop\\PMDb\\Personal-Movie-Database-PMDb\\Interfeces\\PMDb.Domain.Interfeces.csproj"
             }
@@ -3542,16 +3553,5 @@
         "warn": true
       }
     }
-  },
-  "logs": [
-    {
-      "code": "NU1104",
-      "level": "Error",
-      "message": "Unable to find project 'C:\\Users\\DrVoo\\Desktop\\PMDb\\PMDb.Domain.Core\\PMDb.Domain.Core.csproj'. Check that the project reference is valid and that the project file exists.",
-      "libraryId": "C:\\Users\\DrVoo\\Desktop\\PMDb\\PMDb.Domain.Core\\PMDb.Domain.Core.csproj",
-      "targetGraphs": [
-        ".NETCoreApp,Version=v2.0"
-      ]
-    }
-  ]
+  }
 }

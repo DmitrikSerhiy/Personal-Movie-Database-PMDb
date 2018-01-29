@@ -4,3 +4,10 @@ C:\Users\DrVoo\Desktop\PMDb\Personal-Movie-Database-PMDb\PMDb.Infrastucrure.Data
 C:\Users\DrVoo\Desktop\PMDb\Personal-Movie-Database-PMDb\PMDb.Infrastucrure.Data\obj\Debug\netcoreapp2.0\PMDb.Infrastucrure.Data.csproj.CoreCompileInputs.cache
 C:\Users\DrVoo\Desktop\PMDb\Personal-Movie-Database-PMDb\PMDb.Infrastucrure.Data\obj\Debug\netcoreapp2.0\PMDb.Infrastucrure.Data.AssemblyInfoInputs.cache
 C:\Users\DrVoo\Desktop\PMDb\Personal-Movie-Database-PMDb\PMDb.Infrastucrure.Data\obj\Debug\netcoreapp2.0\PMDb.Infrastucrure.Data.AssemblyInfo.cs
+C:\Users\DrVoo\Desktop\PMDb\Personal-Movie-Database-PMDb\PMDb.Infrastucrure.Data\bin\Debug\netcoreapp2.0\PMDb.Infrastucrure.Data.deps.json
+C:\Users\DrVoo\Desktop\PMDb\Personal-Movie-Database-PMDb\PMDb.Infrastucrure.Data\bin\Debug\netcoreapp2.0\PMDb.Infrastucrure.Data.dll
+C:\Users\DrVoo\Desktop\PMDb\Personal-Movie-Database-PMDb\PMDb.Infrastucrure.Data\bin\Debug\netcoreapp2.0\PMDb.Infrastucrure.Data.pdb
+C:\Users\DrVoo\Desktop\PMDb\Personal-Movie-Database-PMDb\PMDb.Infrastucrure.Data\bin\Debug\netcoreapp2.0\PMDb.Domain.Interfeces.pdb
+C:\Users\DrVoo\Desktop\PMDb\Personal-Movie-Database-PMDb\PMDb.Infrastucrure.Data\bin\Debug\netcoreapp2.0\PMDb.Domain.Core.pdb
+C:\Users\DrVoo\Desktop\PMDb\Personal-Movie-Database-PMDb\PMDb.Infrastucrure.Data\obj\Debug\netcoreapp2.0\PMDb.Infrastucrure.Data.dll
+C:\Users\DrVoo\Desktop\PMDb\Personal-Movie-Database-PMDb\PMDb.Infrastucrure.Data\obj\Debug\netcoreapp2.0\PMDb.Infrastucrure.Data.pdb
