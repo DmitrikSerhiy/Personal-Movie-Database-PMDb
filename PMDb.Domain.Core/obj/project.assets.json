@@ -673,11 +673,11 @@
       "hideWarningsAndErrors": true
     },
     "restore": {
-      "projectUniqueName": "C:\\Users\\DrVoo\\Desktop\\PMDb\\Personal-Movie-Database-PMDb\\PMDb.Domain.Core\\PMDb.Domain.Core.csproj",
+      "projectUniqueName": "E:\\diploma\\Personal-Movie-Database-PMDb\\PMDb.Domain.Core\\PMDb.Domain.Core.csproj",
       "projectName": "PMDb.Domain.Core",
-      "projectPath": "C:\\Users\\DrVoo\\Desktop\\PMDb\\Personal-Movie-Database-PMDb\\PMDb.Domain.Core\\PMDb.Domain.Core.csproj",
+      "projectPath": "E:\\diploma\\Personal-Movie-Database-PMDb\\PMDb.Domain.Core\\PMDb.Domain.Core.csproj",
       "packagesPath": "C:\\Users\\DrVoo\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\DrVoo\\Desktop\\PMDb\\Personal-Movie-Database-PMDb\\PMDb.Domain.Core\\obj\\",
+      "outputPath": "E:\\diploma\\Personal-Movie-Database-PMDb\\PMDb.Domain.Core\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

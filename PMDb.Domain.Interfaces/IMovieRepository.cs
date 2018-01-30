@@ -3,10 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace PMDb.Domain.Interfeces
+namespace PMDb.Domain.Interfaces
 {
     public interface IMovieRepository : IRepository<Movie>
     {
-        //some extra methods for movie
+        void AddMark(double mark);
+        void UpdateMark(int movieId);
+        void DeleteMark(int movieId);
     }
 }
