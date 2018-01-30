@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2010
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PMDb.Domain", "PMDb.Domain", "{8CCFF366-B056-4207-8229-018DB2F16F7E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PMDb.Domain.Core", "PMDb.Domain.Core\PMDb.Domain.Core.csproj", "{BC6BF807-CF04-406C-A61F-49EEF43B3C9C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PMDb.Domain.Interfaces", "PMDb.Domain.Interfaces\PMDb.Domain.Interfaces.csproj", "{BD71A4E5-1ED7-433B-ABD7-FB9EB0DA17F2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PMDb.Infrastucture", "PMDb.Infrastucture", "{A1D58CC5-CB3C-4F7F-A29F-E659E34EACC0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PMDb.Infrastructure.Data", "PMDb.Infrastructure.Data\PMDb.Infrastructure.Data.csproj", "{AAFC9F8C-0EB6-4B45-BDF8-73D097511124}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PMDb.Tests", "PMDb.Tests", "{9E6B99E2-F037-47E1-8EAE-B1779C31A171}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PmDb.MovieRepository.Test", "PmDb.MovieRepository.Test\PmDb.MovieRepository.Test.csproj", "{05AD22EE-D3BA-43CD-9267-757CBDE490C1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BC6BF807-CF04-406C-A61F-49EEF43B3C9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC6BF807-CF04-406C-A61F-49EEF43B3C9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC6BF807-CF04-406C-A61F-49EEF43B3C9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC6BF807-CF04-406C-A61F-49EEF43B3C9C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD71A4E5-1ED7-433B-ABD7-FB9EB0DA17F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD71A4E5-1ED7-433B-ABD7-FB9EB0DA17F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD71A4E5-1ED7-433B-ABD7-FB9EB0DA17F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD71A4E5-1ED7-433B-ABD7-FB9EB0DA17F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AAFC9F8C-0EB6-4B45-BDF8-73D097511124}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AAFC9F8C-0EB6-4B45-BDF8-73D097511124}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AAFC9F8C-0EB6-4B45-BDF8-73D097511124}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AAFC9F8C-0EB6-4B45-BDF8-73D097511124}.Release|Any CPU.Build.0 = Release|Any CPU
+		{05AD22EE-D3BA-43CD-9267-757CBDE490C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05AD22EE-D3BA-43CD-9267-757CBDE490C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05AD22EE-D3BA-43CD-9267-757CBDE490C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05AD22EE-D3BA-43CD-9267-757CBDE490C1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{BC6BF807-CF04-406C-A61F-49EEF43B3C9C} = {8CCFF366-B056-4207-8229-018DB2F16F7E}
+		{BD71A4E5-1ED7-433B-ABD7-FB9EB0DA17F2} = {8CCFF366-B056-4207-8229-018DB2F16F7E}
+		{AAFC9F8C-0EB6-4B45-BDF8-73D097511124} = {A1D58CC5-CB3C-4F7F-A29F-E659E34EACC0}
+		{05AD22EE-D3BA-43CD-9267-757CBDE490C1} = {9E6B99E2-F037-47E1-8EAE-B1779C31A171}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5E84038A-3170-410E-8953-86092C4E9C07}
+	EndGlobalSection
+EndGlobal
