@@ -2,12 +2,19 @@
 using PMDb.Domain.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace PMDb.Infrastructure.Data
 {
     public class MovieRepository : IMovieRepository
 
     {
+        private MovieContext _context;
+
+        public MovieRepository(MovieContext context)
+        {
+            _context = context;
+        }
         public void AddMark(double mark)
         {
             throw new NotImplementedException();
@@ -20,12 +27,12 @@ namespace PMDb.Infrastructure.Data
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            _context.Dispose();
         }
 
         public Movie GetMovie(int movieId)
         {
-            throw new NotImplementedException();
+            return _context.Movies.FirstOrDefault(m => m.Id == movieId);
         }
 
         public IEnumerable<Movie> GetMovies()
