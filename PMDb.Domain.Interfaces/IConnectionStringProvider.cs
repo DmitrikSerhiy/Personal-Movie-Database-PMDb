@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace PMDb.Infrastructure.Data
+namespace PMDb.Domain.Interfaces
 {
     public interface IConnectionStringProvider
     {

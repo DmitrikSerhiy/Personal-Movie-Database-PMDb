@@ -6,7 +6,7 @@ using PMDb.Infrastructure.Data;
 using System;
 using System.ComponentModel;
 
-namespace PMDb.Infrastructure.IoC
+namespace PMDb.DependencyResolver.IoC
 {
     public class IoCBuilder
     {

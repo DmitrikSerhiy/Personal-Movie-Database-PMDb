@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\PMDb.Infrastructure.IoC\PMDb.Infrastructure.IoC.csproj" />
+    <ProjectReference Include="..\PMDb.Infrastructure.IoC\PMDb.DependencyResolver.IoC.csproj" />
   </ItemGroup>
 
 </Project>

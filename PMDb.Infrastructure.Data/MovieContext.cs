@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PMDb.Domain.Core;
+using PMDb.Domain.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Text;
