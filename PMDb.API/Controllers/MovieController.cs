@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using PMDb.Services.Validation;
+using PMDb.Services;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PMDb.Domain.Interfaces;
-using PMDb.Services.Mappers;
 
 namespace PMDb.API.Controllers
 {

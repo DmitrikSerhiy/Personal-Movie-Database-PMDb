@@ -1,15 +1,15 @@
 ﻿using AutoMapper;
 using PMDb.Domain.Core;
-using PMDb.Services.BusinessModels;
+using PMDb.Services;
 using System;
 
-namespace PMDb.Services.Mappers
+namespace PMDb.Services
 {
     public class MovieMapper
     {
         public MovieMapper()
         {
-            Mapper.Initialize(cfg => cfg.CreateMap<Movie, MovieModel>());      
+            Mapper.Initialize(cfg => cfg.CreateMap<Movie, MovieModel>());
         }
 
         public static MovieModel Map(Movie movie)

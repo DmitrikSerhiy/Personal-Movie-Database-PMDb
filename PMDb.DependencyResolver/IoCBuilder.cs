@@ -4,9 +4,8 @@ using Microsoft.Extensions.DependencyInjection;
 using PMDb.Domain.Interfaces;
 using PMDb.Infrastructure.Data;
 using System;
-using System.ComponentModel;
 
-namespace PMDb.DependencyResolver.IoC
+namespace PMDb.DependencyResolver
 {
     public class IoCBuilder
     {

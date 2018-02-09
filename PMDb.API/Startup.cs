@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using PMDb.DependencyResolver.IoC;
-using PMDb.Services.Mappers;
+using PMDb.Services;
 
 namespace PMDb.API
 {

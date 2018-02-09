@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PMDb.Services.BusinessModels
+namespace PMDb.Services
 {
     public class MovieModel
     {
