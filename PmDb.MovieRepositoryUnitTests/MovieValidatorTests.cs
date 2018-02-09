@@ -1,8 +1,7 @@
-﻿using BMDb.Services.Validation;
-using FluentAssertions;
-using FluentValidation;
+﻿using FluentAssertions;
 using FluentValidation.Results;
 using PMDb.Domain.Core;
+using PMDb.Services.Validation;
 using System;
 using System.Collections.Generic;
 using System.Text;

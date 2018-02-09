@@ -23,9 +23,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BMDb.Services.Validation\BMDb.Services.Validation.csproj" />
     <ProjectReference Include="..\PMDb.Infrastructure.IoC\PMDb.DependencyResolver.IoC.csproj" />
     <ProjectReference Include="..\PMDb.Services.Mappers\PMDb.Services.Mappers.csproj" />
+    <ProjectReference Include="..\PMDb.Services.Validation\PMDb.Services.Validation.csproj" />
   </ItemGroup>
 
 </Project>

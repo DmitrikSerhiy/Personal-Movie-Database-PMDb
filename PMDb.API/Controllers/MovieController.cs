@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using BMDb.Services.Validation;
+using PMDb.Services.Validation;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -24,19 +24,20 @@ namespace PMDb.API.Controllers
         [HttpGet("{id}", Name = "GetMovie")]
         public IActionResult Getmovie(int id)
         {
-            var mapper = new MovieMapper();
             var validator = new MovieValidation();
 
             var movie = _movieRepository.GetMovie(id);
 
-            if (!validator.Validate(movie).IsValid)
+            //var validationResult = validator.Validate(movie);
+            if (movie == null)
             {
-                return (BadRequest());
+                return (NotFound());
             }
 
-            var movieModel = mapper.Map(movie);
+            var movieModel = MovieMapper.Map(movie);
 
-            return Ok(new JsonResult(movieModel));
+            return Ok(movieModel);
+
         }
         //    // GET: api/Movie
         //    [HttpGet]

@@ -11,7 +11,6 @@ namespace PmDb.MovieRepositoryUnitTests
     [Trait("Category", "Mapper Tests")]
     public class MovieMapperTests
     {
-        private MovieMapper movieMapper;
         private Movie MovieExaple;
         public MovieMapperTests()
         {
@@ -28,9 +27,7 @@ namespace PmDb.MovieRepositoryUnitTests
         [Fact]
         public void MovieMappingTest()
         {
-            movieMapper = new MovieMapper(true);
-
-            var result = movieMapper.Map(MovieExaple);
+            var result = MovieMapper.Map(MovieExaple);
 
             result.Name.Should().Be(MovieExaple.Name);
             result.Genre.Should().Be(MovieExaple.Genre);

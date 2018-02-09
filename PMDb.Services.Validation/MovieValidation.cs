@@ -1,9 +1,8 @@
 ﻿using FluentValidation;
-using Microsoft.Extensions.DependencyInjection;
 using PMDb.Domain.Core;
 using System;
 
-namespace BMDb.Services.Validation
+namespace PMDb.Services.Validation
 {
     public class MovieValidation : AbstractValidator<Movie>
     {
