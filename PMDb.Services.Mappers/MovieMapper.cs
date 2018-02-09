@@ -5,16 +5,20 @@ using System;
 
 namespace PMDb.Services.Mappers
 {
-    public class MapMovieToMovieModel
+    public class MovieMapper
     {
-        public MapMovieToMovieModel()
+        public MovieMapper()
         {
             Mapper.Initialize(cfg => cfg.CreateMap<Movie, MovieModel>());      
         }
-        public MovieModel Map()
+
+        public MovieMapper(bool Initialized)
         {
-            return null;
-            //return Mapper.Map<IEnumerable<User>, List<IndexUserViewModel>>(repo.GetAll());
+                
+        }
+        public MovieModel Map(Movie movie)
+        {
+            return Mapper.Map<MovieModel>((movie));
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using BMDb.Services.Validation;
 using Microsoft.Extensions.DependencyInjection;
 using PMDb.Domain.Interfaces;
 using PMDb.Infrastructure.Data;
@@ -24,6 +25,10 @@ namespace PMDb.DependencyResolver.IoC
                 .InstancePerLifetimeScope();
 
             builder.RegisterType<MovieContext>()
+                .AsSelf()
+                .InstancePerLifetimeScope();
+
+            builder.RegisterType<MovieValidation>()
                 .AsSelf()
                 .InstancePerLifetimeScope();
 

@@ -9,12 +9,12 @@ using Xunit;
 
 namespace PmDb.MovieRepositoryUnitTests
 {
-    public class GetMovieTest
+    public class GetMovieTests
     {
         private Movie fakeMovie;
         private Mock<IMovieRepository> mockMovieRepository;
 
-        public GetMovieTest()
+        public GetMovieTests()
         {
             mockMovieRepository = new Mock<IMovieRepository>();
             fakeMovie = new Movie()

@@ -19,6 +19,7 @@
     <ProjectReference Include="..\PMDb.API\PMDb.API.csproj" />
     <ProjectReference Include="..\PMDb.Domain.Core\PMDb.Domain.Core.csproj" />
     <ProjectReference Include="..\PMDb.Domain.Interfaces\PMDb.Domain.Interfaces.csproj" />
+    <ProjectReference Include="..\PMDb.Services.Mappers\PMDb.Services.Mappers.csproj" />
   </ItemGroup>
 
 </Project>
