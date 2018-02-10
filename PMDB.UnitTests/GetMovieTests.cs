@@ -6,7 +6,7 @@ using System;
 using System.Linq.Expressions;
 using Xunit;
 
-namespace PmDb.UnitTests
+namespace PMDb.UnitTests
 {
     public class GetMovieTests
     {

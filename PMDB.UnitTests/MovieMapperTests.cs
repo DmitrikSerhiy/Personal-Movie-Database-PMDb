@@ -5,7 +5,7 @@ using System;
 using System.Text;
 using Xunit;
 
-namespace PmDb.UnitTests
+namespace PMDb.UnitTests
 {
     [Trait("Category", "Mapper Tests")]
     public class MovieMapperTests

@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Text;
 using Xunit;
 
-namespace PmDb.UnitTests
+namespace PMDb.UnitTests
 {
     [Trait("Category", "Movie Validation tests")]
     public class MovieValidatorTests
