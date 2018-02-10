@@ -31,7 +31,7 @@ namespace PMDb.UnitTests
             result.Name.Should().Be(MovieExaple.Name);
             result.Genre.Should().Be(MovieExaple.Genre);
             result.Mark.Should().Be(MovieExaple.Mark);
-            result.Director.Should().Be(MovieExaple.Director);
+            result.Director.Should().Be(MovieExaple.Director);//remake
         }
     }
 }

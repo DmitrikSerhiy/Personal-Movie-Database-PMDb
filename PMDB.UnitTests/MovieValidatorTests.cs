@@ -61,7 +61,7 @@ namespace PMDb.UnitTests
         {
             var LongMovieDirectorName = new Movie()
             {
-                Director = "This is example of too long director's name"
+                Director = "This is example of too long director's name even longer than you could emagine"
             };
             MovieValidation validator = new MovieValidation();
 
@@ -75,7 +75,7 @@ namespace PMDb.UnitTests
         {
             var LongMovieGenre = new Movie()
             {
-                Director = "This is example of too long movie's genre"
+                Director = "This is example of too long movie's genre even longer than you could emagine"
             };
             MovieValidation validator = new MovieValidation();
 

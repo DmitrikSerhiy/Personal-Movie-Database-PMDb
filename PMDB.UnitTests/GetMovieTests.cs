@@ -3,7 +3,6 @@ using Moq;
 using PMDb.Domain.Core;
 using PMDb.Domain.Interfaces;
 using System;
-using System.Linq.Expressions;
 using Xunit;
 
 namespace PMDb.UnitTests
