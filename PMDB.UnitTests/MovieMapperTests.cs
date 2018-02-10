@@ -2,11 +2,10 @@
 using PMDb.Domain.Core;
 using PMDb.Services;
 using System;
-using System.Collections.Generic;
 using System.Text;
 using Xunit;
 
-namespace PmDb.MovieRepositoryUnitTests
+namespace PmDb.UnitTests
 {
     [Trait("Category", "Mapper Tests")]
     public class MovieMapperTests
@@ -34,7 +33,5 @@ namespace PmDb.MovieRepositoryUnitTests
             result.Mark.Should().Be(MovieExaple.Mark);
             result.Director.Should().Be(MovieExaple.Director);
         }
-
-
     }
 }
