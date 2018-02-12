@@ -18,10 +18,10 @@ namespace PMDb.UnitTests
             fakeMovie = new Movie()
             {
                 Id = 13,
-                Name = "Divine Trash",
-                Mark = 9.7,
-                Genre = "Documentary",
-                Director = "Stephannie Kinforth",
+                //Name = "Divine Trash",
+                //Mark = 9.7,
+                //Genre = "Documentary",
+                //Director = "Stephannie Kinforth",
             };
         }
 
