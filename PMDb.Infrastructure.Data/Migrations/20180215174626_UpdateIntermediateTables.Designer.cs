@@ -11,8 +11,8 @@ using System;
 namespace PMDb.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(MovieContext))]
-    [Migration("20180212195310_NewWriterEntity")]
-    partial class NewWriterEntity
+    [Migration("20180215174626_UpdateIntermediateTables")]
+    partial class UpdateIntermediateTables
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,18 @@ namespace PMDb.Infrastructure.Data.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.0.1-rtm-125")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("PMDb.Domain.Core.Actor", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Actors");
+                });
 
             modelBuilder.Entity("PMDb.Domain.Core.Director", b =>
                 {
@@ -63,18 +75,26 @@ namespace PMDb.Infrastructure.Data.Migrations
                     b.ToTable("Movies");
                 });
 
+            modelBuilder.Entity("PMDb.Domain.Core.MovieActor", b =>
+                {
+                    b.Property<int>("ActorId");
+
+                    b.Property<int>("MovieId");
+
+                    b.HasKey("ActorId", "MovieId");
+
+                    b.HasIndex("MovieId");
+
+                    b.ToTable("MovieActor");
+                });
+
             modelBuilder.Entity("PMDb.Domain.Core.MovieDirector", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
                     b.Property<int>("DirectorId");
 
                     b.Property<int>("MovieId");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("DirectorId");
+                    b.HasKey("DirectorId", "MovieId");
 
                     b.HasIndex("MovieId");
 
@@ -83,38 +103,78 @@ namespace PMDb.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("PMDb.Domain.Core.MovieGenre", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
                     b.Property<int>("GenreId");
 
                     b.Property<int>("MovieId");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("GenreId");
+                    b.HasKey("GenreId", "MovieId");
 
                     b.HasIndex("MovieId");
 
                     b.ToTable("MovieGenre");
                 });
 
+            modelBuilder.Entity("PMDb.Domain.Core.MovieTag", b =>
+                {
+                    b.Property<int>("TagId");
+
+                    b.Property<int>("MovieId");
+
+                    b.HasKey("TagId", "MovieId");
+
+                    b.HasIndex("MovieId");
+
+                    b.ToTable("MovieTag");
+                });
+
             modelBuilder.Entity("PMDb.Domain.Core.MovieWriter", b =>
+                {
+                    b.Property<int>("WriterId");
+
+                    b.Property<int>("MovieId");
+
+                    b.HasKey("WriterId", "MovieId");
+
+                    b.HasIndex("MovieId");
+
+                    b.ToTable("MovieWriter");
+                });
+
+            modelBuilder.Entity("PMDb.Domain.Core.Rating", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<double?>("IMDbRating");
+
+                    b.Property<int?>("IMDbVotes");
+
+                    b.Property<double?>("MetaCriticRating");
+
                     b.Property<int>("MovieId");
 
-                    b.Property<int>("WriterId");
+                    b.Property<double?>("OwnRating");
+
+                    b.Property<double?>("RotenTomatosRaing");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MovieId");
+                    b.HasIndex("MovieId")
+                        .IsUnique();
 
-                    b.HasIndex("WriterId");
+                    b.ToTable("Ratings");
+                });
 
-                    b.ToTable("MovieWriter");
+            modelBuilder.Entity("PMDb.Domain.Core.Tag", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Tags");
                 });
 
             modelBuilder.Entity("PMDb.Domain.Core.Writer", b =>
@@ -127,6 +187,19 @@ namespace PMDb.Infrastructure.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Writers");
+                });
+
+            modelBuilder.Entity("PMDb.Domain.Core.MovieActor", b =>
+                {
+                    b.HasOne("PMDb.Domain.Core.Actor", "Actor")
+                        .WithMany("MovieActor")
+                        .HasForeignKey("ActorId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("PMDb.Domain.Core.Movie", "Movie")
+                        .WithMany("MovieActor")
+                        .HasForeignKey("MovieId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("PMDb.Domain.Core.MovieDirector", b =>
@@ -155,6 +228,19 @@ namespace PMDb.Infrastructure.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("PMDb.Domain.Core.MovieTag", b =>
+                {
+                    b.HasOne("PMDb.Domain.Core.Movie", "Movie")
+                        .WithMany("MovieTag")
+                        .HasForeignKey("MovieId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("PMDb.Domain.Core.Tag", "Tag")
+                        .WithMany("MovieTag")
+                        .HasForeignKey("TagId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("PMDb.Domain.Core.MovieWriter", b =>
                 {
                     b.HasOne("PMDb.Domain.Core.Movie", "Movie")
@@ -165,6 +251,14 @@ namespace PMDb.Infrastructure.Data.Migrations
                     b.HasOne("PMDb.Domain.Core.Writer", "Writer")
                         .WithMany("MovieWriter")
                         .HasForeignKey("WriterId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("PMDb.Domain.Core.Rating", b =>
+                {
+                    b.HasOne("PMDb.Domain.Core.Movie", "Movie")
+                        .WithOne("Rating")
+                        .HasForeignKey("PMDb.Domain.Core.Rating", "MovieId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

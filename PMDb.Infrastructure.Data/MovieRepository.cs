@@ -1,4 +1,5 @@
-﻿using PMDb.Domain.Core;
+﻿using Microsoft.EntityFrameworkCore;
+using PMDb.Domain.Core;
 using PMDb.Domain.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -32,12 +33,26 @@ namespace PMDb.Infrastructure.Data
 
         public Movie GetMovie(int movieId)
         {
-            return _context.Movies.FirstOrDefault(m => m.Id == movieId);
+            var movies = _context.Movies
+                .Include(mg => mg.MovieGenre).ThenInclude(g => g.Genre)
+                .Include(ma => ma.MovieActor).ThenInclude(a => a.Actor)
+                .Include(ma => ma.MovieDirector).ThenInclude(d => d.Director)
+                .Include(ma => ma.MovieTag).ThenInclude(t => t.Tag)
+                .Include(mw => mw.MovieWriter).ThenInclude(w => w.Writer)
+                .Include(r => r.Rating)
+                .FirstOrDefault();
+
+            return movies;
         }
 
-        public IEnumerable<Movie> GetMovies()
+        public ICollection<Movie> GetMovies()
         {
-            throw new NotImplementedException();
+            var movies = _context.Movies
+                .Include(ma => ma.MovieTag).ThenInclude(t => t.Tag)
+                .Include(r => r.Rating)
+                .ToList();
+
+            return movies;
         }
 
         public void Save()

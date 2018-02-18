@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using PMDb.DependencyResolver;
 using PMDb.Services;
+using PMDb.Services.Mappers;
 
 namespace PMDb.API
 {
@@ -15,7 +16,7 @@ namespace PMDb.API
     public class Startup
     {
         private IoCBuilder IoCBuilder;
-        private MovieMapper movieMapper;
+        private MapperInitializatior mapperInitializatior;
         public Startup()
         {
             
@@ -25,7 +26,7 @@ namespace PMDb.API
         {
             services.AddMvc();
             IoCBuilder = new IoCBuilder(services);
-            movieMapper = new MovieMapper();
+            mapperInitializatior = new MapperInitializatior();
             return IoCBuilder.GetContainer();
         }
 

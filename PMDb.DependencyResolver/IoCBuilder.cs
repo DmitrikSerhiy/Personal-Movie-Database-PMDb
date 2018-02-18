@@ -3,6 +3,7 @@ using Autofac.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 using PMDb.Domain.Interfaces;
 using PMDb.Infrastructure.Data;
+using PMDb.Services;
 using System;
 
 namespace PMDb.DependencyResolver
@@ -24,6 +25,10 @@ namespace PMDb.DependencyResolver
 
             builder.RegisterType<MovieContext>()
                 .AsSelf()
+                .InstancePerLifetimeScope();
+
+            builder.RegisterType<MovieService>()
+                .As<IMovieService>()
                 .InstancePerLifetimeScope();
 
             container = builder.Build();

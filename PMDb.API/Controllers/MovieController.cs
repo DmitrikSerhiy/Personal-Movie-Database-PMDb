@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using PMDb.Services;
 using Microsoft.AspNetCore.Mvc;
 using PMDb.Domain.Interfaces;
+using PMDb.Services.Mappers;
 
 namespace PMDb.API.Controllers
 {
@@ -12,10 +13,10 @@ namespace PMDb.API.Controllers
     [Route("api/Movie")]
     public class MovieController : Controller
     {
-        private IMovieRepository _movieRepository;
-        public MovieController(IMovieRepository movieRepository)
+        private IMovieService movieService;
+        public MovieController(IMovieService MovieService)
         {
-            _movieRepository = movieRepository;
+            movieService = MovieService;
         }
 
         [HttpGet("{id}", Name = "GetMovie")]
@@ -23,15 +24,16 @@ namespace PMDb.API.Controllers
         {
             var validator = new MovieValidation();
 
-            var movie = _movieRepository.GetMovie(id);
+            var movieModel = movieService.GetMovie(id);
 
+           // var mov = new Movie
             //var validationResult = validator.Validate(movie);
-            if (movie == null)
+            if (movieModel == null)
             {
                 return (NotFound());
             }
 
-            var movieModel = MovieMapper.Map(movie);
+
 
             return Ok(movieModel);
 

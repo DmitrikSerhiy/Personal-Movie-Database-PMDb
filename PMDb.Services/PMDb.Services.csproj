@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\PMDb.Domain.Core\PMDb.Domain.Core.csproj" />
+    <ProjectReference Include="..\PMDb.Domain.Interfaces\PMDb.Domain.Interfaces.csproj" />
   </ItemGroup>
 
 </Project>

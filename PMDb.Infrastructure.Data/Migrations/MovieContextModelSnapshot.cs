@@ -76,16 +76,11 @@ namespace PMDb.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("PMDb.Domain.Core.MovieActor", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
                     b.Property<int>("ActorId");
 
                     b.Property<int>("MovieId");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("ActorId");
+                    b.HasKey("ActorId", "MovieId");
 
                     b.HasIndex("MovieId");
 
@@ -94,16 +89,11 @@ namespace PMDb.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("PMDb.Domain.Core.MovieDirector", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
                     b.Property<int>("DirectorId");
 
                     b.Property<int>("MovieId");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("DirectorId");
+                    b.HasKey("DirectorId", "MovieId");
 
                     b.HasIndex("MovieId");
 
@@ -112,16 +102,11 @@ namespace PMDb.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("PMDb.Domain.Core.MovieGenre", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
                     b.Property<int>("GenreId");
 
                     b.Property<int>("MovieId");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("GenreId");
+                    b.HasKey("GenreId", "MovieId");
 
                     b.HasIndex("MovieId");
 
@@ -130,36 +115,26 @@ namespace PMDb.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("PMDb.Domain.Core.MovieTag", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                    b.Property<int>("TagId");
 
                     b.Property<int>("MovieId");
 
-                    b.Property<int>("TagId");
-
-                    b.HasKey("Id");
+                    b.HasKey("TagId", "MovieId");
 
                     b.HasIndex("MovieId");
-
-                    b.HasIndex("TagId");
 
                     b.ToTable("MovieTag");
                 });
 
             modelBuilder.Entity("PMDb.Domain.Core.MovieWriter", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                    b.Property<int>("WriterId");
 
                     b.Property<int>("MovieId");
 
-                    b.Property<int>("WriterId");
-
-                    b.HasKey("Id");
+                    b.HasKey("WriterId", "MovieId");
 
                     b.HasIndex("MovieId");
-
-                    b.HasIndex("WriterId");
 
                     b.ToTable("MovieWriter");
                 });
@@ -171,13 +146,13 @@ namespace PMDb.Infrastructure.Data.Migrations
 
                     b.Property<double?>("IMDbRating");
 
+                    b.Property<int?>("IMDbVotes");
+
                     b.Property<double?>("MetaCriticRating");
 
                     b.Property<int>("MovieId");
 
                     b.Property<double?>("OwnRating");
-
-                    b.Property<int?>("PMDbVotes");
 
                     b.Property<double?>("RotenTomatosRaing");
 
