@@ -1,0 +1,10 @@
+insert into Tags (Name) values ('#3d1');
+insert into Tags (Name) values ('#7c3');
+insert into Tags (Name) values ('#8d4');
+insert into Tags (Name) values ('#75f');
+insert into Tags (Name) values ('#428');
+insert into Tags (Name) values ('#6be');
+insert into Tags (Name) values ('#dd3');
+insert into Tags (Name) values ('#2a1');
+insert into Tags (Name) values ('#092');
+insert into Tags (Name) values ('#961');

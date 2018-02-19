@@ -26,6 +26,8 @@ namespace PMDb.Services.Mappers
                     .ForMember("Name", model => model.MapFrom(w => w.Writer.Name));
                 cfg.CreateMap<Rating, RatingModel>()
                     .ForMember("Mark", model => model.MapFrom(r => r.OwnRating));
+                cfg.CreateMap<RatingModel, Rating>()
+                    .ForMember("OwnRating", model => model.MapFrom(r => r.Mark));
             });
         }
     }

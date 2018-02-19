@@ -33,36 +33,39 @@ namespace PMDb.Infrastructure.Data
 
         public Movie GetMovie(int movieId)
         {
-            var movies = _context.Movies
+            return _context.Movies
                 .Include(mg => mg.MovieGenre).ThenInclude(g => g.Genre)
                 .Include(ma => ma.MovieActor).ThenInclude(a => a.Actor)
                 .Include(ma => ma.MovieDirector).ThenInclude(d => d.Director)
                 .Include(ma => ma.MovieTag).ThenInclude(t => t.Tag)
                 .Include(mw => mw.MovieWriter).ThenInclude(w => w.Writer)
                 .Include(r => r.Rating)
-                .FirstOrDefault();
-
-            return movies;
+                .FirstOrDefault(m => m.Id == movieId);
         }
 
-        public ICollection<Movie> GetMovies()
+        public IList<Movie> GetMovies()
         {
-            var movies = _context.Movies
+            return _context.Movies
                 .Include(ma => ma.MovieTag).ThenInclude(t => t.Tag)
                 .Include(r => r.Rating)
                 .ToList();
+        }
 
-            return movies;
+        public bool IsExist(int movieId)
+        {
+            return _context.Movies.FirstOrDefault(m => m.Id == movieId) == null ? false : true;
         }
 
         public void Save()
         {
-            throw new NotImplementedException();
+            _context.SaveChanges();
         }
 
-        public void UpdateMark(int movieId)
+        public void UpdateMark(int movieId, double newMark)
         {
-            throw new NotImplementedException();
+            _context.Ratings
+                .FirstOrDefault(m => m.MovieId == movieId)
+                .OwnRating = newMark;
         }
     }
 }

@@ -8,6 +8,8 @@ namespace PMDb.Services
     public interface IMovieService
     {
         MovieModel GetMovie(int Id);
-        IEnumerable<MovieModel> GetMovies();
+        IList<MovieModel> GetMovies();
+        bool IsMovieExist(int movieId);
+        void UpdateMark(int movieId, double newMark);
     }
 }

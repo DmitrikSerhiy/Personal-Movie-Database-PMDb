@@ -1,4 +1,5 @@
-﻿using PMDb.Domain.Interfaces;
+﻿using PMDb.Domain.Core;
+using PMDb.Domain.Interfaces;
 using PMDb.Services.Mappers;
 using PMDb.Services.Models;
 using System;
@@ -24,16 +25,27 @@ namespace PMDb.Services
             return movieModel;
         }
 
-        public IEnumerable<MovieModel> GetMovies()
+        public IList<MovieModel> GetMovies()
         {
-            var movies = movieRepository.GetMovies();
+            var movies = movieRepository.GetMovies() as List<Movie>;
             List<MovieModel> movieModels = new List<MovieModel>();
-            for (int i = 0; i < movies.Count(); i++)
+            foreach (var item in movies)
             {
-               // movieModels = MovieMapper.Map((movies[i]));
+                movieModels.Add(MovieMapper.Map(item));
             }
 
-            throw new NotImplementedException();
+            return movieModels;
+        }
+
+        public bool IsMovieExist(int movieId)
+        {
+            return movieRepository.IsExist(movieId);
+        }
+
+        public void UpdateMark(int movieId, double newMark)
+        {
+            movieRepository.UpdateMark(movieId, newMark);
+            movieRepository.Save();
         }
     }
 }
