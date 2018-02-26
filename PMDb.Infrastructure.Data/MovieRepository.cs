@@ -10,30 +10,31 @@ namespace PMDb.Infrastructure.Data
     public class MovieRepository : IMovieRepository
 
     {
-        private MovieContext _context;
+        private MovieContext context;
 
-        public MovieRepository(MovieContext context)
+        public MovieRepository(MovieContext Context)
         {
-            _context = context;
+            context = Context;
         }
         public void AddMark(double mark)
         {
             throw new NotImplementedException();
         }
 
-        public void DeleteMark(int movieId)
+        public void DeleteMark(string movieName)
         {
-            throw new NotImplementedException();
+            var movie = context.Movies.FirstOrDefault(m => m.Title == movieName);
+            context.Movies.Remove(movie);
         }
 
         public void Dispose()
         {
-            _context.Dispose();
+            context.Dispose();
         }
 
         public Movie GetMovie(int movieId)
         {
-            return _context.Movies
+            return context.Movies
                 .Include(mg => mg.MovieGenre).ThenInclude(g => g.Genre)
                 .Include(ma => ma.MovieActor).ThenInclude(a => a.Actor)
                 .Include(ma => ma.MovieDirector).ThenInclude(d => d.Director)
@@ -43,27 +44,42 @@ namespace PMDb.Infrastructure.Data
                 .FirstOrDefault(m => m.Id == movieId);
         }
 
-        public IList<Movie> GetMovies()
+        public IQueryable<Movie> GetMovies()
         {
-            return _context.Movies
-                .Include(ma => ma.MovieTag).ThenInclude(t => t.Tag)
-                .Include(r => r.Rating)
-                .ToList();
+            var MovieCollectionBeforePaging = context.Movies
+                   .Include(ma => ma.MovieTag).ThenInclude(t => t.Tag)
+                   .Include(r => r.Rating)
+                   .OrderBy(m => m.Title);
+
+            return MovieCollectionBeforePaging; //that's not the resource by far
+           // return MovieCollectionBeforePaging;
+            //return context.Movies
+            //    .Include(ma => ma.MovieTag).ThenInclude(t => t.Tag)
+            //    .Include(r => r.Rating)
+            //    .OrderBy(m => m.Title)
+            //    .Skip(PageSize * (PageNumber - 1))
+            //    .Take(PageSize)
+            //    .ToList();
         }
 
         public bool IsExist(int movieId)
         {
-            return _context.Movies.FirstOrDefault(m => m.Id == movieId) == null ? false : true;
+            return context.Movies.FirstOrDefault(m => m.Id == movieId) == null ? false : true;
+        }
+
+        public bool IsExist(string movieName)
+        {
+            return context.Movies.FirstOrDefault(m => m.Title == movieName) == null ? false : true;
         }
 
         public void Save()
         {
-            _context.SaveChanges();
+            context.SaveChanges();
         }
 
         public void UpdateMark(int movieId, double newMark)
         {
-            _context.Ratings
+            context.Ratings
                 .FirstOrDefault(m => m.MovieId == movieId)
                 .OwnRating = newMark;
         }

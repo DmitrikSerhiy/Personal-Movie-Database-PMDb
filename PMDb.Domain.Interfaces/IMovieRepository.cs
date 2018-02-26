@@ -9,7 +9,7 @@ namespace PMDb.Domain.Interfaces
     {
         void AddMark(double mark);
         void UpdateMark(int movieId, double newMark);
-        void DeleteMark(int movieId);
         void Save();
+        void DeleteMark(string movieName);
     }
 }

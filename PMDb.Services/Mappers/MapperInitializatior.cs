@@ -14,6 +14,8 @@ namespace PMDb.Services.Mappers
             Mapper.Initialize(cfg =>
             {
                 cfg.CreateMap<Movie, MovieModel>();
+                cfg.CreateMap<Movie, SimplifiedMovieModel>()
+                    .ForMember("Mark", model => model.MapFrom(m => m.Rating.OwnRating));
                 cfg.CreateMap<MovieGenre, GenreModel>()
                     .ForMember("Name", model => model.MapFrom(g => g.Genre.Name));
                 cfg.CreateMap<MovieActor, ActorModel>()
@@ -28,6 +30,7 @@ namespace PMDb.Services.Mappers
                     .ForMember("Mark", model => model.MapFrom(r => r.OwnRating));
                 cfg.CreateMap<RatingModel, Rating>()
                     .ForMember("OwnRating", model => model.MapFrom(r => r.Mark));
+                
             });
         }
     }

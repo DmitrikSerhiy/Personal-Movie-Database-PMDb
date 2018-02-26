@@ -8,14 +8,16 @@ using PMDb.Domain.Interfaces;
 using PMDb.Services.Mappers;
 using PMDb.Services.Models;
 using Microsoft.AspNetCore.JsonPatch;
+using PMDb.Services.Helpers;
 
 namespace PMDb.API.Controllers
 {
     [Produces("application/json")]
-    [Route("api/Movie")]
+    [Route("api/movies")]
     public class MovieController : Controller
     {
         private IMovieService movieService;
+
         public MovieController(IMovieService MovieService)
         {
             movieService = MovieService;
@@ -40,9 +42,10 @@ namespace PMDb.API.Controllers
         }
 
         [HttpGet(Name = "GetMovies")]
-        public IActionResult GetMovies()
+        public IActionResult GetMovies(GetMoviesParameters getMoviesParameters)
+            //instead of specifying parameters directly
         {
-            var movieModels = movieService.GetMovies();
+            var movieModels = movieService.GetMovies(getMoviesParameters);
             if (movieModels == null)
             {
                 return (NotFound());
@@ -73,14 +76,15 @@ namespace PMDb.API.Controllers
            return NoContent();
         }
 
-        [HttpDelete("{id}", Name = "DeleteMark")]
-        public IActionResult DeleteMark(int id)
+        [HttpDelete("{title}", Name = "DeleteMark")]
+        public IActionResult DeleteMark(string title)
         {
-            if (!movieService.IsMovieExist(id))
+            if (!movieService.IsMovieExist(title))
                 return NotFound();
 
-            return null;
-
+            // add validation for title
+            movieService.DeleteMark(title);
+            return NoContent();
         }
 
 

@@ -1,5 +1,6 @@
 ﻿using PMDb.Domain.Core;
 using PMDb.Domain.Interfaces;
+using PMDb.Services.Helpers;
 using PMDb.Services.Mappers;
 using PMDb.Services.Models;
 using System;
@@ -25,13 +26,19 @@ namespace PMDb.Services
             return movieModel;
         }
 
-        public IList<MovieModel> GetMovies()
+        public PagedList<SimplifiedMovieModel> GetMovies(GetMoviesParameters getMoviesParameters)
         {
-            var movies = movieRepository.GetMovies() as List<Movie>;
-            List<MovieModel> movieModels = new List<MovieModel>();
+            var MovieCollectionBeforePaging = movieRepository.GetMovies();
+
+            var movies = PagedList<Movie>.Create(MovieCollectionBeforePaging,
+                getMoviesParameters.PageNumber,
+                getMoviesParameters.PageSize);
+
+
+            PagedList<SimplifiedMovieModel> movieModels = new PagedList<SimplifiedMovieModel>();
             foreach (var item in movies)
             {
-                movieModels.Add(MovieMapper.Map(item));
+                movieModels.Add(SimplifiedMovieMapper.Map(item));
             }
 
             return movieModels;
@@ -42,9 +49,20 @@ namespace PMDb.Services
             return movieRepository.IsExist(movieId);
         }
 
+        public bool IsMovieExist(string movieName)
+        {
+            return movieRepository.IsExist(movieName);
+        }
+
         public void UpdateMark(int movieId, double newMark)
         {
             movieRepository.UpdateMark(movieId, newMark);
+            movieRepository.Save();
+        }
+
+        public void DeleteMark(string movieName)
+        {
+            movieRepository.DeleteMark(movieName);
             movieRepository.Save();
         }
     }
