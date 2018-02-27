@@ -9,6 +9,7 @@ using PMDb.Services.Mappers;
 using PMDb.Services.Models;
 using Microsoft.AspNetCore.JsonPatch;
 using PMDb.Services.Helpers;
+using Microsoft.AspNetCore.Mvc.Routing;
 
 namespace PMDb.API.Controllers
 {
@@ -17,10 +18,12 @@ namespace PMDb.API.Controllers
     public class MovieController : Controller
     {
         private IMovieService movieService;
+        private IUrlHelper urlHelper;
 
-        public MovieController(IMovieService MovieService)
+        public MovieController(IMovieService MovieService, IUrlHelper UrlHelper)
         {
             movieService = MovieService;
+            urlHelper = UrlHelper;
         }
 
         [HttpGet("{id}", Name = "GetMovie")]
@@ -50,6 +53,28 @@ namespace PMDb.API.Controllers
             {
                 return (NotFound());
             }
+
+            var previousPageLink = movieModels.HasNext ?
+                UriProvider.CreateMoviesUri(getMoviesParameters,
+                UriType.PreviousPage, urlHelper as UrlHelper) : null;
+
+            var nextPageLink = movieModels.HasPrevious ?
+                UriProvider.CreateMoviesUri(getMoviesParameters,
+                UriType.NextPage, urlHelper as UrlHelper) : null;
+
+            var paginationMetada = new
+            {
+                totalCount = movieModels.TotalCount,
+                pageSize = movieModels.PageSize,
+                currentPage = movieModels.CurrentPage,
+                totalPages = movieModels.TotalPages,
+                previousPageLink,
+                nextPageLink
+            };
+
+            Response.Headers.Add("X-Pagination",
+                Newtonsoft.Json.JsonConvert.SerializeObject(paginationMetada));
+
             return Ok(movieModels);
         }
 

@@ -16,17 +16,27 @@ namespace PMDb.DependencyResolver
         private Autofac.IContainer container;
         public IoCBuilder(IServiceCollection services)
         {
+
+            //services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
+
+            services.AddScoped<IUrlHelper>(implementationFactory =>
+            {
+                var actionContext = implementationFactory.GetService<IActionContextAccessor>()
+                .ActionContext;
+                return new UrlHelper(actionContext);
+            });
+
             var builder = new ContainerBuilder();
             builder.Populate(services);
 
-            builder.RegisterType<ActionContextAccessor>()
-                .As<IActionContextAccessor>()
-                .SingleInstance();
+            //builder.RegisterType<ActionContextAccessor>()
+            //    .As<IActionContextAccessor>()
+            //    .SingleInstance();
 
-            builder.RegisterType<UrlHelper>()
-                .As<IUrlHelper>()
-                .UsingConstructor(typeof(IActionContextAccessor))
-                .InstancePerLifetimeScope();
+            //builder.RegisterType<UrlHelper>()
+            //    .As<IUrlHelper>()
+            //    .InstancePerLifetimeScope();
 
             builder.RegisterType<MovieRepository>()
                 .As<IMovieRepository>()
@@ -55,10 +65,9 @@ namespace PMDb.DependencyResolver
             {
                 var actionContext = scope.Resolve<IActionContextAccessor>().ActionContext;
 
-                // scope.Register(x => new UrlHelper(actionContext));
-                //var uh = new UrlHelper(actionContext);
-                var urlhelper = scope.Resolve<IUrlHelper>();
-                //resolve in correct way
+                // var ac = new ActionContextAccessor().ActionContext;
+                //var urlhelper = scope.Resolve<IUrlHelper>(
+                //    new TypedParameter(typeof(IActionContextAccessor), new ActionContextAccessor().ActionContext));
 
                 var repo = scope.Resolve<IMovieRepository>();
                 var CSProvider = scope.Resolve<IConnectionStringProvider>();

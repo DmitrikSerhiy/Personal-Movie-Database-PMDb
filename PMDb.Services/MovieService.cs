@@ -35,13 +35,19 @@ namespace PMDb.Services
                 getMoviesParameters.PageSize);
 
 
-            PagedList<SimplifiedMovieModel> movieModels = new PagedList<SimplifiedMovieModel>();
+            //var simplifiedMovie = PagedList<SimplifiedMovieModel>.Create()
+            var movieModels = new List<SimplifiedMovieModel>();
             foreach (var item in movies)
             {
                 movieModels.Add(SimplifiedMovieMapper.Map(item));
             }
 
-            return movieModels;
+            var PagedSimplifiedMovies = PagedList<SimplifiedMovieModel>.Create(
+                movieModels.AsQueryable(),
+                getMoviesParameters.PageNumber,
+                getMoviesParameters.PageSize);
+
+            return PagedSimplifiedMovies;
         }
 
         public bool IsMovieExist(int movieId)
