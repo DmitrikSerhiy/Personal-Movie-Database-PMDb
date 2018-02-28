@@ -18,12 +18,10 @@ namespace PMDb.API.Controllers
     public class MovieController : Controller
     {
         private IMovieService movieService;
-        private IUrlHelper urlHelper;
 
-        public MovieController(IMovieService MovieService, IUrlHelper UrlHelper)
+        public MovieController(IMovieService MovieService)
         {
             movieService = MovieService;
-            urlHelper = UrlHelper;
         }
 
         [HttpGet("{id}", Name = "GetMovie")]
@@ -46,21 +44,13 @@ namespace PMDb.API.Controllers
 
         [HttpGet(Name = "GetMovies")]
         public IActionResult GetMovies(GetMoviesParameters getMoviesParameters)
-            //instead of specifying parameters directly
         {
             var movieModels = movieService.GetMovies(getMoviesParameters);
+            
             if (movieModels == null)
             {
                 return (NotFound());
             }
-
-            var previousPageLink = movieModels.HasNext ?
-                UriProvider.CreateMoviesUri(getMoviesParameters,
-                UriType.PreviousPage, urlHelper as UrlHelper) : null;
-
-            var nextPageLink = movieModels.HasPrevious ?
-                UriProvider.CreateMoviesUri(getMoviesParameters,
-                UriType.NextPage, urlHelper as UrlHelper) : null;
 
             var paginationMetada = new
             {
@@ -68,8 +58,8 @@ namespace PMDb.API.Controllers
                 pageSize = movieModels.PageSize,
                 currentPage = movieModels.CurrentPage,
                 totalPages = movieModels.TotalPages,
-                previousPageLink,
-                nextPageLink
+                previousPageLink = movieService.GeneratePreviousPageLink(movieModels.HasPrevious, getMoviesParameters),
+                nextPageLink = movieService.GenerateNextPageLink(movieModels.HasNext, getMoviesParameters)
             };
 
             Response.Headers.Add("X-Pagination",

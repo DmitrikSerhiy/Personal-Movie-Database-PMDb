@@ -16,8 +16,6 @@ namespace PMDb.DependencyResolver
         private Autofac.IContainer container;
         public IoCBuilder(IServiceCollection services)
         {
-
-            //services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
 
             services.AddScoped<IUrlHelper>(implementationFactory =>

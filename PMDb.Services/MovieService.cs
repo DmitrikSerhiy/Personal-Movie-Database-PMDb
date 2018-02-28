@@ -1,4 +1,6 @@
-﻿using PMDb.Domain.Core;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Routing;
+using PMDb.Domain.Core;
 using PMDb.Domain.Interfaces;
 using PMDb.Services.Helpers;
 using PMDb.Services.Mappers;
@@ -13,9 +15,12 @@ namespace PMDb.Services
     public class MovieService : IMovieService
     {
         private IMovieRepository movieRepository;
-        public MovieService(IMovieRepository MovieRepository)
+        private IUrlHelper urlHelper;
+
+        public MovieService(IMovieRepository MovieRepository, IUrlHelper UrlHelper)
         {
             movieRepository = MovieRepository;
+            urlHelper = UrlHelper;
         }
         public MovieModel GetMovie(int id)
         {
@@ -34,20 +39,37 @@ namespace PMDb.Services
                 getMoviesParameters.PageNumber,
                 getMoviesParameters.PageSize);
 
+            var PagedSimplifiedMovies = new PagedList<SimplifiedMovieModel>(
+                                        movies.CurrentPage,
+                                        movies.TotalPages,
+                                        movies.PageSize,
+                                        movies.TotalCount,
+                                        movies.HasPrevious,
+                                        movies.HasNext);
 
-            //var simplifiedMovie = PagedList<SimplifiedMovieModel>.Create()
-            var movieModels = new List<SimplifiedMovieModel>();
             foreach (var item in movies)
             {
-                movieModels.Add(SimplifiedMovieMapper.Map(item));
+                PagedSimplifiedMovies.Add(SimplifiedMovieMapper.Map(item));
             }
 
-            var PagedSimplifiedMovies = PagedList<SimplifiedMovieModel>.Create(
-                movieModels.AsQueryable(),
-                getMoviesParameters.PageNumber,
-                getMoviesParameters.PageSize);
+
+
 
             return PagedSimplifiedMovies;
+        }
+
+        public string GenerateNextPageLink(bool nextPage, GetMoviesParameters getMoviesParameters)
+        {
+            return nextPage ?
+               UriProvider.CreateMoviesUri(getMoviesParameters,
+               UriType.NextPage, urlHelper as UrlHelper) : null;
+        }
+
+        public string GeneratePreviousPageLink(bool previousPage, GetMoviesParameters getMoviesParameters)
+        {
+            return previousPage ?
+               UriProvider.CreateMoviesUri(getMoviesParameters,
+               UriType.PreviousPage, urlHelper as UrlHelper) : null;
         }
 
         public bool IsMovieExist(int movieId)

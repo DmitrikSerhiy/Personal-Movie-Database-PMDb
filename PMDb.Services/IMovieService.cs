@@ -14,5 +14,8 @@ namespace PMDb.Services
         bool IsMovieExist(string movieName);
         void UpdateMark(int movieId, double newMark);
         void DeleteMark(string movieName);
+        string GeneratePreviousPageLink(bool hasPrevious, GetMoviesParameters getMoviesParameters);
+        string GenerateNextPageLink(bool hasNext, GetMoviesParameters getMoviesParameters);
+
     }
 }

@@ -5,22 +5,26 @@ using System.Text;
 
 namespace PMDb.Services.Helpers
 {
-    public class PagedList<T> : List<T>
+    public class PagedList<T> : List<T> 
     {
         public int CurrentPage { get; private set; }
         public int TotalPages { get; private set; }
         public int PageSize { get; private set; }
         public int TotalCount { get; private set; }
 
+        private bool hasNext;
+        private bool hasPrevious;
         public bool HasPrevious
         {
-            get => CurrentPage > 1;
+            get => hasPrevious = CurrentPage > 1;
+            private set => hasPrevious = value;
         }
         public bool HasNext
         {
-            get => CurrentPage < TotalPages;
+            get => hasNext = CurrentPage < TotalPages;
+            private set => hasNext = value;
         }
-        private PagedList(List<T> Items, int Count, int PageNumber, int PageSize)
+        private PagedList(ICollection<T> Items, int Count, int PageNumber, int PageSize)
         {
             TotalCount = Count;
             this.PageSize = PageSize;
@@ -29,9 +33,20 @@ namespace PMDb.Services.Helpers
             AddRange(Items);
         }
 
-        public PagedList()
-        {
 
+        public PagedList(int CurrentPage,
+                         int TotalPages,
+                         int PageSize,
+                         int TotalCount,
+                         bool HasPrevious,
+                         bool HasNext)
+        {
+            this.CurrentPage = CurrentPage;
+            this.TotalPages = TotalPages;
+            this.PageSize = PageSize;
+            this.TotalCount = TotalCount;
+            this.HasPrevious = HasPrevious;
+            this.HasNext = HasNext;
         }
 
         public static PagedList<T> Create(IQueryable<T> Source, int PageNumber, int PageSize)
