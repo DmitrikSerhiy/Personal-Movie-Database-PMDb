@@ -1,12 +1,17 @@
 ﻿using Autofac;
+using Autofac.Core;
 using Autofac.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using PMDb.Domain.Core;
 using PMDb.Domain.Interfaces;
 using PMDb.Infrastructure.Data;
 using PMDb.Services;
+using PMDb.Services.Helpers;
 using System;
 
 namespace PMDb.DependencyResolver
@@ -16,6 +21,7 @@ namespace PMDb.DependencyResolver
         private Autofac.IContainer container;
         public IoCBuilder(IServiceCollection services)
         {
+            
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
 
             services.AddScoped<IUrlHelper>(implementationFactory =>
@@ -28,16 +34,12 @@ namespace PMDb.DependencyResolver
             var builder = new ContainerBuilder();
             builder.Populate(services);
 
-            //builder.RegisterType<ActionContextAccessor>()
-            //    .As<IActionContextAccessor>()
-            //    .SingleInstance();
-
-            //builder.RegisterType<UrlHelper>()
-            //    .As<IUrlHelper>()
-            //    .InstancePerLifetimeScope();
-
             builder.RegisterType<MovieRepository>()
                 .As<IMovieRepository>()
+                .InstancePerLifetimeScope();
+
+            builder.RegisterType<FiltrationRepository>()
+                .As<IFiltrationRepository>()
                 .InstancePerLifetimeScope();
 
             builder.RegisterType<ConnectionStringProvider>()
@@ -48,8 +50,21 @@ namespace PMDb.DependencyResolver
                 .AsSelf()
                 .InstancePerLifetimeScope();
 
+            builder.RegisterType<MovieFilters>()
+                .AsSelf()
+                .InstancePerLifetimeScope();
+
+            builder.RegisterType<FilterTransformer>()
+                .AsSelf()
+                .InstancePerLifetimeScope();
+            
+
             builder.RegisterType<MovieService>()
                 .As<IMovieService>()
+                .InstancePerLifetimeScope();
+
+            builder.RegisterType<FiltrationService>()
+                .As<IFiltrationService>()
                 .InstancePerLifetimeScope();
 
             container = builder.Build();
@@ -61,15 +76,11 @@ namespace PMDb.DependencyResolver
         {
             using (var scope = container.BeginLifetimeScope())
             {
-                var actionContext = scope.Resolve<IActionContextAccessor>().ActionContext;
-
-                // var ac = new ActionContextAccessor().ActionContext;
-                //var urlhelper = scope.Resolve<IUrlHelper>(
-                //    new TypedParameter(typeof(IActionContextAccessor), new ActionContextAccessor().ActionContext));
-
-                var repo = scope.Resolve<IMovieRepository>();
-                var CSProvider = scope.Resolve<IConnectionStringProvider>();
-                var context = scope.Resolve<MovieContext>();
+                scope.Resolve<IConnectionStringProvider>();
+                scope.Resolve<MovieContext>();
+                scope.Resolve<MovieFilters>();
+                var mRepo = scope.Resolve<IMovieRepository>();
+                var fRepo = scope.Resolve<IFiltrationRepository>();
             }
         }
 

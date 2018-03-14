@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using PMDb.Services;
+﻿using PMDb.Services;
 using Microsoft.AspNetCore.Mvc;
-using PMDb.Domain.Interfaces;
-using PMDb.Services.Mappers;
 using PMDb.Services.Models;
 using Microsoft.AspNetCore.JsonPatch;
 using PMDb.Services.Helpers;
-using Microsoft.AspNetCore.Mvc.Routing;
 
 namespace PMDb.API.Controllers
 {

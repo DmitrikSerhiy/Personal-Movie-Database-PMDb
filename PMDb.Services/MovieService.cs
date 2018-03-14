@@ -15,7 +15,7 @@ namespace PMDb.Services
     public class MovieService : IMovieService
     {
         private IMovieRepository movieRepository;
-        private IUrlHelper urlHelper;
+        public IUrlHelper urlHelper;
 
         public MovieService(IMovieRepository MovieRepository, IUrlHelper UrlHelper)
         {
@@ -51,10 +51,6 @@ namespace PMDb.Services
             {
                 PagedSimplifiedMovies.Add(SimplifiedMovieMapper.Map(item));
             }
-
-
-
-
             return PagedSimplifiedMovies;
         }
 
