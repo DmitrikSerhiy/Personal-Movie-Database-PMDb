@@ -22,8 +22,8 @@ namespace PMDb.Services
             //map to simplifiedMovieModel
             filtrationRepository.Filter(movieFilters);
 
-            throw new NotImplementedException();
-
+            //throw new NotImplementedException();
+            return null;
         }
     }
 }

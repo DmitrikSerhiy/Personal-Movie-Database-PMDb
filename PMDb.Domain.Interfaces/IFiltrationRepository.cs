@@ -7,7 +7,7 @@ namespace PMDb.Domain.Interfaces
 {
     public interface IFiltrationRepository : IRepository<Movie>
     {
-        Movie Filter(MovieFilters movieFilters);
+        IList<Movie> Filter(MovieFilters movieFilters);
        
     }
 }
