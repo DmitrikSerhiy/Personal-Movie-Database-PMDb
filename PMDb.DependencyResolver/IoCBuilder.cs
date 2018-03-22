@@ -1,7 +1,5 @@
 ﻿using Autofac;
-using Autofac.Core;
 using Autofac.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;
@@ -11,8 +9,7 @@ using PMDb.Domain.Core;
 using PMDb.Domain.Interfaces;
 using PMDb.Infrastructure.Data;
 using PMDb.Services;
-using PMDb.Services.Helpers;
-using System;
+
 
 namespace PMDb.DependencyResolver
 {
@@ -42,6 +39,19 @@ namespace PMDb.DependencyResolver
                 .As<IFiltrationRepository>()
                 .InstancePerLifetimeScope();
 
+            builder.RegisterType<FilterChecker>()
+                .AsSelf()
+                .InstancePerLifetimeScope();
+
+            builder.RegisterType<FilterTransformer>()
+                .AsSelf()
+                .InstancePerLifetimeScope();
+
+            builder.RegisterType<MovieFilters>()
+                .AsSelf()
+                .InstancePerLifetimeScope();
+            
+
             builder.RegisterType<ConnectionStringProvider>()
                 .As<IConnectionStringProvider>()
                 .InstancePerLifetimeScope();
@@ -49,15 +59,6 @@ namespace PMDb.DependencyResolver
             builder.RegisterType<MovieContext>()
                 .AsSelf()
                 .InstancePerLifetimeScope();
-
-            builder.RegisterType<MovieFilters>()
-                .AsSelf()
-                .InstancePerLifetimeScope();
-
-            builder.RegisterType<FilterTransformer>()
-                .AsSelf()
-                .InstancePerLifetimeScope();
-            
 
             builder.RegisterType<MovieService>()
                 .As<IMovieService>()
@@ -77,9 +78,11 @@ namespace PMDb.DependencyResolver
             using (var scope = container.BeginLifetimeScope())
             {
                 scope.Resolve<IConnectionStringProvider>();
-                scope.Resolve<MovieContext>();
-                scope.Resolve<MovieFilters>();
+                var context = scope.Resolve<MovieContext>();
                 var mRepo = scope.Resolve<IMovieRepository>();
+                var filters = scope.Resolve<MovieFilters>();
+                scope.Resolve<FilterChecker>(new TypedParameter(typeof(MovieContext), context));
+                scope.Resolve<FilterTransformer>(new TypedParameter(typeof(MovieFilters), filters));
                 var fRepo = scope.Resolve<IFiltrationRepository>();
             }
         }

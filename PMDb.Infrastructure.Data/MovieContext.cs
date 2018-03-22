@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Console;
+//using Microsoft.Extensions.Logging.Console;
 using PMDb.Domain.Core;
 using PMDb.Domain.Interfaces;
 using System;
@@ -13,13 +13,13 @@ namespace PMDb.Infrastructure.Data
     {
 
         private string connectionString = null;
-        public static readonly LoggerFactory loggerFactory
-            = new LoggerFactory(new[]
-            {
-                new ConsoleLoggerProvider( (category, level)
-                    => category == DbLoggerCategory.Database.Command.Name
-                    && level == LogLevel.Information, true)
-            });
+        //public static readonly LoggerFactory loggerFactory
+        //    = new LoggerFactory(new[]
+        //    {
+        //        new ConsoleLoggerProvider( (category, level)
+        //            => category == DbLoggerCategory.Database.Command.Name
+        //            && level == LogLevel.Information, true)
+        //    });
 
 
         public DbSet<Movie> Movies { get; set; }
@@ -48,7 +48,7 @@ namespace PMDb.Infrastructure.Data
             if (connectionString != null)
             {
                 optionsBuilder
-                    .UseLoggerFactory(loggerFactory)
+                    //.UseLoggerFactory(loggerFactory)
                     .EnableSensitiveDataLogging(true)
                     .UseSqlServer(connectionString);
             }
