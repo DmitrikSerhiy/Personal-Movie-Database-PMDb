@@ -1,4 +1,5 @@
-﻿using PMDb.Domain.Core;
+﻿using Microsoft.EntityFrameworkCore;
+using PMDb.Domain.Core;
 using PMDb.Domain.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ namespace PMDb.Infrastructure.Data
         private MovieContext context;
         private FilterTransformer filterTransformer;
         private FilterChecker filterChecker;
-        private List<Movie> FiltredMovies = new List<Movie>();
+        private List<Movie> FiltredMovies;
 
         public FiltrationRepository(MovieContext Context,
             FilterTransformer FilterTransformer,
@@ -21,6 +22,7 @@ namespace PMDb.Infrastructure.Data
             context = Context;
             filterTransformer = FilterTransformer;
             filterChecker = FilterChecker;
+            FiltredMovies = new List<Movie>();
         }
 
         public void Dispose()
@@ -28,7 +30,7 @@ namespace PMDb.Infrastructure.Data
             context.Dispose();
         }
 
-        public IList<Movie> Filter(MovieFilters filters)
+        public void Filter(MovieFilters filters)
         {
             filterTransformer.Transform(filters);
             var tFilters = filterTransformer.TransformedFilters;
@@ -42,22 +44,30 @@ namespace PMDb.Infrastructure.Data
                 else
                     FiltredMovies.AddRange(movies);
             }
-            return FiltredMovies;
         }
 
         public IQueryable<Movie> GetMovies()
         {
-            throw new NotImplementedException();
+            return FiltredMovies.AsQueryable()
+                    .Include(ma => ma.MovieTag).ThenInclude(t => t.Tag)
+                    .Include(r => r.Rating)
+                    .OrderBy(m => m.Title);
         }
 
         public bool IsExist(int movieId)
         {
-            return context.Movies.FirstOrDefault(m => m.Id == movieId) == null ? false : true;
+            if(FiltredMovies != null)
+                return FiltredMovies.AsQueryable()
+                    .FirstOrDefault(m => m.Id == movieId) == null ? false : true;
+            return false;
         }
 
         public bool IsExist(string movieName)
         {
-            return context.Movies.FirstOrDefault(m => m.Title == movieName) == null ? false : true;
+            if (FiltredMovies != null)
+                return FiltredMovies.AsQueryable()
+                    .FirstOrDefault(m => m.Title == movieName) == null ? false : true;
+            return false;
         }
     }
 }

@@ -84,6 +84,7 @@ namespace PMDb.DependencyResolver
                 scope.Resolve<FilterChecker>(new TypedParameter(typeof(MovieContext), context));
                 scope.Resolve<FilterTransformer>(new TypedParameter(typeof(MovieFilters), filters));
                 var fRepo = scope.Resolve<IFiltrationRepository>();
+                //scope.Resolve<IFiltrationService>();
             }
         }
 

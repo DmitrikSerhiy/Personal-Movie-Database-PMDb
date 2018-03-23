@@ -31,7 +31,7 @@ namespace PMDb.Services
             return movieModel;
         }
 
-        public PagedList<SimplifiedMovieModel> GetMovies(GetMoviesParameters getMoviesParameters)
+        public IList<SimplifiedMovieModel> GetMovies(PaginationParameters getMoviesParameters)
         {
             var MovieCollectionBeforePaging = movieRepository.GetMovies();
 
@@ -40,12 +40,8 @@ namespace PMDb.Services
                 getMoviesParameters.PageSize);
 
             var PagedSimplifiedMovies = new PagedList<SimplifiedMovieModel>(
-                                        movies.CurrentPage,
-                                        movies.TotalPages,
-                                        movies.PageSize,
-                                        movies.TotalCount,
-                                        movies.HasPrevious,
-                                        movies.HasNext);
+                movies.CurrentPage, movies.TotalPages, movies.PageSize,
+                movies.TotalCount, movies.HasPrevious, movies.HasNext);
 
             foreach (var item in movies)
             {
@@ -54,14 +50,14 @@ namespace PMDb.Services
             return PagedSimplifiedMovies;
         }
 
-        public string GenerateNextPageLink(bool nextPage, GetMoviesParameters getMoviesParameters)
+        public string GenerateNextPageLink(bool nextPage, PaginationParameters getMoviesParameters)
         {
             return nextPage ?
                UriProvider.CreateMoviesUri(getMoviesParameters,
                UriType.NextPage, urlHelper as UrlHelper) : null;
         }
 
-        public string GeneratePreviousPageLink(bool previousPage, GetMoviesParameters getMoviesParameters)
+        public string GeneratePreviousPageLink(bool previousPage, PaginationParameters getMoviesParameters)
         {
             return previousPage ?
                UriProvider.CreateMoviesUri(getMoviesParameters,

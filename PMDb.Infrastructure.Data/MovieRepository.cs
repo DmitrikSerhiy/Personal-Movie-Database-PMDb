@@ -46,20 +46,10 @@ namespace PMDb.Infrastructure.Data
 
         public IQueryable<Movie> GetMovies()
         {
-            var MovieCollectionBeforePaging = context.Movies
+            return context.Movies
                    .Include(ma => ma.MovieTag).ThenInclude(t => t.Tag)
                    .Include(r => r.Rating)
                    .OrderBy(m => m.Title);
-
-            return MovieCollectionBeforePaging; //that's not the resource by far
-           // return MovieCollectionBeforePaging;
-            //return context.Movies
-            //    .Include(ma => ma.MovieTag).ThenInclude(t => t.Tag)
-            //    .Include(r => r.Rating)
-            //    .OrderBy(m => m.Title)
-            //    .Skip(PageSize * (PageNumber - 1))
-            //    .Take(PageSize)
-            //    .ToList();
         }
 
         public bool IsExist(int movieId)

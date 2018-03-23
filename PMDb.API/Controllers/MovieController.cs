@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using PMDb.Services.Models;
 using Microsoft.AspNetCore.JsonPatch;
 using PMDb.Services.Helpers;
+using PMDb.Domain.Core;
 
 namespace PMDb.API.Controllers
 {
@@ -36,9 +37,10 @@ namespace PMDb.API.Controllers
         }
 
         [HttpGet(Name = "GetMovies")]
-        public IActionResult GetMovies(GetMoviesParameters getMoviesParameters)
+        public IActionResult GetMovies(PaginationParameters getMoviesParameters)
         {
-            var movieModels = movieService.GetMovies(getMoviesParameters);
+            var movieModels = movieService.GetMovies(getMoviesParameters) 
+                as PagedList<SimplifiedMovieModel>;
             
             if (movieModels == null)
             {

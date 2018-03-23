@@ -4,7 +4,7 @@ using System.Text;
 
 namespace PMDb.Services.Helpers
 {
-    public class GetMoviesParameters
+    public class PaginationParameters
     {
         private const int maxPageSize = 20;
         public int PageNumber { get; set; } = 1;

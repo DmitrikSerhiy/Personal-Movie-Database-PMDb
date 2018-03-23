@@ -64,7 +64,7 @@ namespace PMDb.Infrastructure.Data
             return dbSet as IQueryable;
         }
 
-        public IList<Movie> CheckFilter(object value, string EntityName, string IntermidiateTableName)
+        public IEnumerable<Movie> CheckFilter(object value, string EntityName, string IntermidiateTableName)
         {
             List<Movie> Movies = new List<Movie>();
             var dbset = GetDbSet(EntityName);

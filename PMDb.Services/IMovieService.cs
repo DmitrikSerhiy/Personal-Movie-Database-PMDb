@@ -9,13 +9,13 @@ namespace PMDb.Services
     public interface IMovieService
     {
         MovieModel GetMovie(int Id);
-        PagedList<SimplifiedMovieModel> GetMovies(GetMoviesParameters getMoviesParameters);
+        IList<SimplifiedMovieModel> GetMovies(PaginationParameters getMoviesParameters);
         bool IsMovieExist(int movieId);
         bool IsMovieExist(string movieName);
         void UpdateMark(int movieId, double newMark);
         void DeleteMark(string movieName);
-        string GeneratePreviousPageLink(bool hasPrevious, GetMoviesParameters getMoviesParameters);
-        string GenerateNextPageLink(bool hasNext, GetMoviesParameters getMoviesParameters);
+        string GeneratePreviousPageLink(bool hasPrevious, PaginationParameters getMoviesParameters);
+        string GenerateNextPageLink(bool hasNext, PaginationParameters getMoviesParameters);
 
     }
 }

@@ -7,7 +7,7 @@ namespace PMDb.Services.Helpers
 {
     public class UriProvider
     {
-        public static string CreateMoviesUri(GetMoviesParameters getMoviesParameters, 
+        public static string CreateMoviesUri(PaginationParameters getMoviesParameters, 
                                             UriType type, 
                                             UrlHelper urlHelper)
 

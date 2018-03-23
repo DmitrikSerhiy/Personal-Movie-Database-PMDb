@@ -2,6 +2,7 @@
 using PMDb.Domain.Core;
 using PMDb.Services;
 using PMDb.Services.Helpers;
+using PMDb.Services.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,11 +24,32 @@ namespace PMDb.API.Controllers
 
 
         [HttpGet(Name = "FilterMovies")]
-        public IActionResult FilterMovies(MovieFilters movieFilters)
+        public IActionResult FilterMovies(MovieFilters movieFilters,
+            PaginationParameters paginationParameters)
         {
             filtrationService.Filter(movieFilters);
+            var filtredMovies = filtrationService.GetFiltredMovies(paginationParameters)
+                as PagedList<SimplifiedMovieModel>;
 
-            return NoContent();
+            if(filtredMovies == null)
+            {
+                return NotFound();
+            }
+
+            var paginationMetada = new
+            {
+                totalCount = filtredMovies.TotalCount,
+                pageSize = filtredMovies.PageSize,
+                currentPage = filtredMovies.CurrentPage,
+                totalPages = filtredMovies.TotalPages,
+                previousPageLink = filtrationService.GeneratePreviousPageLink(filtredMovies.HasPrevious, paginationParameters),
+                nextPageLink = filtrationService.GenerateNextPageLink(filtredMovies.HasNext, paginationParameters)
+            };
+
+            Response.Headers.Add("X-Pagination",
+                Newtonsoft.Json.JsonConvert.SerializeObject(paginationMetada));
+
+            return Ok(filtredMovies);
         }
 
 
