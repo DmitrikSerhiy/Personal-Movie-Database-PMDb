@@ -21,12 +21,14 @@ namespace PMDb.Infrastructure.Data
         private void InitDictionary()
         {
             var RatingEntity = context.Ratings;
+            var MovieEntity = context.Movies;
             dbSets = new Dictionary<string, IQueryable>()
             {
                 {nameof(Actor), context.Actors},
                 {nameof(Director), context.Directors},
                 {nameof(Genre), context.Genres},
-                {nameof(Movie.Year), context.Movies},
+                {nameof(Movie.Year), MovieEntity},
+                {nameof(Movie), MovieEntity},
                 {nameof(Writer), context.Writers},
                 {nameof(Tag), context.Tags},
                 {nameof(Rating.OwnRating), RatingEntity},
@@ -42,7 +44,7 @@ namespace PMDb.Infrastructure.Data
             return dbSets.Keys.Contains(Name) ? dbSets[Name] : null;
         }
 
-        private IQueryable GetDbSet(string Name)
+        public IQueryable GetDbSet(string Name)
         {
             var NameForPropery = Name;
             PropertyInfo Prop;
@@ -51,7 +53,8 @@ namespace PMDb.Infrastructure.Data
             else if (NameForPropery == nameof(Rating.OwnRating) ||
                     NameForPropery == nameof(Rating.IMDbRating) ||
                     NameForPropery == nameof(Rating.MetaCriticRating) ||
-                    NameForPropery == nameof(Rating.RotenTomatosRating))
+                    NameForPropery == nameof(Rating.RotenTomatosRating) ||
+                     NameForPropery == nameof(Rating))
             {
                 NameForPropery = nameof(Rating) + "s";
             }
@@ -67,14 +70,15 @@ namespace PMDb.Infrastructure.Data
         public IEnumerable<Movie> CheckFilter(object value, string EntityName, string IntermidiateTableName)
         {
             List<Movie> Movies = new List<Movie>();
-            var dbset = GetDbSet(EntityName);
+            var currentDbset = GetDbSet(EntityName);
             var MoviesFromContext = context.Movies;
 
             if (IntermidiateTableName != "")//many-to-many tables filtrations
             {
-                var EntityType = dbset.GetType().GetGenericArguments().Single().Name;
+                var EntityType = currentDbset.GetType().GetGenericArguments().Single().Name;
                 var IntermidiateTable = MoviesFromContext.SelectMany(IntermidiateTableName);
-                var criteries = dbset
+                if (EntityType == nameof(Tag)) { value = "#" + value; }
+                var criteries = currentDbset
                     .Where(GetClauseForField(EntityType), value);
                 foreach (var filed in criteries)
                     Movies.AddRange(IntermidiateTable.Where(GetClauseForEntity(EntityName), filed).Select(nameof(Movie))
@@ -84,11 +88,13 @@ namespace PMDb.Infrastructure.Data
             {
                 var FieldName = EntityName;
                 if (EntityName == nameof(Movie.Year))//movie fields filtration
-                    Movies.AddRange(dbset.Where(GetClauseForField(FieldName), value)
+                    Movies.AddRange(currentDbset.Where(GetClauseForField(FieldName), value)
                    .ToDynamicList<Movie>());
                 else//Rating filtration
                 {
-                    var Ratings = dbset.Where(GetClauseForField(FieldName), value);
+                    var MinMark = (byte)Math.Truncate((double)value);
+                    var MaxMark = MinMark + 1;
+                    var Ratings = currentDbset.Where(GetClauseForRating(FieldName), MaxMark, MinMark);
                     foreach (var rating in Ratings)
                     {
                         Movies.AddRange(MoviesFromContext.Where(GetClauseForEntity(nameof(Rating)), rating)
@@ -96,8 +102,12 @@ namespace PMDb.Infrastructure.Data
                     }
                 }
             }
-
             return Movies;
+        }
+
+        private string GetClauseForRating(string FieldName)
+        {
+            return $"it.{FieldName}<=@0 and it.{FieldName}>=@1";
         }
 
         private string GetClauseForField(string type)

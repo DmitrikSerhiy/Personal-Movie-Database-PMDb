@@ -48,9 +48,10 @@ namespace PMDb.Infrastructure.Data
 
         public IQueryable<Movie> GetMovies()
         {
-            return FiltredMovies.AsQueryable()
+            return context.Movies
                     .Include(ma => ma.MovieTag).ThenInclude(t => t.Tag)
                     .Include(r => r.Rating)
+                    .Where(movie => FiltredMovies.Any(fm => movie.Id == fm.Id))
                     .OrderBy(m => m.Title);
         }
 
