@@ -16,7 +16,6 @@ namespace PMDb.Services
     {
         private IList<Dictionary<string, bool>> filters;
         private IFiltrationRepository filtrationRepository;
-        private IMovieService movieService;
         private IUrlHelper urlHelper;
         private IList<Movie> filtredMovie;
 

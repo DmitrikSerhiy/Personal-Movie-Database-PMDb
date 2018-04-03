@@ -10,11 +10,11 @@ namespace PMDb.Services.Models
         public int? Year { get; set; }
         public string Poster { get; set; }
         public string IMDbId { get; set; }
-        public List<GenreModel> Genres { get; set; }
-        public List<DirectorModel> Directors { get; set; }
-        public List<WriterModel> Writers { get; set; }
-        public List<ActorModel> Actors { get; set; }
-        public List<TagModel> Tags { get; set; }
+        public List<GenreModel> GenreModels { get; set; }
+        public List<DirectorModel> DirectorModels { get; set; }
+        public List<WriterModel> WriterModels { get; set; }
+        public List<ActorModel> ActorModels { get; set; }
+        public List<TagModel> TagModels { get; set; }
         public RatingModel Ratings { get; set; }
     }
 }

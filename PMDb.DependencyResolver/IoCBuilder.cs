@@ -68,6 +68,10 @@ namespace PMDb.DependencyResolver
                 .As<IFiltrationService>()
                 .InstancePerLifetimeScope();
 
+            builder.RegisterType<SearchService>()
+                .As<ISearchService>()
+                .InstancePerLifetimeScope();
+
             container = builder.Build();
 
             BeginLifeTime();

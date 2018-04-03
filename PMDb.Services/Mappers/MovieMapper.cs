@@ -12,11 +12,11 @@ namespace PMDb.Services.Mappers
         {
             var movieModel = Mapper.Map<MovieModel>((movie));
 
-            movieModel.Genres = GenreMapper.Map(movie.MovieGenre);
-            movieModel.Actors = ActorMapper.Map(movie.MovieActor);
-            movieModel.Directors = DirectorMapper.Map(movie.MovieDirector);
-            movieModel.Tags = TagMapper.Map(movie.MovieTag);
-            movieModel.Writers = WriterMapper.Map(movie.MovieWriter);
+            movieModel.GenreModels = GenreMapper.Map(movie.MovieGenre);
+            movieModel.ActorModels = ActorMapper.Map(movie.MovieActor);
+            movieModel.DirectorModels = DirectorMapper.Map(movie.MovieDirector);
+            movieModel.TagModels = TagMapper.Map(movie.MovieTag);
+            movieModel.WriterModels = WriterMapper.Map(movie.MovieWriter);
             movieModel.Ratings = RatingMapper.Map(movie.Rating);
 
             return movieModel;
