@@ -7,7 +7,7 @@ namespace PMDb.Services.Mappers
 {
     public static class DownloadedMovieMaper
     {
-        public static MovieModel Map(DownloadedMovieModel movies)
+        public static MovieModel Map(Models.DownloadedMovieModel movies)
         {
             if (movies.imdbVotes.Contains(","))
                 movies.imdbVotes = movies.imdbVotes.Replace(",", "");

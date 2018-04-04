@@ -9,7 +9,7 @@ using PMDb.Domain.Core;
 using PMDb.Domain.Interfaces;
 using PMDb.Infrastructure.Data;
 using PMDb.Services;
-
+using PMDb.Services.ServicesAbstraction;
 
 namespace PMDb.DependencyResolver
 {

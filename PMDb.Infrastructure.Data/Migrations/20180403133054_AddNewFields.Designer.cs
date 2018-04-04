@@ -11,9 +11,10 @@ using System;
 namespace PMDb.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(MovieContext))]
-    partial class MovieContextModelSnapshot : ModelSnapshot
+    [Migration("20180403133054_AddNewFields")]
+    partial class AddNewFields
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -73,7 +74,7 @@ namespace PMDb.Infrastructure.Data.Migrations
 
                     b.Property<string>("Title");
 
-                    b.Property<string>("Year");
+                    b.Property<int?>("Year");
 
                     b.HasKey("Id");
 

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using PMDb.Services;
+using PMDb.Services.ServicesAbstraction;
 
 namespace PMDb.API.Controllers
 {

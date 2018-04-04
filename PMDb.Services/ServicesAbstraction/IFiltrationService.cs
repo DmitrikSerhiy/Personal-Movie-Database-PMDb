@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace PMDb.Services
+namespace PMDb.Services.ServicesAbstraction
 {
     public interface IFiltrationService
     {

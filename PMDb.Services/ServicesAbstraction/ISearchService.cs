@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace PMDb.Services
+namespace PMDb.Services.ServicesAbstraction
 {
    public interface ISearchService
     {
@@ -11,5 +11,6 @@ namespace PMDb.Services
         void Serialize(string MovieString);
         void MapToModel();
         MovieModel GetMovie();
+        bool Validate();
     }
 }

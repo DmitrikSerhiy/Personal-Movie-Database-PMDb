@@ -7,7 +7,7 @@ namespace PMDb.Services.Models
     public class DownloadedMovieModel
     {
         public string Title { get; set; }
-        public int? Year { get; set; }
+        public string Year { get; set; }
         public string Runtime { get; set; }
 
         public string Genre { get; set; }

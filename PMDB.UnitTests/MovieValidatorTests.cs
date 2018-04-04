@@ -21,7 +21,7 @@ namespace PMDb.UnitTests
         public void WrongMovieIdValidationTest()
         {
             var negativeMovieId = new Movie() { Id = -1 };
-            MovieValidation validator = new MovieValidation();
+            DownloadedMovieModelValidator validator = new DownloadedMovieModelValidator();
 
             ValidationResult results = validator.Validate(negativeMovieId);
 
