@@ -13,5 +13,10 @@ namespace PMDb.Services.Mappers
         {
             return Mapper.Map<RatingModel>((Rating));
         }
+
+        public static Rating Map(RatingModel RatingModel)
+        {
+            return Mapper.Map<Rating>((RatingModel));
+        }
     }
 }

@@ -13,5 +13,10 @@ namespace PMDb.Services.Mappers
         {
             return Mapper.Map<MovieGenre[], List<GenreModel>>(Genres.ToArray());
         }
+
+        public static List<MovieGenre> Map(List<GenreModel> Genres)
+        {
+            return Mapper.Map<GenreModel[], List<MovieGenre>>(Genres.ToArray());
+        }
     }
 }

@@ -13,5 +13,10 @@ namespace PMDb.Services.Mappers
         {
             return Mapper.Map<MovieActor[], List<ActorModel>>(Actors.ToArray());
         }
+
+        public static List<MovieActor> Map(List<ActorModel> Actors)
+        {
+            return Mapper.Map<ActorModel[], List<MovieActor>>(Actors.ToArray());
+        }
     }
 }

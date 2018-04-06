@@ -24,18 +24,46 @@ namespace PMDb.API.Controllers
         {
             if (!movieService.IsMovieExist(id))
                 return NotFound();
-            
+
             //var validator = new MovieValidation();
             var movieModel = movieService.GetMovie(id);
             // var mov = new Movie
             //var validationResult = validator.Validate(movie);
-            
+
             if (movieModel == null)
             {
                 return (NotFound());
             }
             return Ok(movieModel);
         }
+
+        [HttpPost(Name = "AddMovie")]
+        public IActionResult AddMovie([FromBody]MovieModel movieModel)
+        {
+            if (movieModel == null)
+            {
+                return BadRequest();
+            }
+
+            movieService.MapToMovie(movieModel);
+            movieService.AddMovie();
+
+            return CreatedAtRoute("GetMovie", new { id = movieService.GetId() }, movieModel);
+        }
+
+        [HttpDelete("{title}", Name = "DeleteMovie")]
+        public IActionResult DeleteMovie(string title)
+        {
+            if(movieService.IsMovieExist(title) == false)
+            {
+                return NotFound();
+            }
+
+            movieService.DeleteMovie(title);
+
+            return NoContent();
+        }
+
 
         [HttpGet(Name = "GetMovies")]
         public IActionResult GetMovies(PaginationParameters getMoviesParameters)
@@ -87,14 +115,14 @@ namespace PMDb.API.Controllers
            return NoContent();
         }
 
-        [HttpDelete("{title}", Name = "DeleteMark")]
-        public IActionResult DeleteMark(string title)
+        [HttpDelete("{movieTitleDeliteMarkFor}", Name = "DeleteMark")]
+        public IActionResult DeleteMark(string movieTitleDeliteMarkFor)
         {
-            if (!movieService.IsMovieExist(title))
+            if (!movieService.IsMovieExist(movieTitleDeliteMarkFor))
                 return NotFound();
 
             // add validation for title
-            movieService.DeleteMark(title);
+            movieService.DeleteMark(movieTitleDeliteMarkFor);
             return NoContent();
         }
 

@@ -34,6 +34,7 @@ namespace PMDb.API.Controllers
 
                 json_data = w.DownloadString(uriString);
                 searchService.Serialize(json_data);
+                searchService.Validate();
                 if (!searchService.IsExist()){
                     return NotFound();
                 }

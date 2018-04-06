@@ -10,6 +10,10 @@ namespace PMDb.Services.ServicesAbstraction
     {
         MovieModel GetMovie(int Id);
         IList<SimplifiedMovieModel> GetMovies(PaginationParameters getMoviesParameters);
+        void MapToMovie(MovieModel movieModel);
+        void AddMovie();
+        void DeleteMovie(string MovieName);
+        int GetId();
         bool IsMovieExist(int movieId);
         bool IsMovieExist(string movieName);
         void UpdateMark(int movieId, double newMark);

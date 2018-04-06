@@ -2,7 +2,6 @@
 using PMDb.Domain.Core;
 using PMDb.Domain.Interfaces;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace PMDb.Infrastructure.Data
@@ -16,6 +15,18 @@ namespace PMDb.Infrastructure.Data
         {
             context = Context;
         }
+
+        public void AddMovie(Movie movie)
+        {
+            context.Movies.Add(movie);
+        }
+
+        public void DeleteMovie(string MovieName)
+        {
+            var movie = context.Movies.FirstOrDefault(m => m.Title == MovieName);
+            context.Movies.Remove(movie);
+        }
+
         public void AddMark(double mark)
         {
             throw new NotImplementedException();
@@ -50,6 +61,11 @@ namespace PMDb.Infrastructure.Data
                    .Include(ma => ma.MovieTag).ThenInclude(t => t.Tag)
                    .Include(r => r.Rating)
                    .OrderBy(m => m.Title);
+        }
+
+        public int GetId(Movie movie)
+        {
+            return context.Movies.FirstOrDefault(m => m.Id == movie.Id).Id;
         }
 
         public bool IsExist(int movieId)

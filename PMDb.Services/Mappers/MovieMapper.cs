@@ -21,5 +21,19 @@ namespace PMDb.Services.Mappers
 
             return movieModel;
         }
+
+        public static Movie Map(MovieModel movieModel)
+        {
+            var Movie = Mapper.Map<Movie>((movieModel));
+
+            Movie.Rating = RatingMapper.Map(movieModel.Ratings);
+
+            Movie.MovieActor = ActorMapper.Map(movieModel.ActorModels);
+            Movie.MovieGenre = GenreMapper.Map(movieModel.GenreModels);
+            Movie.MovieDirector = DirectorMapper.Map(movieModel.DirectorModels);
+            Movie.MovieWriter = WriterMapper.Map(movieModel.WriterModels);
+
+            return Movie;
+        }
     }
 }

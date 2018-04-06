@@ -16,6 +16,7 @@ namespace PMDb.Services
     public class MovieService : IMovieService
     {
         private IMovieRepository movieRepository;
+        private Movie movieToAdd;
         public IUrlHelper urlHelper;
 
         public MovieService(IMovieRepository MovieRepository, IUrlHelper UrlHelper)
@@ -30,6 +31,27 @@ namespace PMDb.Services
             var movieModel = MovieMapper.Map(movies);
 
             return movieModel;
+        }
+
+        public void MapToMovie(MovieModel movieModel)
+        {
+            movieToAdd = MovieMapper.Map(movieModel);
+        }
+        public void AddMovie()
+        {
+            movieRepository.AddMovie(movieToAdd);
+            movieRepository.Save();
+        }
+
+        public void DeleteMovie(string MovieName)
+        {
+            movieRepository.DeleteMovie(MovieName);
+            movieRepository.Save();
+        }
+
+        public int GetId()
+        {
+            return movieToAdd.Id;
         }
 
         public IList<SimplifiedMovieModel> GetMovies(PaginationParameters getMoviesParameters)

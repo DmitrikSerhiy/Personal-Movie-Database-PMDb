@@ -11,6 +11,6 @@ namespace PMDb.Services.ServicesAbstraction
         void Serialize(string MovieString);
         void MapToModel();
         MovieModel GetMovie();
-        bool Validate();
+        void Validate();
     }
 }

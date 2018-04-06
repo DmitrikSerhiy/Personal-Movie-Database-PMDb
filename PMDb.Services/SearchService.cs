@@ -26,24 +26,23 @@ namespace PMDb.Services
         {
             serializedMovie = JsonConvert
                 .DeserializeObject<Models.DownloadedMovieModel>(MovieString);
-
-            Validate();
         }
 
         public void Validate()
         {
             DownloadedMovieModelValidator validator = 
                 new DownloadedMovieModelValidator();
-            var results = validator.Validate(serializedMovie);
-            results.Errors[0].1
-            if (results.IsValid != true)
-                foreach (var item in results.Errors)
-                {
-                    if(item.PropertyName == "strings")
-                    {
-                        serializedMovie.//fack it!!!!!
-                    }
-                }
+            var RatingsValidation = validator.Validate(serializedMovie, ruleSet: "Ratings");
+            var IMDbRatingsValidation = validator.Validate(serializedMovie, ruleSet: "IMDbRatings");
+
+            if (IMDbRatingsValidation.IsValid != true)
+            {
+                serializedMovie.imdbRating = "0.0";
+                serializedMovie.imdbVotes = "0";
+            }
+            var cout = serializedMovie.Ratings.Length;
+
+
         }
 
         public void MapToModel()
