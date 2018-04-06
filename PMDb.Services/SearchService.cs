@@ -15,11 +15,13 @@ namespace PMDb.Services
     {
         private Models.DownloadedMovieModel serializedMovie;
         private MovieModel mappedMovie;
-        private List<string> failures; 
+        private List<string> failures;
+        DownloadedMovieModelValidator validator;
 
         public SearchService()
         {
             failures = new List<string>();
+            validator = new DownloadedMovieModelValidator();
         }
 
         public void Serialize(string MovieString)
@@ -30,8 +32,6 @@ namespace PMDb.Services
 
         public void Validate()
         {
-            DownloadedMovieModelValidator validator = 
-                new DownloadedMovieModelValidator();
             var RatingsValidation = validator.Validate(serializedMovie, ruleSet: "Ratings");
             var IMDbRatingsValidation = validator.Validate(serializedMovie, ruleSet: "IMDbRatings");
 

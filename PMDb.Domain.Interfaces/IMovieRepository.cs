@@ -8,9 +8,9 @@ namespace PMDb.Domain.Interfaces
     public interface IMovieRepository : IRepository<Movie>
     {
         Movie GetMovie(int movieId);
-
+        Movie GetMovie(string title);
         void AddMovie(Movie movie);
-        void AddMark(double mark);
+        void AddMark(double mark, string movieTitle);
         int GetId(Movie movie);
         void UpdateMark(int movieId, double newMark);
         void Save();

@@ -9,9 +9,12 @@ namespace PMDb.Services.ServicesAbstraction
     public interface IMovieService
     {
         MovieModel GetMovie(int Id);
+        MovieModel GetMovie(string title);
         IList<SimplifiedMovieModel> GetMovies(PaginationParameters getMoviesParameters);
         void MapToMovie(MovieModel movieModel);
         void AddMovie();
+        void AddMark(double mark, string movieTitle);
+        bool IsMarkValid();
         void DeleteMovie(string MovieName);
         int GetId();
         bool IsMovieExist(int movieId);

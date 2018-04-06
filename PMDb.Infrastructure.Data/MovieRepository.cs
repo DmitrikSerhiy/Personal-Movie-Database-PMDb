@@ -27,9 +27,12 @@ namespace PMDb.Infrastructure.Data
             context.Movies.Remove(movie);
         }
 
-        public void AddMark(double mark)
+        public void AddMark(double mark, string movieTitle)
         {
-            throw new NotImplementedException();
+            var movie = context.Movies
+                .Include(r => r.Rating)
+                .FirstOrDefault(m => m.Title == movieTitle);
+            movie.Rating.OwnRating = mark;
         }
 
         public void DeleteMark(string movieName)
@@ -53,6 +56,18 @@ namespace PMDb.Infrastructure.Data
                 .Include(mw => mw.MovieWriter).ThenInclude(w => w.Writer)
                 .Include(r => r.Rating)
                 .FirstOrDefault(m => m.Id == movieId);
+        }
+
+        public Movie GetMovie(string title)
+        {
+            return context.Movies
+               .Include(mg => mg.MovieGenre).ThenInclude(g => g.Genre)
+               .Include(ma => ma.MovieActor).ThenInclude(a => a.Actor)
+               .Include(ma => ma.MovieDirector).ThenInclude(d => d.Director)
+               .Include(ma => ma.MovieTag).ThenInclude(t => t.Tag)
+               .Include(mw => mw.MovieWriter).ThenInclude(w => w.Writer)
+               .Include(r => r.Rating)
+               .FirstOrDefault(m => m.Title == title);
         }
 
         public IQueryable<Movie> GetMovies()

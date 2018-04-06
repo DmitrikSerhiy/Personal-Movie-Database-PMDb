@@ -16,21 +16,35 @@ namespace PMDb.Services
     public class MovieService : IMovieService
     {
         private IMovieRepository movieRepository;
-        private Movie movieToAdd;
+        private MovieServiceValidator validator;
+        private MovieModel MovieModel;
+        public Movie movieToAdd;
+        public double markToAdd;
         public IUrlHelper urlHelper;
 
         public MovieService(IMovieRepository MovieRepository, IUrlHelper UrlHelper)
         {
             movieRepository = MovieRepository;
             urlHelper = UrlHelper;
+            validator = new MovieServiceValidator();
+        }
+
+        public void MapToModel(Movie movie)
+        {
+            MovieModel = MovieMapper.Map(movie);
         }
         public MovieModel GetMovie(int id)
         {
-            var movies = movieRepository.GetMovie(id);
+            var movie = movieRepository.GetMovie(id);
+            MapToModel(movie);
+            return MovieModel;
+        }
 
-            var movieModel = MovieMapper.Map(movies);
-
-            return movieModel;
+        public MovieModel GetMovie(string title)
+        {
+            var movie = movieRepository.GetMovie(title);
+            MapToModel(movie);
+            return MovieModel;
         }
 
         public void MapToMovie(MovieModel movieModel)
@@ -97,6 +111,19 @@ namespace PMDb.Services
             return movieRepository.IsExist(movieName);
         }
 
+        public void AddMark(double mark, string movieTitle)
+        {
+            markToAdd = mark;
+            movieRepository.AddMark(mark, movieTitle);
+            movieRepository.Save();
+            
+        }
+
+        public bool IsMarkValid()
+        {
+            return validator.Validate(this).IsValid;//that's bool shit cannot add a ruleset
+        }
+
         public void UpdateMark(int movieId, double newMark)
         {
             movieRepository.UpdateMark(movieId, newMark);
@@ -108,5 +135,7 @@ namespace PMDb.Services
             movieRepository.DeleteMark(movieName);
             movieRepository.Save();
         }
+
+
     }
 }

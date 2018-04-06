@@ -19,14 +19,14 @@ namespace PMDb.API.Controllers
             movieService = MovieService;
         }
 
-        [HttpGet("{id}", Name = "GetMovie")]
-        public IActionResult Getmovie(int id)
+        [HttpGet("{title}", Name = "GetMovie")]
+        public IActionResult Getmovie(string title)
         {
-            if (!movieService.IsMovieExist(id))
+            if (!movieService.IsMovieExist(title))
                 return NotFound();
 
             //var validator = new MovieValidation();
-            var movieModel = movieService.GetMovie(id);
+            var movieModel = movieService.GetMovie(title);
             // var mov = new Movie
             //var validationResult = validator.Validate(movie);
 
@@ -37,6 +37,18 @@ namespace PMDb.API.Controllers
             return Ok(movieModel);
         }
 
+        [HttpPatch("{title}/{mark}")]
+        public IActionResult AddMark(string title, double mark)
+        {
+            if (movieService.IsMarkValid() != true)
+                return BadRequest();
+            if (movieService.IsMovieExist(title) != true)
+                return NotFound();
+
+            movieService.AddMark(mark, title);
+
+            return NoContent();
+        }
         [HttpPost(Name = "AddMovie")]
         public IActionResult AddMovie([FromBody]MovieModel movieModel)
         {
@@ -63,7 +75,6 @@ namespace PMDb.API.Controllers
 
             return NoContent();
         }
-
 
         [HttpGet(Name = "GetMovies")]
         public IActionResult GetMovies(PaginationParameters getMoviesParameters)
