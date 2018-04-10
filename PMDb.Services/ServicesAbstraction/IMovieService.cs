@@ -17,6 +17,7 @@ namespace PMDb.Services.ServicesAbstraction
         bool IsMarkValid();
         void DeleteMovie(string MovieName);
         int GetId();
+        string GetName();
         bool IsMovieExist(int movieId);
         bool IsMovieExist(string movieName);
         void UpdateMark(int movieId, double newMark);

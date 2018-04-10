@@ -16,5 +16,6 @@ namespace PMDb.Domain.Interfaces
         void Save();
         void DeleteMark(string movieName);
         void DeleteMovie(string MovieName);
+        void InitExistedEntities(Movie movie);
     }
 }

@@ -51,8 +51,11 @@ namespace PMDb.Services
         {
             movieToAdd = MovieMapper.Map(movieModel);
         }
+
+
         public void AddMovie()
         {
+            movieRepository.InitExistedEntities(movieToAdd);
             movieRepository.AddMovie(movieToAdd);
             movieRepository.Save();
         }
@@ -67,6 +70,12 @@ namespace PMDb.Services
         {
             return movieToAdd.Id;
         }
+
+        public string GetName()
+        {
+            return movieToAdd.Title;
+        }
+
 
         public IList<SimplifiedMovieModel> GetMovies(PaginationParameters getMoviesParameters)
         {
@@ -121,7 +130,7 @@ namespace PMDb.Services
 
         public bool IsMarkValid()
         {
-            return validator.Validate(this).IsValid;//that's bool shit cannot add a ruleset
+            return validator.Validate(this).IsValid;//that's bool shit!!! why cannot add a ruleset
         }
 
         public void UpdateMark(int movieId, double newMark)

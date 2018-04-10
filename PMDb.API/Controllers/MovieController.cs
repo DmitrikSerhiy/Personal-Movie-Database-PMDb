@@ -31,9 +31,7 @@ namespace PMDb.API.Controllers
             //var validationResult = validator.Validate(movie);
 
             if (movieModel == null)
-            {
                 return (NotFound());
-            }
             return Ok(movieModel);
         }
 
@@ -53,14 +51,15 @@ namespace PMDb.API.Controllers
         public IActionResult AddMovie([FromBody]MovieModel movieModel)
         {
             if (movieModel == null)
-            {
-                return BadRequest();
-            }
+                return NotFound();
+
+            if (movieService.IsMovieExist(movieModel.Title))
+                return NotFound();
 
             movieService.MapToMovie(movieModel);
             movieService.AddMovie();
 
-            return CreatedAtRoute("GetMovie", new { id = movieService.GetId() }, movieModel);
+            return CreatedAtRoute("GetMovie", new { title = movieService.GetName() }, movieModel);
         }
 
         [HttpDelete("{title}", Name = "DeleteMovie")]

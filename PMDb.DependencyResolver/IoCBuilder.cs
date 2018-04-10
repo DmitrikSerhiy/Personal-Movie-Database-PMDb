@@ -50,7 +50,10 @@ namespace PMDb.DependencyResolver
             builder.RegisterType<MovieFilters>()
                 .AsSelf()
                 .InstancePerLifetimeScope();
-            
+
+            builder.RegisterType<DuplicateChecker>()
+                .AsSelf()
+                .InstancePerLifetimeScope();
 
             builder.RegisterType<ConnectionStringProvider>()
                 .As<IConnectionStringProvider>()

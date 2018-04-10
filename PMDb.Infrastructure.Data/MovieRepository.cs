@@ -2,6 +2,7 @@
 using PMDb.Domain.Core;
 using PMDb.Domain.Interfaces;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace PMDb.Infrastructure.Data
@@ -10,15 +11,27 @@ namespace PMDb.Infrastructure.Data
 
     {
         private MovieContext context;
+        private DuplicateChecker duplicateChecker;
 
-        public MovieRepository(MovieContext Context)
+        public MovieRepository(MovieContext Context, DuplicateChecker DuplicateChecker)
         {
             context = Context;
+            duplicateChecker = DuplicateChecker;
         }
+
 
         public void AddMovie(Movie movie)
         {
             context.Movies.Add(movie);
+        }
+
+        public void InitExistedEntities(Movie movie)
+        {
+            duplicateChecker.CheckAndInitActors(movie.MovieActor);
+            duplicateChecker.CheckAndInitDirectors(movie.MovieDirector);
+            duplicateChecker.CheckAndInitGenres(movie.MovieGenre);
+            duplicateChecker.CheckAndInitTags(movie.MovieTag);
+            duplicateChecker.CheckAndInitWriters(movie.MovieWriter);
         }
 
         public void DeleteMovie(string MovieName)
