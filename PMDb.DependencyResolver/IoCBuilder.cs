@@ -39,6 +39,10 @@ namespace PMDb.DependencyResolver
                 .As<IFiltrationRepository>()
                 .InstancePerLifetimeScope();
 
+            builder.RegisterType<MovieListRepository>()
+                .As<IMovieListRepository>()
+                .InstancePerLifetimeScope();
+
             builder.RegisterType<FilterChecker>()
                 .AsSelf()
                 .InstancePerLifetimeScope();
@@ -87,11 +91,12 @@ namespace PMDb.DependencyResolver
                 scope.Resolve<IConnectionStringProvider>();
                 var context = scope.Resolve<MovieContext>();
                 var mRepo = scope.Resolve<IMovieRepository>();
+                var mLRepo = scope.Resolve<IMovieListRepository>();
                 var filters = scope.Resolve<MovieFilters>();
                 scope.Resolve<FilterChecker>(new TypedParameter(typeof(MovieContext), context));
                 scope.Resolve<FilterTransformer>(new TypedParameter(typeof(MovieFilters), filters));
                 var fRepo = scope.Resolve<IFiltrationRepository>();
-                //scope.Resolve<IFiltrationService>();
+                //scope.Resolve<IFiltrationService>();//why services stil can't be resolved
             }
         }
 

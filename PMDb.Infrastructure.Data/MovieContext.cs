@@ -29,6 +29,7 @@ namespace PMDb.Infrastructure.Data
         public DbSet<Tag> Tags { get; set; }
         public DbSet<Actor> Actors { get; set; }
         public DbSet<Rating> Ratings { get; set; }
+        public DbSet<MovieList> MovieLists { get; set; }
 
 
 
@@ -61,6 +62,21 @@ namespace PMDb.Infrastructure.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<MovieListMovie>()
+                .HasKey(t => new { t.MovieId, t.MovieListId });
+
+            modelBuilder.Entity<MovieListMovie>()
+                .HasOne(sc => sc.Movie)
+                .WithMany(s => s.MovieListMovie)
+                .HasForeignKey(sc => sc.MovieId);
+
+            modelBuilder.Entity<MovieListMovie>()
+                .HasOne(sc => sc.MovieList)
+                .WithMany(c => c.MovieListMovies)
+                .HasForeignKey(sc => sc.MovieListId);
+
+
+
             modelBuilder.Entity<MovieActor>()
                 .HasKey(t => new { t.ActorId, t.MovieId });
 

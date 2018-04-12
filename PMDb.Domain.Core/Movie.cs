@@ -18,6 +18,7 @@ namespace PMDb.Domain.Core
         public List<MovieActor> MovieActor { get; set; }
         public List<MovieTag> MovieTag { get; set; }
         public Rating Rating { get; set; }
+        public List<MovieListMovie> MovieListMovie { get; set; }
 
 
         public Movie()
@@ -27,6 +28,7 @@ namespace PMDb.Domain.Core
             MovieWriter = new List<MovieWriter>();
             MovieActor = new List<MovieActor>();
             MovieTag = new List<MovieTag>();
+            MovieListMovie = new List<MovieListMovie>();
         }
     }
 }

@@ -7,7 +7,7 @@ namespace PMDb.UnitTests
 {
     public class FilterRepositoryTest
     {
-        MovieRepository movieRepository;
+        //MovieRepository movieRepository;
         public FilterRepositoryTest()
         {
 
