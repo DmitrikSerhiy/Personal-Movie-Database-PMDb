@@ -7,12 +7,14 @@ namespace PMDb.Domain.Interfaces
 {
     public interface IMovieListRepository
     {
-        void CreateMovieList(string Name, bool IsDefault = false);
-        void DeleteMovieList(int MovieListId);
+        MovieList CreateMovieList(string Name, bool IsDefault = false);
+        MovieList GetMovieList(string Name);
+        void DeleteMovieList(string movieListName);
         bool IsMovieListExist(int movieListId);
         bool IsMovieListExist(string movieListName);
-        void AddMovieToList(string movieName, int movieListId);
-        void DeleteMovieFromList(string movieName, int movieListId);
+        bool IsMovieExist(string movieName);
+        void AddMovieToList(string movieName, string movieListName);
+        void DeleteMovieFromList(string movieName, string movieListName);
         void Save();
     }
 }

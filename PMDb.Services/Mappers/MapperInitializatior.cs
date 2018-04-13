@@ -2,6 +2,7 @@
 using PMDb.Domain.Core;
 using PMDb.Services.Models;
 using System;
+using System.Linq;
 
 namespace PMDb.Services.Mappers
 {
@@ -51,6 +52,9 @@ namespace PMDb.Services.Mappers
                     .ForMember(mm => mm.Year, model => model.MapFrom(y => y.Year))
                     .ForPath(mm => mm.Ratings.IMDbRating, model => model.MapFrom(r => r.imdbRating))
                     .ForPath(mm => mm.Ratings.IMDbVotes, model => model.MapFrom(r => r.imdbVotes));
+
+                cfg.CreateMap<MovieList, MovieListModel>()
+                .ForMember(mlm => mlm.MovieListMovies, model => model.MapFrom(ml => ml.MovieListMovies.Select(m => m.Movie)));
             });
         }
     }

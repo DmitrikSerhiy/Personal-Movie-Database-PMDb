@@ -1,4 +1,6 @@
 ﻿using PMDb.Domain.Interfaces;
+using PMDb.Services.Mappers;
+using PMDb.Services.Models;
 using PMDb.Services.ServicesAbstraction;
 using System;
 using System.Collections.Generic;
@@ -8,39 +10,62 @@ namespace PMDb.Services
 {
     public class MovieListService : IMovieListService
     {
-        private IMovieListRepository movieRepository;
+        private IMovieListRepository movieListRepository;
+
         public MovieListService(IMovieListRepository MovieListRepository)
         {
-            movieRepository = MovieListRepository;
+            movieListRepository = MovieListRepository;
         }
 
-        public void AddMovieToList(int movieId, int movieListId)
+        public void AddMovieToList(string movieName, string movieListName)
         {
-            throw new NotImplementedException();
+            movieListRepository.AddMovieToList(movieName, movieListName);
+            movieListRepository.Save();
         }
 
-        public void CreateMovieList(string Name, bool IsDefault = false)
+        public MovieListModel CreateMovieList(string Name, bool IsDefault = false)
         {
-            if (movieRepository.IsMovieListExist(Name) != true)
+            if (IsDefault != true)
             {
-                movieRepository.CreateMovieList(Name, IsDefault);
+                var movieList = movieListRepository.CreateMovieList(Name);
+                movieListRepository.Save();
+                return MovieListMapper.Map(movieList);
             }
-            throw new NotImplementedException();
+            var defaultMovieList = movieListRepository.CreateMovieList(Name, true);//create default movieList
+            movieListRepository.Save();
+            return MovieListMapper.Map(defaultMovieList);
         }
 
-        public void DeleteMovieFromList(int movieId, int movieListId)
+        public void DeleteMovieFromList(string movieName, string movieListName)
         {
-            throw new NotImplementedException();
+            movieListRepository.DeleteMovieFromList(movieName, movieListName);
+            movieListRepository.Save();
         }
 
-        public void DeleteMovieList(int MovieListId)
+        public void DeleteMovieList(string MovieListName)
         {
-            throw new NotImplementedException();
+            if (movieListRepository.GetMovieList(MovieListName).IsDefault != true)
+            {
+                movieListRepository.DeleteMovieList(MovieListName);
+                movieListRepository.Save();
+            }
         }
 
-        public bool IsMovieListExist(int movieListId)
+        public MovieListModel GetMovieList(string MovieListName)
         {
-            throw new NotImplementedException();
+            var movieList = movieListRepository.GetMovieList(MovieListName);
+            var mappedMovieList = MovieListMapper.Map(movieList);
+            return mappedMovieList;
+        }
+
+        public bool IsMovieListExist(string movieListName)
+        {
+            return movieListRepository.IsMovieListExist(movieListName);
+        }
+
+        public bool IsMovieExist(string movieName)
+        {
+            return movieListRepository.IsMovieExist(movieName);
         }
     }
 }

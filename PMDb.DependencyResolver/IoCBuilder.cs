@@ -79,6 +79,10 @@ namespace PMDb.DependencyResolver
                 .As<ISearchService>()
                 .InstancePerLifetimeScope();
 
+            builder.RegisterType<MovieListService>()
+                .As<IMovieListService>()
+                .InstancePerLifetimeScope();
+
             container = builder.Build();
 
             BeginLifeTime();

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PMDb.Services.Models;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,10 +7,12 @@ namespace PMDb.Services.ServicesAbstraction
 {
     public interface IMovieListService
     {
-        void CreateMovieList(string Name, bool IsDefault = false);
-        void DeleteMovieList(int MovieListId);
-        bool IsMovieListExist(int movieListId);
-        void AddMovieToList(int movieId, int movieListId);
-        void DeleteMovieFromList(int movieId, int movieListId);
+        MovieListModel CreateMovieList(string MovieListName, bool IsDefault = false);
+        MovieListModel GetMovieList(string MovieListName);
+        void DeleteMovieList(string MovieListName);
+        bool IsMovieListExist(string movieListName);
+        bool IsMovieExist(string movieName);
+        void AddMovieToList(string movieName, string movieListName);
+        void DeleteMovieFromList(string movieName, string movieListName);
     }
 }
