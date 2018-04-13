@@ -12,7 +12,9 @@ namespace PMDb.Services.ServicesAbstraction
         void DeleteMovieList(string MovieListName);
         bool IsMovieListExist(string movieListName);
         bool IsMovieExist(string movieName);
-        void AddMovieToList(string movieName, string movieListName);
-        void DeleteMovieFromList(string movieName, string movieListName);
+        bool IsMovieExistInList(string movieListName, string MovieName);
+        MovieListModel AddMovieToList(string movieName, string movieListName);
+        MovieListModel DeleteMovieFromList(string movieName, string movieListName);
+        MovieListModel UpdateMovieListName(string oldName, string newName);
     }
 }

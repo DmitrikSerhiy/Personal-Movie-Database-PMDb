@@ -13,8 +13,10 @@ namespace PMDb.Domain.Interfaces
         bool IsMovieListExist(int movieListId);
         bool IsMovieListExist(string movieListName);
         bool IsMovieExist(string movieName);
-        void AddMovieToList(string movieName, string movieListName);
-        void DeleteMovieFromList(string movieName, string movieListName);
+        bool IsMovieExistInList(string movieListName, string MovieName);
+        MovieList AddMovieToList(string movieName, string movieListName);
+        MovieList DeleteMovieFromList(string movieName, string movieListName);
+        MovieList UpdateMovieListName(string oldName, string newName);
         void Save();
     }
 }

@@ -17,10 +17,11 @@ namespace PMDb.Services
             movieListRepository = MovieListRepository;
         }
 
-        public void AddMovieToList(string movieName, string movieListName)
+        public MovieListModel AddMovieToList(string movieName, string movieListName)
         {
-            movieListRepository.AddMovieToList(movieName, movieListName);
+            var movieList = movieListRepository.AddMovieToList(movieName, movieListName);
             movieListRepository.Save();
+            return MovieListMapper.Map(movieList);
         }
 
         public MovieListModel CreateMovieList(string Name, bool IsDefault = false)
@@ -36,10 +37,11 @@ namespace PMDb.Services
             return MovieListMapper.Map(defaultMovieList);
         }
 
-        public void DeleteMovieFromList(string movieName, string movieListName)
+        public MovieListModel DeleteMovieFromList(string movieName, string movieListName)
         {
-            movieListRepository.DeleteMovieFromList(movieName, movieListName);
+            var movieList = movieListRepository.DeleteMovieFromList(movieName, movieListName);
             movieListRepository.Save();
+            return MovieListMapper.Map(movieList);
         }
 
         public void DeleteMovieList(string MovieListName)
@@ -57,6 +59,19 @@ namespace PMDb.Services
             var mappedMovieList = MovieListMapper.Map(movieList);
             return mappedMovieList;
         }
+
+        public MovieListModel UpdateMovieListName(string oldName, string newName)
+        {
+            var movieList = movieListRepository.UpdateMovieListName(oldName, newName);
+            movieListRepository.Save();
+            return MovieListMapper.Map(movieList);
+        }
+
+        public bool IsMovieExistInList(string movieListName, string movieName)
+        {
+            return movieListRepository.IsMovieExistInList(movieListName, movieName);
+        }
+
 
         public bool IsMovieListExist(string movieListName)
         {

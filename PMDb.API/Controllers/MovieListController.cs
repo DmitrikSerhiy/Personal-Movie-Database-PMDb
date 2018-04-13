@@ -38,5 +38,33 @@ namespace PMDb.API.Controllers
             var movieList = movieListService.CreateMovieList(Name, false);
             return CreatedAtRoute("GetMovieList", new { Name }, movieList);
         }
+
+        [HttpPost("{MovieListName}/{MovieTitle}")]
+        public IActionResult AddMovieToList(string MovieListName, string MovieTitle)
+        {
+            if (movieListService.IsMovieListExist(MovieListName) != true)
+                return NotFound();
+            if (movieListService.IsMovieExist(MovieTitle) != true)
+                return NotFound();
+            if (movieListService.IsMovieExistInList(MovieListName, MovieTitle))
+                return BadRequest();
+
+            var movieList = movieListService.AddMovieToList(MovieListName, MovieTitle);
+
+            return CreatedAtRoute("GetMovieList", new { Name = MovieListName }, movieList);
+        }
+
+        [HttpDelete("{MovieListName}/{MovieTitle}")]
+        public IActionResult DeleteMovieFromList(string MovieListName, string MovieTitle)
+        {
+            if (movieListService.IsMovieListExist(MovieListName) != true)
+                return NotFound();
+            if (movieListService.IsMovieExistInList(MovieListName, MovieTitle) != true)
+                return BadRequest();
+
+            var movieList = movieListService.DeleteMovieFromList(MovieTitle, MovieListName);
+
+            return NoContent();
+        }
     }
 }

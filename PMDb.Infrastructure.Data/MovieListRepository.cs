@@ -1,4 +1,5 @@
-﻿using PMDb.Domain.Core;
+﻿using Microsoft.EntityFrameworkCore;
+using PMDb.Domain.Core;
 using PMDb.Domain.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -15,18 +16,20 @@ namespace PMDb.Infrastructure.Data
             context = Context;
         }
 
-        public void AddMovieToList(string movieName, string movieListName)
+        public MovieList AddMovieToList(string movieListName, string movieName)
         {
-            var movieListMovie = context.MovieLists.SelectMany(ml => ml.MovieListMovies)
-                .FirstOrDefault(ml => ml.MovieList.Name == movieListName);
+            var movie = context.Movies
+                .Include(m => m.MovieListMovie).ThenInclude(mlm => mlm.MovieList)
+                .FirstOrDefault(m => m.Title == movieName);
 
-            var movieList = context.MovieLists.FirstOrDefault(ml => ml.Name == movieListName);
-            var movie = context.Movies.FirstOrDefault(m => m.Title == movieName);
+            var movieList = context.MovieLists
+                .Include(ml => ml.MovieListMovies)
+                .ThenInclude(m => m.Movie)
+                .FirstOrDefault(ml => ml.Name == movieListName);
 
-            movieListMovie.Movie = movie;
-            movieListMovie.MovieId = movie.Id;
-            movieListMovie.MovieList = movieList;
-            movieListMovie.MovieListId = movieList.Id;
+            movieList.MovieListMovies.Add(new MovieListMovie {Movie = movie});
+
+            return movieList;
 
         }
 
@@ -43,26 +46,46 @@ namespace PMDb.Infrastructure.Data
             context.MovieLists.Remove(movieList);
         }
 
-        public void DeleteMovieFromList(string movieName, string movieListName)
+        public MovieList DeleteMovieFromList(string movieName, string movieListName)
         {
-            var movieList = context.MovieLists.FirstOrDefault(ml => ml.Name == movieListName);
+            var movieList = context.MovieLists
+                .Include(ml => ml.MovieListMovies)
+                .ThenInclude(m => m.Movie)
+                .FirstOrDefault(ml => ml.Name == movieListName);
+
             if (movieList.IsDefault != true)
             {
                 var movieListMovie = movieList.MovieListMovies.FirstOrDefault(m => m.Movie.Title == movieName);
-
-                context.Movies.FirstOrDefault(m => m.Title == movieName).MovieListMovie = null;
-                movieListMovie.Movie = null;
-                //movieListMovie = null;
-                //movieListMovie.MovieList = null;
-                //movieListMovie.MovieId = null;
+                movieList.MovieListMovies.Remove(movieListMovie);
             }
+            return movieList;
         }
 
         public MovieList GetMovieList(string Name)
         {
-            return context.MovieLists.FirstOrDefault(ml => ml.Name == Name);
+            return context.MovieLists
+                .Include(ml => ml.MovieListMovies)
+                .ThenInclude(m => m.Movie)
+                .FirstOrDefault(ml => ml.Name == Name);
         }
 
+
+        public MovieList UpdateMovieListName(string oldName, string newName)
+        {
+            var movieList = context.MovieLists.FirstOrDefault(ml => ml.Name == oldName);
+            context.Entry(movieList).Property(ml => ml.Name).CurrentValue = newName;
+            return movieList;
+        }
+
+        public bool IsMovieExistInList(string movieListName, string movieName)
+        {
+            var movieList = context.MovieLists
+                .Include(ml => ml.MovieListMovies).ThenInclude(m => m.Movie)
+                .Where(ml => ml.Name == movieListName);
+
+            return movieList.SelectMany(mlm => mlm.MovieListMovies)
+                .Where(ml => ml.Movie.Title == movieName).Count() == 0 ? false : true;
+        }
 
         public bool IsMovieListExist(int movieListId)
         {
