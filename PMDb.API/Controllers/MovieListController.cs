@@ -66,5 +66,35 @@ namespace PMDb.API.Controllers
 
             return NoContent();
         }
+
+        [HttpDelete("{Name}")]
+        public IActionResult DeleteMovieList(string Name)
+        {
+            if (movieListService.IsMovieListExist(Name) != true)
+                return NotFound();
+
+            movieListService.DeleteMovieList(Name);
+            //movieListService.DeleteDefaultMovieList(Name);
+
+            return NoContent();
+        }
+
+        [HttpPatch("{OldName}/{NewName}")]
+        public IActionResult UpdateName(string OldName, string NewName)
+        {
+            if(movieListService.IsMovieListExist(OldName) != true)
+                return NotFound();
+
+            if (movieListService.IsMovieListExist(NewName))
+                return BadRequest();//is already in db
+
+            var movieList = movieListService.UpdateMovieListName(OldName, NewName);
+
+            return NoContent();
+
+
+
+        }
+
     }
 }

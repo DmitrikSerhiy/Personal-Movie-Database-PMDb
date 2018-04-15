@@ -53,6 +53,12 @@ namespace PMDb.Services
             }
         }
 
+        public void DeleteDefaultMovieList(string MovieListName)
+        {
+            movieListRepository.DeleteMovieList(MovieListName);
+            movieListRepository.Save();
+        }
+
         public MovieListModel GetMovieList(string MovieListName)
         {
             var movieList = movieListRepository.GetMovieList(MovieListName);
