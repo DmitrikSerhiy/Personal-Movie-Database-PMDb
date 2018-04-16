@@ -32,14 +32,14 @@ namespace PMDb.API.Controllers
         public IActionResult CreateMovieList(string Name, [FromRoute] bool isDefault = false)
         {
             if (movieListService.IsMovieListExist(Name))
-                //check whether movieList with such name is in db alredy
+                //check whether movieList with such name is in db already
                 return BadRequest();//409 needs
 
             var movieList = movieListService.CreateMovieList(Name, false);
             return CreatedAtRoute("GetMovieList", new { Name }, movieList);
         }
 
-        [HttpPost("{MovieListName}/{MovieTitle}")]
+        [HttpPost("{MovieListName}/{MovieTitle}", Name = "AddMovieToList")]
         public IActionResult AddMovieToList(string MovieListName, string MovieTitle)
         {
             if (movieListService.IsMovieListExist(MovieListName) != true)

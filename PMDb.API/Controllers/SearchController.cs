@@ -40,6 +40,7 @@ namespace PMDb.API.Controllers
                 }
 
                 searchService.MapToModel();
+                searchService.AddLinks();
                 var movie = searchService.GetMovie();
 
                 return Ok(movie);

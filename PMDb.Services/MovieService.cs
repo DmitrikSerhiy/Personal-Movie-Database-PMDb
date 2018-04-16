@@ -17,16 +17,18 @@ namespace PMDb.Services
     {
         private IMovieRepository movieRepository;
         private MovieServiceValidator validator;
+        private LinksGenetator linksGenetator;
         private MovieModel MovieModel;
         public Movie movieToAdd;
         public double markToAdd;
         public IUrlHelper urlHelper;
 
-        public MovieService(IMovieRepository MovieRepository, IUrlHelper UrlHelper)
+        public MovieService(IMovieRepository MovieRepository, IUrlHelper UrlHelper, LinksGenetator LinksGenetator)
         {
             movieRepository = MovieRepository;
             urlHelper = UrlHelper;
             validator = new MovieServiceValidator();
+            linksGenetator = LinksGenetator;
         }
 
         public void MapToModel(Movie movie)
@@ -44,6 +46,7 @@ namespace PMDb.Services
         {
             var movie = movieRepository.GetMovie(title);
             MapToModel(movie);
+            linksGenetator.CreateLinksForGetMovie(MovieModel, title);//bool shit
             return MovieModel;
         }
 

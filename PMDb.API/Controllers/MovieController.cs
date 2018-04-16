@@ -32,10 +32,11 @@ namespace PMDb.API.Controllers
 
             if (movieModel == null)
                 return (NotFound());
+
             return Ok(movieModel);
         }
 
-        [HttpPatch("{title}/{mark}")]
+        [HttpPatch("{title}/{mark}", Name = "AddMark")]
         public IActionResult AddMark(string title, double mark)
         {
             if (movieService.IsMarkValid() != true)

@@ -63,6 +63,7 @@ namespace PMDb.Services
         {
             var movieList = movieListRepository.GetMovieList(MovieListName);
             var mappedMovieList = MovieListMapper.Map(movieList);
+            var movies = mappedMovieList.MovieListMovies;
             return mappedMovieList;
         }
 

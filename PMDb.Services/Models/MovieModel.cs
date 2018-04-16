@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace PMDb.Services.Models
 {
-    public class MovieModel
+    public class MovieModel : LinkedResourceBase
     {
         public string Title { get; set; }
         public string Year { get; set; }

@@ -12,5 +12,6 @@ namespace PMDb.Services.ServicesAbstraction
         void MapToModel();
         MovieModel GetMovie();
         void Validate();
+        void AddLinks();
     }
 }

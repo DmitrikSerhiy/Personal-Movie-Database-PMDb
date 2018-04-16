@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using FluentValidation.Results;
 using Newtonsoft.Json;
+using PMDb.Services.Helpers;
 using PMDb.Services.Mappers;
 using PMDb.Services.Models;
 using PMDb.Services.ServicesAbstraction;
@@ -16,12 +17,14 @@ namespace PMDb.Services
         private Models.DownloadedMovieModel serializedMovie;
         private MovieModel mappedMovie;
         private List<string> failures;
+        private LinksGenetator linksGenetator;
         DownloadedMovieModelValidator validator;
 
-        public SearchService()
+        public SearchService(LinksGenetator LinksGenetator)
         {
             failures = new List<string>();
             validator = new DownloadedMovieModelValidator();
+            linksGenetator = LinksGenetator;
         }
 
         public void Serialize(string MovieString)
@@ -52,6 +55,11 @@ namespace PMDb.Services
         public MovieModel GetMovie()
         {
             return mappedMovie;
+        }
+
+        public void AddLinks()
+        {
+            linksGenetator.CreateLinksForSearchMovie(mappedMovie, mappedMovie.Title);
         }
 
         public bool IsExist()
