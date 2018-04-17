@@ -49,7 +49,7 @@ namespace PMDb.Services.Helpers
             this.HasNext = HasNext;
         }
 
-        public static PagedList<T> Create(IQueryable<T> Source, int PageNumber, int PageSize)
+        public static PagedList<T> Create(IEnumerable<T> Source, int PageNumber, int PageSize)
         {
             var count = Source.Count();
             var items = Source.Skip((PageNumber - 1) * PageSize)
@@ -57,5 +57,12 @@ namespace PMDb.Services.Helpers
                               .ToList();
             return new PagedList<T>(items, count, PageNumber, PageSize);
         }
+
+        //public PagedList<T> InitDefault(PagedList<T> Source)
+        //{
+        //    PaginationParameters parameters = new PaginationParameters();
+        //    Source.CurrentPage = 1;
+        //    Source.HasNext = parameters.
+        //}
     }
 }

@@ -54,7 +54,7 @@ namespace PMDb.Services.Mappers
                     .ForPath(mm => mm.Ratings.IMDbVotes, model => model.MapFrom(r => r.imdbVotes));
 
                 cfg.CreateMap<MovieList, MovieListModel>()
-                .ForMember(mlm => mlm.MovieListMovies, model => model.MapFrom(ml => ml.MovieListMovies.Select(m => m.Movie)));
+                .ForMember(mlm => mlm.Movies, model => model.MapFrom(ml => ml.MovieListMovies.Select(m => m.Movie)));
             });
         }
     }

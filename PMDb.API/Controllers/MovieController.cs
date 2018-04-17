@@ -25,10 +25,7 @@ namespace PMDb.API.Controllers
             if (!movieService.IsMovieExist(title))
                 return NotFound();
 
-            //var validator = new MovieValidation();
             var movieModel = movieService.GetMovie(title);
-            // var mov = new Movie
-            //var validationResult = validator.Validate(movie);
 
             if (movieModel == null)
                 return (NotFound());
@@ -39,7 +36,7 @@ namespace PMDb.API.Controllers
         [HttpPatch("{title}/{mark}", Name = "AddMark")]
         public IActionResult AddMark(string title, double mark)
         {
-            if (movieService.IsMarkValid() != true)
+            if (movieService.IsMarkValid(mark) != true)
                 return BadRequest();
             if (movieService.IsMovieExist(title) != true)
                 return NotFound();
@@ -61,19 +58,6 @@ namespace PMDb.API.Controllers
             movieService.AddMovie();
 
             return CreatedAtRoute("GetMovie", new { title = movieService.GetName() }, movieModel);
-        }
-
-        [HttpDelete("{title}", Name = "DeleteMovie")]
-        public IActionResult DeleteMovie(string title)
-        {
-            if(movieService.IsMovieExist(title) == false)
-            {
-                return NotFound();
-            }
-
-            movieService.DeleteMovie(title);
-
-            return NoContent();
         }
 
         [HttpGet(Name = "GetMovies")]
@@ -103,28 +87,50 @@ namespace PMDb.API.Controllers
             return Ok(movieModels);
         }
 
-        [HttpPatch("{id}", Name = "UpdateMark")]
-        public IActionResult UpdateMark(int id,
+        [HttpPatch("{MovieTitleAddRatingFor}/Mark", Name = "UpdateMark")]
+        public IActionResult UpdateMark(string MovieTitleAddRatingFor,
             [FromBody] JsonPatchDocument<RatingModel> raitingDoc)
         {
             if (raitingDoc == null)
                 return BadRequest();
 
-            if (!movieService.IsMovieExist(id))
+            if (!movieService.IsMovieExist(MovieTitleAddRatingFor))
                 return NotFound();
 
-            var RatingsToPatch = movieService.GetMovie(id).Ratings;
 
-            //redundant code by far
-            if (RatingsToPatch == null)
-                return NotFound();
+            var ratingModel = movieService.GetMovie(MovieTitleAddRatingFor).Ratings;
 
-            //add validation for ratingDoc
+            raitingDoc.ApplyTo(ratingModel);
 
-            raitingDoc.ApplyTo(RatingsToPatch);
-            movieService.UpdateMark(id, RatingsToPatch.Mark);
-           return NoContent();
+            if (!movieService.IsMarkValid(ratingModel.Mark))
+                return BadRequest();
+
+            movieService.UpdateMark(MovieTitleAddRatingFor, ratingModel.Mark);
+            return NoContent();
         }
+
+        [HttpPatch("{MovieTitleAddReviewFor}/Review", Name = "AddReview")]
+        public IActionResult AddReview(string MovieTitleAddReviewFor,
+            [FromBody] JsonPatchDocument<MovieModel> movieDoc)
+        {
+            if (movieDoc == null)
+                return BadRequest();
+
+            if (!movieService.IsMovieExist(MovieTitleAddReviewFor))
+                return NotFound();
+
+            var movieToPatch = movieService.GetMovie(MovieTitleAddReviewFor);
+
+            movieDoc.ApplyTo(movieToPatch);
+
+            if (!movieService.IsReviewValid(movieToPatch))
+                return BadRequest();
+
+            movieService.AddReview(MovieTitleAddReviewFor, movieToPatch.Review);
+            return NoContent();
+        }
+
+
 
         [HttpDelete("{movieTitleDeliteMarkFor}", Name = "DeleteMark")]
         public IActionResult DeleteMark(string movieTitleDeliteMarkFor)

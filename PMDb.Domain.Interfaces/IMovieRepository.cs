@@ -12,10 +12,10 @@ namespace PMDb.Domain.Interfaces
         void AddMovie(Movie movie);
         void AddMark(double mark, string movieTitle);
         int GetId(Movie movie);
-        void UpdateMark(int movieId, double newMark);
+        void UpdateMark(string movieName, double newMark);
         void Save();
         void DeleteMark(string movieName);
-        void DeleteMovie(string MovieName);
+        void AddReview(string movieName, string review);
         void InitExistedEntities(Movie movie);
     }
 }

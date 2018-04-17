@@ -10,25 +10,27 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using FluentValidation;
+using FluentValidation.Results;
 
 namespace PMDb.Services
 {
     public class MovieService : IMovieService
     {
         private IMovieRepository movieRepository;
-        private MovieServiceValidator validator;
         private LinksGenetator linksGenetator;
         private MovieModel MovieModel;
         public Movie movieToAdd;
         public double markToAdd;
         public IUrlHelper urlHelper;
+        public MovieModelValidator validator;
 
         public MovieService(IMovieRepository MovieRepository, IUrlHelper UrlHelper, LinksGenetator LinksGenetator)
         {
             movieRepository = MovieRepository;
             urlHelper = UrlHelper;
-            validator = new MovieServiceValidator();
             linksGenetator = LinksGenetator;
+            validator = new MovieModelValidator();
         }
 
         public void MapToModel(Movie movie)
@@ -63,11 +65,13 @@ namespace PMDb.Services
             movieRepository.Save();
         }
 
-        public void DeleteMovie(string MovieName)
+        public void AddReview(string movieName, string review)
         {
-            movieRepository.DeleteMovie(MovieName);
+            movieRepository.AddReview(movieName, review);
             movieRepository.Save();
         }
+
+
 
         public int GetId()
         {
@@ -131,14 +135,25 @@ namespace PMDb.Services
             
         }
 
-        public bool IsMarkValid()
+        public bool IsMarkValid(double mark)
         {
-            return validator.Validate(this).IsValid;//that's bool shit!!! why cannot add a ruleset
+            MarkValidator MarkValidator = new MarkValidator();
+            return MarkValidator.Validate(mark).IsValid;
         }
 
-        public void UpdateMark(int movieId, double newMark)
+        public bool IsMarkValid(MovieModel movieModel)
         {
-            movieRepository.UpdateMark(movieId, newMark);
+            return validator.Validate(movieModel, ruleSet: "Mark").IsValid;
+        }
+
+        public bool IsReviewValid(MovieModel movieModel)
+        {
+            return validator.Validate(movieModel, ruleSet: "Review").IsValid;
+        }
+
+        public void UpdateMark(string movieName, double newMark)
+        {
+            movieRepository.UpdateMark(movieName, newMark);
             movieRepository.Save();
         }
 

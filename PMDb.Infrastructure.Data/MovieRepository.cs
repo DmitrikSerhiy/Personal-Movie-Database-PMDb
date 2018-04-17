@@ -34,10 +34,14 @@ namespace PMDb.Infrastructure.Data
             duplicateChecker.CheckAndInitWriters(movie.MovieWriter);
         }
 
-        public void DeleteMovie(string MovieName)
+        public void AddReview(string movieName, string review)
         {
-            var movie = context.Movies.FirstOrDefault(m => m.Title == MovieName);
-            context.Movies.Remove(movie);
+            var movie = context.Movies
+                .Where(m => m.Title == movieName)
+                .SingleOrDefault();
+
+            context.Entry(movie).Property(nameof(Movie.Review))
+                .CurrentValue = review;
         }
 
         public void AddMark(double mark, string movieTitle)
@@ -111,11 +115,15 @@ namespace PMDb.Infrastructure.Data
             context.SaveChanges();
         }
 
-        public void UpdateMark(int movieId, double newMark)
+        public void UpdateMark(string movieName, double newMark)
         {
-            context.Ratings
-                .FirstOrDefault(m => m.MovieId == movieId)
-                .OwnRating = newMark;
+            var ratingEntity = context.Movies
+                .Where(m => m.Title == movieName)
+                .Select(m => m.Rating)
+                .SingleOrDefault();
+
+            context.Entry(ratingEntity)
+                .Property(nameof(Rating.OwnRating)).CurrentValue = newMark;
         }
     }
 }

@@ -14,13 +14,15 @@ namespace PMDb.Services.ServicesAbstraction
         void MapToMovie(MovieModel movieModel);
         void AddMovie();
         void AddMark(double mark, string movieTitle);
-        bool IsMarkValid();
-        void DeleteMovie(string MovieName);
+        bool IsMarkValid(double movieModel);
+        bool IsMarkValid(MovieModel movieModel);
+        bool IsReviewValid(MovieModel movieModel);
+        void AddReview(string movieName, string review);
         int GetId();
         string GetName();
         bool IsMovieExist(int movieId);
         bool IsMovieExist(string movieName);
-        void UpdateMark(int movieId, double newMark);
+        void UpdateMark(string movieName, double newMark);
         void DeleteMark(string movieName);
         string GeneratePreviousPageLink(bool hasPrevious, PaginationParameters getMoviesParameters);
         string GenerateNextPageLink(bool hasNext, PaginationParameters getMoviesParameters);
