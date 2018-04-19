@@ -15,7 +15,14 @@ namespace PMDb.Domain.Interfaces
         void UpdateMark(string movieName, double newMark);
         void Save();
         void DeleteMark(string movieName);
-        void AddReview(string movieName, string review);
+        void EditReview(string movieName, string review);
+        void DeleteReview(string movieName);
         void InitExistedEntities(Movie movie);
+        void AddTagsToDb(IList<Tag> tags);
+        void AddTagsToMovie(IList<Tag> tags, string movieName);
+        bool IsTagExist(string tag);
+        Tag GetExistedTag(string tag);
+        bool IsTagAttachedToMovie(string tagName, string movieName);
+        void DeleteTag(string tagName, string movieName);
     }
 }

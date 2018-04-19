@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.JsonPatch;
 using PMDb.Services.Helpers;
 using PMDb.Domain.Core;
 using PMDb.Services.ServicesAbstraction;
+using System.Collections.Generic;
 
 namespace PMDb.API.Controllers
 {
@@ -109,8 +110,8 @@ namespace PMDb.API.Controllers
             return NoContent();
         }
 
-        [HttpPatch("{MovieTitleAddReviewFor}/Review", Name = "AddReview")]
-        public IActionResult AddReview(string MovieTitleAddReviewFor,
+        [HttpPatch("{MovieTitleAddReviewFor}/Review", Name = "EditReview")]
+        public IActionResult EditReview(string MovieTitleAddReviewFor,
             [FromBody] JsonPatchDocument<MovieModel> movieDoc)
         {
             if (movieDoc == null)
@@ -126,7 +127,19 @@ namespace PMDb.API.Controllers
             if (!movieService.IsReviewValid(movieToPatch))
                 return BadRequest();
 
-            movieService.AddReview(MovieTitleAddReviewFor, movieToPatch.Review);
+            movieService.EditReview(MovieTitleAddReviewFor, movieToPatch.Review);
+            return NoContent();
+        }
+
+
+        [HttpDelete("{MovieTitleDeleteReviewFor}/Review", Name = "DeleteReview")]
+        public IActionResult DeleteReview(string MovieTitleDeleteReviewFor)
+        {
+            if (!movieService.IsMovieExist(MovieTitleDeleteReviewFor))
+                return NotFound();
+
+            movieService.DeleteReview(MovieTitleDeleteReviewFor);
+
             return NoContent();
         }
 
@@ -138,11 +151,32 @@ namespace PMDb.API.Controllers
             if (!movieService.IsMovieExist(movieTitleDeliteMarkFor))
                 return NotFound();
 
-            // add validation for title
             movieService.DeleteMark(movieTitleDeliteMarkFor);
             return NoContent();
         }
 
+        [HttpPatch("{movieTitle}")]
+        public IActionResult AddTag(string movieTitle, TagParameters tags)
+        {
+            if (!movieService.IsMovieExist(movieTitle))
+                return NotFound();
 
+            movieService.AddTags(tags, movieTitle);
+
+
+            return NoContent();
+        }
+
+        [HttpDelete("{movieTitle}/{tagName}")]
+        public IActionResult DeleteTag(string movieTitle, string tagName)
+        {
+            if (!movieService.IsMovieExist(movieTitle))
+                return NotFound();
+
+            //add is tag exist
+            movieService.DeleteTag(tagName, movieTitle);
+
+            return NoContent();
+        }
     }
 }

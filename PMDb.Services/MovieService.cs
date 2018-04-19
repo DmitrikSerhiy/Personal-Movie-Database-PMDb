@@ -65,13 +65,62 @@ namespace PMDb.Services
             movieRepository.Save();
         }
 
-        public void AddReview(string movieName, string review)
+        public void EditReview(string movieName, string review)
         {
-            movieRepository.AddReview(movieName, review);
+            movieRepository.EditReview(movieName, review);
             movieRepository.Save();
         }
 
+        public void DeleteReview(string movieName)
+        {
+            movieRepository.DeleteReview(movieName);
+            movieRepository.Save();
+        }
 
+        public void AddTags(TagParameters tagParameters, string movieName)
+        {
+            var tags = FormTags(tagParameters.tag);
+            tags = DeleteTagDuplicates(tags);
+            var newtags = new List<Tag>();
+            var tagsFromDb = new List<Tag>();
+            var allTags = new List<Tag>();
+            foreach (var tagName in tags)
+            {
+                if (movieRepository.IsTagAttachedToMovie(tagName, movieName) != true)
+                {
+                    if (movieRepository.IsTagExist(tagName) != true)
+                        newtags.Add(new Tag() { Name = tagName });
+                    else
+                        tagsFromDb.Add(movieRepository.GetExistedTag(tagName));
+                }
+            }
+            movieRepository.AddTagsToDb(newtags);
+            allTags.AddRange(tagsFromDb);
+            allTags.AddRange(newtags);
+            movieRepository.AddTagsToMovie(allTags, movieName);
+            movieRepository.Save();
+        }
+
+        public void DeleteTag(string tagName, string movieName)
+        {
+            movieRepository.DeleteTag(tagName, movieName);
+            movieRepository.Save();
+        }
+
+        private IList<string> FormTags(IList<string> tags)
+        {
+            for (int i = 0; i < tags.Count; i++)
+            {
+                tags[i] = "#" + tags[i];
+            }
+            return tags;
+        }
+
+        private IList<string> DeleteTagDuplicates(IList<string> tags)
+        {
+            HashSet<string> uniqueTags = new HashSet<string>(tags);
+            return new List<string>(uniqueTags);
+        }
 
         public int GetId()
         {
@@ -162,7 +211,5 @@ namespace PMDb.Services
             movieRepository.DeleteMark(movieName);
             movieRepository.Save();
         }
-
-
     }
 }

@@ -17,7 +17,10 @@ namespace PMDb.Services.ServicesAbstraction
         bool IsMarkValid(double movieModel);
         bool IsMarkValid(MovieModel movieModel);
         bool IsReviewValid(MovieModel movieModel);
-        void AddReview(string movieName, string review);
+        void EditReview(string movieName, string review);
+        void DeleteReview(string movieName);
+        void AddTags(TagParameters tagParameters, string movieName);
+        void DeleteTag(string tagName, string movieName);
         int GetId();
         string GetName();
         bool IsMovieExist(int movieId);

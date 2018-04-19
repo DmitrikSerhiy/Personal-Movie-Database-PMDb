@@ -34,7 +34,7 @@ namespace PMDb.Infrastructure.Data
             duplicateChecker.CheckAndInitWriters(movie.MovieWriter);
         }
 
-        public void AddReview(string movieName, string review)
+        public void EditReview(string movieName, string review)
         {
             var movie = context.Movies
                 .Where(m => m.Title == movieName)
@@ -43,6 +43,62 @@ namespace PMDb.Infrastructure.Data
             context.Entry(movie).Property(nameof(Movie.Review))
                 .CurrentValue = review;
         }
+
+        public void DeleteReview(string movieName)
+        {
+            var movie = context.Movies
+               .Where(m => m.Title == movieName)
+               .SingleOrDefault();
+
+            context.Entry(movie).Property(nameof(Movie.Review))
+               .CurrentValue = null;
+        }
+
+        public void AddTagsToDb(IList<Tag> tags)
+        {
+            context.Tags.AddRange(tags);
+        }
+
+        public void AddTagsToMovie(IList<Tag> tags, string movieName)
+        {
+            var movie = context.Movies.FirstOrDefault(m => m.Title == movieName);
+
+            foreach (var tag in tags)
+            {
+                movie.MovieTag.Add(new MovieTag { Tag = tag, Movie = movie });
+            }
+            
+        }
+
+        public bool IsTagExist(string tagName)
+        { 
+            return context.Tags.SingleOrDefault(t => t.Name == tagName) == null ? false : true;
+        }
+
+        public Tag GetExistedTag(string tagName)
+        {
+            return context.Tags.FirstOrDefault(t => t.Name == tagName);
+        }
+
+        public bool IsTagAttachedToMovie(string tagName, string movieName)
+        {
+            var movieTags = context.Tags.SelectMany(t => t.MovieTag)
+               .Where(m => m.Movie.Title == movieName);
+
+            return movieTags.FirstOrDefault(mt => mt.Tag.Name == tagName) == null ? false : true;
+        }
+
+        public void DeleteTag(string tagName, string movieName)
+        {
+            var tag = context.Tags
+                .Include(mt => mt.MovieTag)
+                .ThenInclude(t => t.Tag)
+                .FirstOrDefault(ml => ml.Name == tagName);
+
+            var movieTag = tag.MovieTag.FirstOrDefault(m => m.Movie.Title == movieName);
+            tag.MovieTag.Remove(movieTag);
+        }
+
 
         public void AddMark(double mark, string movieTitle)
         {
