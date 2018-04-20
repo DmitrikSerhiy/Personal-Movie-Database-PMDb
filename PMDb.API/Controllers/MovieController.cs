@@ -34,7 +34,7 @@ namespace PMDb.API.Controllers
             return Ok(movieModel);
         }
 
-        [HttpPatch("{title}/{mark}", Name = "AddMark")]
+        [HttpPatch("{title}/mark/{mark}", Name = "AddMark")]
         public IActionResult AddMark(string title, double mark)
         {
             if (movieService.IsMarkValid(mark) != true)
@@ -46,6 +46,7 @@ namespace PMDb.API.Controllers
 
             return NoContent();
         }
+
         [HttpPost(Name = "AddMovie")]
         public IActionResult AddMovie([FromBody]MovieModel movieModel)
         {
@@ -88,7 +89,7 @@ namespace PMDb.API.Controllers
             return Ok(movieModels);
         }
 
-        [HttpPatch("{MovieTitleAddRatingFor}/Mark", Name = "UpdateMark")]
+        [HttpPatch("{MovieTitleAddRatingFor}/mark", Name = "UpdateMark")]
         public IActionResult UpdateMark(string MovieTitleAddRatingFor,
             [FromBody] JsonPatchDocument<RatingModel> raitingDoc)
         {
@@ -110,7 +111,7 @@ namespace PMDb.API.Controllers
             return NoContent();
         }
 
-        [HttpPatch("{MovieTitleAddReviewFor}/Review", Name = "EditReview")]
+        [HttpPatch("{MovieTitleAddReviewFor}/review", Name = "EditReview")]
         public IActionResult EditReview(string MovieTitleAddReviewFor,//the same as add review
             [FromBody] JsonPatchDocument<MovieModel> movieDoc)
         {
@@ -131,8 +132,7 @@ namespace PMDb.API.Controllers
             return NoContent();
         }
 
-
-        [HttpDelete("{MovieTitleDeleteReviewFor}/Review", Name = "DeleteReview")]
+        [HttpDelete("{MovieTitleDeleteReviewFor}/review", Name = "DeleteReview")]
         public IActionResult DeleteReview(string MovieTitleDeleteReviewFor)
         {
             if (!movieService.IsMovieExist(MovieTitleDeleteReviewFor))
@@ -143,9 +143,7 @@ namespace PMDb.API.Controllers
             return NoContent();
         }
 
-
-
-        [HttpDelete("{movieTitleDeliteMarkFor}", Name = "DeleteMark")]
+        [HttpDelete("{movieTitleDeliteMarkFor}/mark", Name = "DeleteMark")]
         public IActionResult DeleteMark(string movieTitleDeliteMarkFor)
         {
             if (!movieService.IsMovieExist(movieTitleDeliteMarkFor))
@@ -155,8 +153,8 @@ namespace PMDb.API.Controllers
             return NoContent();
         }
 
-        [HttpPatch("{movieTitle}")]
-        public IActionResult AddTag(string movieTitle, TagParameters tags)
+        [HttpPatch("{movieTitle}/tags")]
+        public IActionResult AddTags(string movieTitle, TagParameters tags)
         {
             if (!movieService.IsMovieExist(movieTitle))
                 return NotFound();
@@ -167,13 +165,24 @@ namespace PMDb.API.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{movieTitle}")]
+        [HttpDelete("{movieTitle}/tags", Name = "DeleteTags")]
         public IActionResult DeleteTags(string movieTitle, TagParameters tags)
         {
             if (!movieService.IsMovieExist(movieTitle))
                 return NotFound();
 
             movieService.DeleteTag(tags, movieTitle);
+
+            return NoContent();
+        }
+
+        [HttpDelete("{movieTitle}", Name ="DeleteMovie")]
+        public IActionResult DeleteMovie(string movieTitle)
+        {
+            if (!movieService.IsMovieExist(movieTitle))
+                return NotFound();
+
+            movieService.DeleteMovie(movieTitle);
 
             return NoContent();
         }

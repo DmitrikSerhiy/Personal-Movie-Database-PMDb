@@ -181,5 +181,11 @@ namespace PMDb.Infrastructure.Data
             context.Entry(ratingEntity)
                 .Property(nameof(Rating.OwnRating)).CurrentValue = newMark;
         }
+
+        public void DeleteMovie(string movieName)
+        {
+            var movie = context.Movies.FirstOrDefault(m => m.Title == movieName);
+            context.Movies.Remove(movie);
+        }
     }
 }

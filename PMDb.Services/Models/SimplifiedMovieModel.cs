@@ -4,7 +4,7 @@ using System.Text;
 
 namespace PMDb.Services.Models
 {
-    public class SimplifiedMovieModel
+    public class SimplifiedMovieModel : LinkedResourceBase
     {
         public string Title { get; set; }
         public string Year { get; set; }

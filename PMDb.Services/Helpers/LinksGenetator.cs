@@ -46,8 +46,20 @@ namespace PMDb.Services.Helpers
             //    "POST"));
         }
 
-        public void CreateLinksForGetMovies(LinkedResourceBase Resource, string MovieName)
+        public void CreateLinksForMovieList(LinkedResourceBase Resource)
         {
+            foreach (var movie in (Resource as MovieListModel).Movies)
+            {
+                movie.Links.Add(
+                    new LinkModel(urlHelper.Link("GetMovie", new { title = movie.Title}),
+                    "get_movie",
+                    "GET"));
+
+                movie.Links.Add(
+                    new LinkModel(urlHelper.Link("GetMovie", new { title = movie.Title }),
+                    "get_movie",
+                    "GET"));
+            }
             
         }
     }

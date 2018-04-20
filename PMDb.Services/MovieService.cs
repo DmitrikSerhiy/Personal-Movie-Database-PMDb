@@ -223,5 +223,11 @@ namespace PMDb.Services
             movieRepository.DeleteMark(movieName);
             movieRepository.Save();
         }
+
+        public void DeleteMovie(string movieName)
+        {
+            movieRepository.DeleteMovie(movieName);
+            movieRepository.Save();
+        }
     }
 }

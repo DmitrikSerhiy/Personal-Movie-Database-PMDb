@@ -5,7 +5,7 @@ using System.Text;
 
 namespace PMDb.Services.Models
 {
-    public class MovieListModel
+    public class MovieListModel : LinkedResourceBase
     {
         public string Name { get; set; }
         public bool IsDefault { get; set; }

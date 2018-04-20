@@ -30,6 +30,7 @@ namespace PMDb.Services.ServicesAbstraction
         void DeleteMark(string movieName);
         string GeneratePreviousPageLink(bool hasPrevious, PaginationParameters getMoviesParameters);
         string GenerateNextPageLink(bool hasNext, PaginationParameters getMoviesParameters);
+        void DeleteMovie(string movieName);
 
     }
 }

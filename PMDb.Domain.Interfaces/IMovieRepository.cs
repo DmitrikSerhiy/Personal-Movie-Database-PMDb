@@ -24,5 +24,6 @@ namespace PMDb.Domain.Interfaces
         Tag GetExistedTag(string tag);
         bool IsTagAttachedToMovie(string tagName, string movieName);
         void DeleteTag(string tagName, string movieName);
+        void DeleteMovie(string movieName);
     }
 }
