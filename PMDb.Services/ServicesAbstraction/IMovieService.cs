@@ -20,7 +20,8 @@ namespace PMDb.Services.ServicesAbstraction
         void EditReview(string movieName, string review);
         void DeleteReview(string movieName);
         void AddTags(TagParameters tagParameters, string movieName);
-        void DeleteTag(string tagName, string movieName);
+        void DeleteTag(TagParameters tagName, string movieName);
+        bool IsTagExist(string tagName);
         int GetId();
         string GetName();
         bool IsMovieExist(int movieId);

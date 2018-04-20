@@ -111,7 +111,7 @@ namespace PMDb.API.Controllers
         }
 
         [HttpPatch("{MovieTitleAddReviewFor}/Review", Name = "EditReview")]
-        public IActionResult EditReview(string MovieTitleAddReviewFor,
+        public IActionResult EditReview(string MovieTitleAddReviewFor,//the same as add review
             [FromBody] JsonPatchDocument<MovieModel> movieDoc)
         {
             if (movieDoc == null)
@@ -167,14 +167,13 @@ namespace PMDb.API.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{movieTitle}/{tagName}")]
-        public IActionResult DeleteTag(string movieTitle, string tagName)
+        [HttpDelete("{movieTitle}")]
+        public IActionResult DeleteTags(string movieTitle, TagParameters tags)
         {
             if (!movieService.IsMovieExist(movieTitle))
                 return NotFound();
 
-            //add is tag exist
-            movieService.DeleteTag(tagName, movieTitle);
+            movieService.DeleteTag(tags, movieTitle);
 
             return NoContent();
         }

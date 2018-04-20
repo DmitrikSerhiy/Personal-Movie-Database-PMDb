@@ -101,10 +101,22 @@ namespace PMDb.Services
             movieRepository.Save();
         }
 
-        public void DeleteTag(string tagName, string movieName)
+        public void DeleteTag(TagParameters tagParameters, string movieName)
         {
-            movieRepository.DeleteTag(tagName, movieName);
+            var tags = FormTags(tagParameters.tag);
+            foreach (var tag in tags)
+            {
+                if (movieRepository.IsTagAttachedToMovie(tag, movieName))
+                {
+                    movieRepository.DeleteTag(tag, movieName);
+                }
+            }
             movieRepository.Save();
+        }
+
+        public bool IsTagExist(string tagName)
+        {
+            return movieRepository.IsExist(tagName);
         }
 
         private IList<string> FormTags(IList<string> tags)
