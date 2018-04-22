@@ -12,6 +12,7 @@ namespace PMDb.Domain.Core
         public IList<string> Genre { get; set; } = null;
         public IList<string> Writer { get; set; } = null;
         public IList<string> Tag { get; set; } = null;
+        public IList<string> Runtime { get; set; } = null;
         public IList<double?> OwnRating { get; set; } = null;
         public IList<double?> IMDbRating { get; set; } = null;
         public IList<double?> MetaCriticRating { get; set; } = null;

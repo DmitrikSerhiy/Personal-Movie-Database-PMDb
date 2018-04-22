@@ -56,9 +56,24 @@ namespace PMDb.Services.Helpers
                     "GET"));
 
                 movie.Links.Add(
-                    new LinkModel(urlHelper.Link("GetMovie", new { title = movie.Title }),
-                    "get_movie",
-                    "GET"));
+                    new LinkModel(urlHelper.Link("AddMovieToList", 
+                        new { MovieListName = "WatchLater", MovieTitle = movie.Title }),
+                    "add_movie_to_watchLater",
+                    "POST"));
+                
+                movie.Links.Add(
+                    new LinkModel(urlHelper.Link("DeleteMark", new { title = movie.Title }),
+                    "delete_movie",
+                    "DELETE"));
+
+                movie.Links.Add(
+                    new LinkModel(urlHelper.Link("DeleteMark", new { title = movie.Title }),
+                    "delete_movie",
+                    "DELETE"));
+
+                //let it be...
+
+
             }
             
         }

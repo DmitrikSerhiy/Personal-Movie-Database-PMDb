@@ -29,6 +29,7 @@ namespace PMDb.Infrastructure.Data
                 {
                     var Name = property.Name;
                     if (Name == nameof(Movie.Year) ||
+                        Name == nameof(Movie.Runtime) ||
                         Name == nameof(Rating.OwnRating) ||
                         Name == nameof(Rating.IMDbRating) ||
                         Name == nameof(Rating.MetaCriticRating) ||

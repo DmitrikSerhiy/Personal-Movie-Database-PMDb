@@ -28,6 +28,7 @@ namespace PMDb.Infrastructure.Data
                 {nameof(Director), context.Directors},
                 {nameof(Genre), context.Genres},
                 {nameof(Movie.Year), MovieEntity},
+                {nameof(Movie.Runtime), MovieEntity},
                 {nameof(Movie), MovieEntity},
                 {nameof(Writer), context.Writers},
                 {nameof(Tag), context.Tags},
@@ -48,7 +49,8 @@ namespace PMDb.Infrastructure.Data
         {
             var NameForPropery = Name;
             PropertyInfo Prop;
-            if (NameForPropery == nameof(Movie.Year))
+            if (NameForPropery == nameof(Movie.Year) ||
+                NameForPropery == nameof(Movie.Runtime))
                 NameForPropery = nameof(Movie) + "s";
             else if (NameForPropery == nameof(Rating.OwnRating) ||
                     NameForPropery == nameof(Rating.IMDbRating) ||
@@ -87,7 +89,9 @@ namespace PMDb.Infrastructure.Data
             else
             {
                 var FieldName = EntityName;
-                if (EntityName == nameof(Movie.Year))//movie fields filtration
+                if (EntityName == nameof(Movie.Year) ||
+                    EntityName == nameof(Movie.Runtime))//movie fields filtration
+
                     Movies.AddRange(currentDbset.Where(GetClauseForField(FieldName), value)
                    .ToDynamicList<Movie>());
                 else//Rating filtration
@@ -116,6 +120,7 @@ namespace PMDb.Infrastructure.Data
             switch (type)
             {
                 case nameof(Movie.Year): currType = "it.Year=@0"; break;
+                case nameof(Movie.Runtime): currType = "it.Runtime=@0"; break;
                 case nameof(Rating.OwnRating): currType = "it.OwnRating=@0"; break;
                 case nameof(Rating.IMDbRating): currType = "it.IMDbRating=@0"; break;
                 case nameof(Rating.MetaCriticRating): currType = "it.MetaCriticRating=@0"; break;

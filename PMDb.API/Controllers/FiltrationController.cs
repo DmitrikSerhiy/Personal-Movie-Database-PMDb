@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace PMDb.API.Controllers
 {
     [Produces("application/json")]
-    [Route("api/movies/filter")]
+    [Route("api/movies/filtration")]
     public class FiltrationController : Controller
     {
         private IFiltrationService filtrationService;
