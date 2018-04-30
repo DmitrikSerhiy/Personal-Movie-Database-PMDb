@@ -2,10 +2,15 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TypeScriptToolsVersion>2.6</TypeScriptToolsVersion>
   </PropertyGroup>
 
   <ItemGroup>
     <Content Remove="appsettings.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="PMDb.UI\src\app\movies\movies.service.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -27,6 +32,10 @@
     <ProjectReference Include="..\PMDb.DependencyResolver\PMDb.DependencyResolver.csproj" />
     <ProjectReference Include="..\PMDb.Domain.Interfaces\PMDb.Domain.Interfaces.csproj" />
     <ProjectReference Include="..\PMDb.Services\PMDb.Services.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="PMDb.UI\src\app\movies\movies.service.ts" />
   </ItemGroup>
 
 </Project>
