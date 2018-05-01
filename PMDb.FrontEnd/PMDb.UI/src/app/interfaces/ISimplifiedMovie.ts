@@ -1,4 +1,4 @@
-interface ISimplifiedMovie{
+export interface ISimplifiedMovie{
         Title: string;
         Year : string;
         Poster: string;
