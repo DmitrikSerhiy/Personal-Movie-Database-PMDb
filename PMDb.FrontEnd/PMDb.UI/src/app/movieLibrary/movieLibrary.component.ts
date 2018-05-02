@@ -1,16 +1,18 @@
 import { Component, OnInit } from "@angular/core";
 import { MovieService } from "./movie.service";
 import { ISimplifiedMovie } from "../interfaces/ISimplifiedMovie";
+//import { }
 
 @Component({
-    selector: 'pmdb-movieLibrary',
-    templateUrl: './movieLibrary-component.html'
+    //selector: 'pmdb-movieLibrary',
+    templateUrl: './movieLibrary.component.html'
 
 })
-export class MovieLibrary implements OnInit{
+export class MovieLibraryComponent implements OnInit{
 
     movies : ISimplifiedMovie[] = [];
     errorMessage : string = '';
+    title : string ='PMDb library'
 
     constructor(private _movieService : MovieService){
         
@@ -19,7 +21,8 @@ export class MovieLibrary implements OnInit{
 
     ngOnInit() : void {
         this._movieService.getMovies()
-                    .subscribe(movies => this.movies = movies,
-                    error => this.errorMessage = <any>error);
+                    .subscribe( 
+                        movies => this.movies = movies,
+                        error => this.errorMessage = <any>error);
     }
 }
