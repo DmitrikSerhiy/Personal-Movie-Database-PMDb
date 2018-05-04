@@ -1,6 +1,44 @@
 <h3>Here is your {{title}} </h3>
+<p>this is first movie title {{firstM}}</p>
+<p>count: {{count}}</p>
 <div class="container">
-        <table class="table table-striped" *ngIf='movies && movies.lenght'>
+  <div class="row">
+      <div class="col-sm">
+        <button class="btn btn-primary" (click)='toggelePoster()'>
+            {{showPoster ? 'Hide' : 'Show'}} Posters
+        </button>
+      </div>
+
+      <div class="col-sm">
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+           <span class="input-group-text" id="inputGroup-sizing-default">Filter:</span>
+          </div>
+         <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" alt="Input some text"
+              name="filterByWords" placeholder="Input some text" [(ngModel)]='listFilter'>
+              <p>{{listFilter}}</p>
+        </div>
+    </div>
+
+    <div class="col-sm">
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Filter by:</button>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="#">Genre</a>
+            <a class="dropdown-item" href="#">Tag</a>
+            <a class="dropdown-item" href="#">Year</a>
+            <a class="dropdown-item" href="#">Mark</a>
+            <a class="dropdown-item" href="#">Runtime</a>
+          </div>
+        </div>
+        <input type="text" class="form-control" aria-label="Text input with dropdown button">
+      </div>
+    </div>
+
+  </div>
+  
+        <table class="table table-striped">
                 <thead>
                   <tr>
                     <th scope="col">Poster</th>
@@ -12,13 +50,30 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>some image</td>
-                    <td>Star wars</td>
-                    <td>2004</td>
-                    <td>156</td>
-                    <td>#Way! #LTFBWY #LoveIt</td>
-                    <td>9</td>
+                  <tr *ngFor='let movie of movies'>
+                    <td><img *ngIf='showPoster'
+                        src={{movie.poster}} 
+                        [title]='movie.title' 
+                        [style.width.px]='posterWidth' 
+                        [style.height.px]='posterHeight'></td>
+                    <td>{{movie.title}}</td>
+                    <td>{{movie.year}}</td>
+                    <td>{{movie.runtime | customRuntime}}</td>
+                    <td> <span *ngFor='let tag of movie.tags'>{{tag.name}} </span></td>
+                    <td> 
+                      <div class="row">
+                        <div class="col-sm-10">
+                            <rating [(ngModel)]="movie.mark" [max]="maxRating" [readonly]="isRatingReadonly"> </rating>
+                        </div>
+                        <div class="col-sm-2">
+                            {{movie.mark}}
+                        </div>
+                      </div >
+                      
+                      <!-- <div class="card">
+                          <p  re class="card-block card-header" style="margin:15px 0;"></pre>
+                      </div> -->
+                      </td>
                   </tr>
                 </tbody>
               </table>

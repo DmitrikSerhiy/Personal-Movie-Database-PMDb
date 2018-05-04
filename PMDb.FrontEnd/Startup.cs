@@ -28,6 +28,14 @@ namespace PMDb.API
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AngularFrontEnd",
+                    builder => builder.WithOrigins("http://localhost:4200")
+                                      .AllowAnyHeader());
+            });
+
             services.AddMvc();
             IoCBuilder = new IoCBuilder(services);
             mapperInitializatior = new MapperInitializatior();
@@ -36,6 +44,8 @@ namespace PMDb.API
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            app.UseCors("AngularFrontEnd");
+
             app.Use(async (context, next) => {
                 await next();
                 if (context.Response.StatusCode == 404 &&

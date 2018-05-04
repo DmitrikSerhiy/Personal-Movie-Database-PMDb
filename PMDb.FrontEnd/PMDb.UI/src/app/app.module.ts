@@ -8,6 +8,8 @@ import { MovieLibraryComponent } from './movieLibrary/movieLibrary.component';
 import { RouterModule } from '@angular/router';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { WelcomeComponent } from './welcome/welcome.component';
+import { CustomRuntimePipe } from './Shared/custom-time-pipe.pipe';
+import { RatingModule } from 'ngx-bootstrap';
 
 
 
@@ -16,6 +18,7 @@ import { WelcomeComponent } from './welcome/welcome.component';
     BrowserModule,
     FormsModule,
     HttpClientModule,
+    RatingModule,
     RouterModule.forRoot([
       {path: 'welcome', component: WelcomeComponent },
       {path: 'movies', component: MovieLibraryComponent},
@@ -27,7 +30,8 @@ import { WelcomeComponent } from './welcome/welcome.component';
     AppComponent,
     MovieLibraryComponent,
     NotFoundComponent,
-    WelcomeComponent
+    WelcomeComponent,
+    CustomRuntimePipe
   ],
 
   providers: [],

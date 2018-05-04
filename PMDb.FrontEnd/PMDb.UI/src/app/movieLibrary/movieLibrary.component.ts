@@ -1,28 +1,43 @@
 import { Component, OnInit } from "@angular/core";
 import { MovieService } from "./movie.service";
 import { ISimplifiedMovie } from "../interfaces/ISimplifiedMovie";
-//import { }
+import { RatingModule } from 'ngx-bootstrap/rating';
+
 
 @Component({
-    //selector: 'pmdb-movieLibrary',
     templateUrl: './movieLibrary.component.html'
 
 })
 export class MovieLibraryComponent implements OnInit{
 
     movies : ISimplifiedMovie[] = [];
+    posterWidth : number = 60;
+    posterHeight : number = 100;
+    showPoster : boolean = false;
+    listFilter : string = '';
+    maxRating: number = 10;
+    isRatingReadonly: boolean = true;
+
+
     errorMessage : string = '';
-    title : string ='PMDb library'
+    title : string ='PMDb library';
 
     constructor(private _movieService : MovieService){
         
     }
-    
 
     ngOnInit() : void {
+        
         this._movieService.getMovies()
-                    .subscribe( 
-                        movies => this.movies = movies,
-                        error => this.errorMessage = <any>error);
+                .subscribe( 
+                        (movies : ISimplifiedMovie[]) => {
+                            this.movies = movies;
+                        },
+                        error => this.errorMessage = <any>error),
+                        () => console.log('ITS DONE!');
+    }
+
+    toggelePoster() : void{
+        this.showPoster = !this.showPoster;
     }
 }

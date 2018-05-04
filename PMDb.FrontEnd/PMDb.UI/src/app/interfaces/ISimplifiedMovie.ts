@@ -1,8 +1,8 @@
 export interface ISimplifiedMovie{
-        Title: string;
-        Year : string;
-        Poster: string;
-        Mark : number;
-        Runtime : string;
-        Tags : any[]; 
+        title: string;
+        year : string;
+        poster: string;
+        mark : number;
+        runtime : string;
+        tags : any[]; 
 }
