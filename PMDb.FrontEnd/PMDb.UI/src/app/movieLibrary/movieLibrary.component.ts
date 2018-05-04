@@ -5,7 +5,8 @@ import { RatingModule } from 'ngx-bootstrap/rating';
 
 
 @Component({
-    templateUrl: './movieLibrary.component.html'
+    templateUrl: './movieLibrary.component.html',
+    styleUrls: ['./movieLibrary.component.css']
 
 })
 export class MovieLibraryComponent implements OnInit{
@@ -17,6 +18,7 @@ export class MovieLibraryComponent implements OnInit{
     listFilter : string = '';
     maxRating: number = 10;
     isRatingReadonly: boolean = true;
+    
 
 
     errorMessage : string = '';

@@ -47,6 +47,7 @@
                     <th scope="col">Runtime</th>
                     <th scope="col">Tags</th>
                     <th scope="col">Mark</th>
+                    <th scope="col"></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -62,18 +63,41 @@
                     <td> <span *ngFor='let tag of movie.tags'>{{tag.name}} </span></td>
                     <td> 
                       <div class="row">
-                        <div class="col-sm-10">
+                        <div class="col-10 px-1">
                             <rating [(ngModel)]="movie.mark" [max]="maxRating" [readonly]="isRatingReadonly"> </rating>
                         </div>
-                        <div class="col-sm-2">
+                        <div class="col-2 px-1">
                             {{movie.mark}}
                         </div>
                       </div >
-                      
-                      <!-- <div class="card">
-                          <p  re class="card-block card-header" style="margin:15px 0;"></pre>
-                      </div> -->
-                      </td>
+                    </td>
+                    <td>
+                      <span>
+                        <button name="watchLater_butom" onclick="AddToWatchLater()" class="btn btn-outline-light p-0 customButtons">
+                          <img src='/assets/watch_later_icon.png' alt="icon" width="24dp" height="23dp"> 
+                        </button>
+                      </span>
+                      <span>
+                          <button name="favorite_butom" onclick="AddToFavorite()" class="btn btn-outline-light p-0 customButtons">
+                            <img src='/assets/not_favorite_icon.png' alt="icon" width="24dp" height="23dp"> 
+                          </button>
+                      </span>
+                      <span>
+                          <button name="addHashtag_button" onclick="AddHashtag()" class="btn btn-outline-light p-0 customButtons">
+                            <img src='/assets/neat_hashtag_icon.png' alt="icon" width="24dp" height="23dp">
+                          </button>
+                      </span>
+                      <span>
+                          <button name="addReview_button" onclick="AddReview()" class="btn btn-outline-light p-0 customButtons">
+                            <img src='/assets/review_icon.png' alt="icon" width="24dp" height="23dp">
+                          </button>
+                      </span>
+                      <span>
+                          <button name="share_button" onclick="Share()" class="btn btn-outline-light p-0 customButtons">
+                            <img src='/assets/share_icon.png' alt="icon" width="24dp" height="23dp">
+                          </button>
+                      </span>
+                    </td>
                   </tr>
                 </tbody>
               </table>
