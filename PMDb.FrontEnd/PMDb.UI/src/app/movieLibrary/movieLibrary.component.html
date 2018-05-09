@@ -107,12 +107,14 @@
                           </button>
                       </span>
 
-                      <span (click) = 'ShowShareIcons(i)'>
+                      <span>
                         <button
                           [popper]="ShowShareButtons"
                           [popperShowOnStart]="false"
                           [popperTrigger]="'click'"
                           [popperPlacement]="'right'"
+                          (popperOnHidden)='ShowShareIcons(i)'
+                          (popperOnShown)='ShowShareIcons(i)'
                           name="share_button" class="btn btn-outline-light p-0 customButtons">
                           <img *ngIf='movies[i]' [src]='movies[i].shareIconSrc' alt="icon" width="24dp" height="23dp" >
                         </button>

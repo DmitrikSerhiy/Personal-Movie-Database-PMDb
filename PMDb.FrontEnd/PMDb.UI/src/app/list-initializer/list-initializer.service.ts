@@ -10,7 +10,7 @@ export class ListInitializerService {
   hashtagIonc: string = '/assets/hashtag_icon.png';
   reviewIcon: string = '/assets/review_icon.png';
 
-  emptyshareIcon : string = './assets/emptyShare_icon.png';
+  emptyShareIcon : string = './assets/emptyShare_icon.png';
   emptyWatchLaterIcon: string = './assets/emptyWatchLater_icon.png';
   emptyFavoriteIcon: string = '/assets/emptyFavorite_icon.png';
   emptyHashtagIonc: string = '/assets/emptyHashtag_icon.png';
@@ -32,7 +32,7 @@ export class ListInitializerService {
         movie.favoriteListIconSrc = movie.isInFavoriteList ? this.favoriteIcon : this.emptyFavoriteIcon;
         movie.hashtagIconSrc = movie.hasHashtag ? this.hashtagIonc : this.emptyHashtagIonc;
         movie.reviewIconSrc = movie.hasReview ? this.reviewIcon : this.emptyReviewIcon;
-        movie.shareIconSrc = this.emptyshareIcon;
+        movie.shareIconSrc = this.emptyShareIcon;
         movie.shareViaGoogleIconSrc = this.shareViaGoogleIcon;
         movie.shareViaFacebookIconSrc = this.shareViaFacebookIcon;
       });
@@ -40,10 +40,13 @@ export class ListInitializerService {
 
 changeShareIcon(index : number) : void {
   
-  var tempShareIcon = this.movies[index].shareIconSrc;
-  this.shareIcon = this.emptyshareIcon;
-  this.emptyshareIcon = tempShareIcon;
-  this.movies[index].shareIconSrc = this.shareIcon;
+  const actualsrc = this.movies[index].shareIconSrc;
+  if(actualsrc){
+    this.movies[index].shareIconSrc = actualsrc === this.shareIcon ? this.emptyShareIcon : this.shareIcon;
+  }else {
+    this.movies[index].shareIconSrc = this.emptyShareIcon;
+  }
+
 }
 
 changeWatchLaterIcon(index : number) : void {

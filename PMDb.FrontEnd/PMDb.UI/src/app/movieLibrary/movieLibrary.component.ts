@@ -49,9 +49,9 @@ export class MovieLibraryComponent implements OnInit{
         this.showPoster = !this.showPoster;
     }
 
-    ShowShareIcons() : void {
+    ShowShareIcons(index : number) : void {
         this.isShareIconsShowen = !this.isShareIconsShowen;
-        this._ListInitializer.changeShareIcon(0);
+        this._ListInitializer.changeShareIcon(index);
     }
 
     AddToWatchLater(index : number) : void {
