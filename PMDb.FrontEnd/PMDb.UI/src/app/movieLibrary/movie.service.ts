@@ -5,7 +5,7 @@ import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/map';
-import { ISimplifiedMovie } from "../interfaces/ISimplifiedMovie";
+import { ISimplifiedMovie } from '../shared/interfaces/ISimplifiedMovie';
 import { compile, compileFromFile } from 'json-schema-to-typescript'
 
 @Injectable()
@@ -22,19 +22,6 @@ export class MovieService {
     getMovies() : Observable<ISimplifiedMovie[]>
     {
         return this._http.get<ISimplifiedMovie[]>(this._getMoviesURL)
-        // .map(response => response as ISimplifiedMovie[])
-        //     .map(data => data.map(function(movie:any){
-        //         return {Title : movie.Title,
-        //                 Year : movie.Year,
-        //                 Poster : movie.Poster,
-        //                 Mark : movie.Mark,
-        //                 Runtime : movie.Runtime,
-        //                 Tags : movie.Tags  }
-        //     }))
-        // .map(data => data.forEach(movie => <ISimplifiedMovie>movie))
-        //    .map(data => <ISimplifiedMovie[]>data)
-
-          
             .do(data => console.log('All: ' + JSON.stringify(data)))
             .catch(this.handleError);
     }

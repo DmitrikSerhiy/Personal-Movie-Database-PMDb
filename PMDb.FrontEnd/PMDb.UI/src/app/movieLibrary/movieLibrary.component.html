@@ -1,6 +1,20 @@
 <h3>Here is your {{title}} </h3>
 <p>this is first movie title {{firstM}}</p>
-<p>count: {{count}}</p>
+<!-- [src]='movies[i].shareViaGoogleIconSrc' -->
+
+<!-- <button
+  [popper]="ShowShareButtons"
+  [popperShowOnStart]="false"
+  [popperTrigger]="'click'"
+  [popperPlacement]="'right'"
+  name="share_button" class="btn btn-outline-light p-0 customButtons">
+<img *ngIf='movies[i]' [src]='movies[i].shareViaGoogleIconSrc' alt="icon" width="24dp" height="23dp" >
+</button> -->
+
+
+     
+
+
 <div class="container">
   <div class="row">
       <div class="col-sm">
@@ -38,7 +52,7 @@
 
   </div>
   
-        <table class="table table-striped">
+        <table class="table table-striped table-md">
                 <thead>
                   <tr>
                     <th scope="col">Poster</th>
@@ -47,11 +61,11 @@
                     <th scope="col">Runtime</th>
                     <th scope="col">Tags</th>
                     <th scope="col">Mark</th>
-                    <th scope="col"></th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor='let movie of movies'>
+                    <!-- [ngForTrackBy]="trackByFn" -->
+                  <tr *ngFor='let movie of movies; let i = index; trackBy:trackByFunction.htmlId'  >
                     <td><img *ngIf='showPoster'
                         src={{movie.poster}} 
                         [title]='movie.title' 
@@ -73,34 +87,84 @@
                     </td>
                     <td>
                       <span>
-                        <button name="watchLater_butom" onclick="AddToWatchLater()" class="btn btn-outline-light p-0 customButtons">
-                          <img src='/assets/watch_later_icon.png' alt="icon" width="24dp" height="23dp"> 
+                        <button name="watchLater_butom" class="btn btn-outline-light p-0 customButtons">
+                          <img [src]='movies[i].watchLaterListIconSrc' alt="icon" width="24dp" height="23dp" (click)='AddToWatchLater(i) '> 
                         </button>
                       </span>
                       <span>
-                          <button name="favorite_butom" onclick="AddToFavorite()" class="btn btn-outline-light p-0 customButtons">
-                            <img src='/assets/not_favorite_icon.png' alt="icon" width="24dp" height="23dp"> 
+                          <button name="favorite_butom" class="btn btn-outline-light p-0 customButtons">
+                            <img [src]='movies[i].favoriteListIconSrc' alt="icon" width="24dp" height="23dp" (click)='AddToFavorite(i)'> 
                           </button>
                       </span>
                       <span>
-                          <button name="addHashtag_button" onclick="AddHashtag()" class="btn btn-outline-light p-0 customButtons">
-                            <img src='/assets/neat_hashtag_icon.png' alt="icon" width="24dp" height="23dp">
+                          <button name="addHashtag_button" class="btn btn-outline-light p-0 customButtons">
+                            <img [src]='movies[i].hashtagIconSrc' alt="icon" width="24dp" height="23dp" (click)='AddHashtag(i)'>
                           </button>
                       </span>
                       <span>
-                          <button name="addReview_button" onclick="AddReview()" class="btn btn-outline-light p-0 customButtons">
-                            <img src='/assets/review_icon.png' alt="icon" width="24dp" height="23dp">
+                          <button name="addReview_button" class="btn btn-outline-light p-0 customButtons">
+                            <img [src]='movies[i].reviewIconSrc'  alt="icon" width="24dp" height="23dp" (click)='AddReview(i)'>
                           </button>
                       </span>
-                      <span>
-                          <button name="share_button" onclick="Share()" class="btn btn-outline-light p-0 customButtons">
-                            <img src='/assets/share_icon.png' alt="icon" width="24dp" height="23dp">
+
+                      <span (click) = 'ShowShareIcons(i)'>
+                        <button
+                          [popper]="ShowShareButtons"
+                          [popperShowOnStart]="false"
+                          [popperTrigger]="'click'"
+                          [popperPlacement]="'right'"
+                          name="share_button" class="btn btn-outline-light p-0 customButtons">
+                          <img *ngIf='movies[i]' [src]='movies[i].shareIconSrc' alt="icon" width="24dp" height="23dp" >
+                        </button>
+
+                        <popper-content #ShowShareButtons>
+                             <div *ngIf='movies[i]'> 
+                              <span>
+                                <button name="google_button"  class="btn btn-outline-light p-0 customButtons">
+                                 <img [src]='movies[i].shareViaGoogleIconSrc' alt="icon" width="24dp" height="23dp">
+                               </button>
+                              </span>
+                             <span> 
+                                 <button name="google_button"  class="btn btn-outline-light p-0 customButtons">
+                                    <img [src]='movies[i].shareViaFacebookIconSrc' alt="icon" width="24dp" height="23dp">
+                                  </button>
+                             </span> 
+                            </div> 
+                          </popper-content>
+                          
+                      </span>
+                      
+
+                      <!-- <span>
+                          <button
+                            [popper]="AddTags"
+                            [popperShowOnStart]="false"
+                            [popperTrigger]="'click'"
+                            [popperPlacement]="'right'"
+                            
+
+                            name="share_button" class="btn btn-outline-light p-0 customButtons">
+                            <img [src]='movies[i].shareIconSrc' alt="icon" width="24dp" height="23dp" >
+                          </button>
+                      </span> -->
+
+                      <!-- <span *ngIf='isShareIconsShowen' class="position-absolute">
+                          <span>
+                            <button name="google_button"  class="btn btn-outline-light p-0 customButtons">
+                              <img [src]='movies[i].shareViaGoogleIconSrc' alt="icon" width="24dp" height="23dp" (click)='ShareViaGoogle(i)'>
+                            </button>
+                          </span>
+                         <span>
+                           <button  name="share_button" class="btn btn-outline-light p-0 customButtons">
+                            <img [src]='movies[i].shareViaFacebookIconSrc' alt="icon" width="24dp" height="23dp" (click)='ShareViaFacebook(i)'>
                           </button>
                       </span>
+                      </span> -->
                     </td>
                   </tr>
                 </tbody>
               </table>
-              
+          
+            
 </div>
 

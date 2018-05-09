@@ -10,6 +10,7 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { WelcomeComponent } from './welcome/welcome.component';
 import { CustomRuntimePipe } from './Shared/custom-time-pipe.pipe';
 import { RatingModule } from 'ngx-bootstrap';
+import {NgxPopperModule} from 'ngx-popper';
 
 
 
@@ -19,10 +20,11 @@ import { RatingModule } from 'ngx-bootstrap';
     FormsModule,
     HttpClientModule,
     RatingModule,
+    NgxPopperModule,
     RouterModule.forRoot([
       {path: 'welcome', component: WelcomeComponent },
       {path: 'movies', component: MovieLibraryComponent},
-      {path: '', redirectTo: 'welcome', pathMatch: 'full'},
+      //{path: '', redirectTo: 'welcome', pathMatch: 'full'},
       //{path: '**',  redirectTo: 'NotFoundComponent', pathMatch: 'full'}
     ])
   ],
