@@ -18,6 +18,7 @@ export class ListInitializerService {
 
   shareViaGoogleIcon : string = 'assets/google_icon.png';
   shareViaFacebookIcon : string = 'assets/facebook_icon.png';
+  
 
   
   private movies;
@@ -36,6 +37,15 @@ export class ListInitializerService {
         movie.shareViaGoogleIconSrc = this.shareViaGoogleIcon;
         movie.shareViaFacebookIconSrc = this.shareViaFacebookIcon;
       });
+}
+
+changeTooltipWatchLaterText(index : number) : void{
+  const actualsrc = this.movies[index].watchLaterListIconSrc;
+  if(actualsrc){
+    this.movies[index].watchLaterListIconSrc = actualsrc === this.watchLaterIcon ? this.emptyWatchLaterIcon : this.watchLaterIcon;
+  }else {
+    this.movies[index].watchLaterListIconSrc = this.emptyWatchLaterIcon;
+  }
 }
 
 changeShareIcon(index : number) : void {

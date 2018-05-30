@@ -11,6 +11,7 @@ export interface ISimplifiedMovie{
 
         hasReview : boolean;
         reviewIconSrc : string;
+
         shareIconSrc : string;
         shareViaGoogleIconSrc : string;
         shareViaFacebookIconSrc : string;
@@ -22,4 +23,5 @@ export interface ISimplifiedMovie{
         mark : number;
         runtime : string;
         tags : any[]; 
+        review : string;
 }
