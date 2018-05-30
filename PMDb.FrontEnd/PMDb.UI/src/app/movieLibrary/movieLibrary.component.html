@@ -1,11 +1,3 @@
-<div *ngIf='moviesRatings'>
-<span   *ngFor=' let integerPartOfRate of moviesRatings[0] let j = index '> {{integerPartOfRate}} __  </span>
-</div>
-
-<div *ngIf='moviesRatings'>
-  <span   *ngFor=' let fractionalPartOfRate of moviesRatings[1] let jj = index '> {{fractionalPartOfRate}} __  </span>
-  </div>
-
 
 <div class="container">
   <div class="row">
@@ -43,10 +35,7 @@
     </div>
 
   </div>
-
-
-
-
+  
         <table class="table table-striped table-md">
                 <thead>
                   <tr>
@@ -59,8 +48,8 @@
                   </tr>
                 </thead>
                 <tbody>
-                    <!-- [ngForTrackBy]="trackByFn" -->
-                  <tr *ngFor='let movie of movies; let i = index; trackBy:trackByFunction.htmlId'  >
+
+                  <tr *ngFor='let movie of movies; let i = index;'  >
                     <td><img *ngIf='showPoster'
                         src={{movie.poster}}
                         [title]='movie.title'
@@ -80,7 +69,6 @@
                               </rating> 
                               <h5  align="center" style="width: 15%;" class="xfont-weight-bold my-0 mx-1 border border-dark rounded">
                                   {{moviesRatings[0][i]}}{{moviesRatings[1][i] === 0 ? '' : '.' + moviesRatings[1][i]}}</h5>  
-                                  <!-- <span *ngIf='markIsOdd'></span></span>  -->
                           </div>
 
                           <ng-template  #popTemplate class="p-0">

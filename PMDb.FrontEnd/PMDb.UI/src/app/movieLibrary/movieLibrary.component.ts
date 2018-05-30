@@ -1,11 +1,12 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input, SimpleChanges } from '@angular/core';
-import { MovieService } from './movie.service';
+import { MovieService } from '../movie-list/movie.service';
 import { ISimplifiedMovie } from '../shared/interfaces/ISimplifiedMovie';
 import { ListInitializerService } from '../list-initializer/list-initializer.service';
 import { PopoverModule } from 'ngx-bootstrap/popover';
 import { Triggers } from 'ngx-popper';
 import { CustomeDecimalPipePipe } from '../Shared/custome-decimal-pipe.pipe';
 import { ChangeDetectorRef } from '@angular/core';
+
 
 
 @Component({
@@ -29,19 +30,14 @@ export class MovieLibraryComponent implements OnInit{
     toolTipText : string = '';
     currMovieMarkToSet : [number, number];
     updatedMark: [number, number];
-    markToDisplay : number;
-    isDetailedRatingClickable : boolean = true;
     isRateTen = false;
-    markIsOdd : boolean;
     
 
-
-    hashtagIonc: string = '/assets/hashtag_icon.png';
     currTags : string[] = [];
     currReviewTitle : string = '';
     currReviewText : string = '';
 
-   unclicableButtons : boolean = true;
+    unclicableButtons : boolean = true;
 
    toggleClickability() : void{
        this.unclicableButtons = ! this.unclicableButtons;
@@ -96,7 +92,6 @@ export class MovieLibraryComponent implements OnInit{
             this.updatedMark = [10, this.currMovieMarkToSet[1]];
             return 10;
         }
-
         const integerRate = this.currMovieMarkToSet[0];
         
         if (!value) {
@@ -114,13 +109,6 @@ export class MovieLibraryComponent implements OnInit{
            this.currMovieMarkToSet = [integerMark, index] 
       }
 
-    //   isMarkOdd(mark: number, index : number): void{
-    //     if(mark === 10 || mark === 0 )
-    //         //return true;
-    //         this.markIsOdd = true;
-    //     else
-    //         this.markIsOdd = false;
-    //   }
 
       submitMark() : void{
         let localDecimalPipe = new CustomeDecimalPipePipe();

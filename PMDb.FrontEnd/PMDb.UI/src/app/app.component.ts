@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { MovieService } from './movieLibrary/movie.service';
 import { ListInitializerService } from './list-initializer/list-initializer.service';
+import { MovieService } from './movie-list/movie.service';
 
 
 @Component({
