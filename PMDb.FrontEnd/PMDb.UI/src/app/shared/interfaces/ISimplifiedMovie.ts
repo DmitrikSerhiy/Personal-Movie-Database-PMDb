@@ -6,8 +6,8 @@ export interface ISimplifiedMovie{
         isInFavoriteList: boolean;
         favoriteListIconSrc : string;
 
-        hasHashtag : boolean;
-        hashtagIconSrc : string;
+        hasTags : boolean;
+        tagIconSrc : string;
 
         hasReview : boolean;
         reviewIconSrc : string;

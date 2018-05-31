@@ -18,6 +18,7 @@ namespace PMDb.Services.Mappers
             movieModel.TagModels = TagMapper.Map(movie.MovieTag);
             movieModel.WriterModels = WriterMapper.Map(movie.MovieWriter);
             movieModel.Ratings = RatingMapper.Map(movie.Rating);
+            movieModel.ListsWithCurrMovie = ListOfMovieListsMapper.Map(movie.MovieListMovie);
 
             return movieModel;
         }

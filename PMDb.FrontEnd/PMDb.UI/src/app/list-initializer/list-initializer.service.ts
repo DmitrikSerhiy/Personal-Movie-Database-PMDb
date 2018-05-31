@@ -19,19 +19,17 @@ export class ListInitializerService {
   shareViaGoogleIcon : string = 'assets/google_icon.png';
   shareViaFacebookIcon : string = 'assets/facebook_icon.png';
   
-
-  
   private movies;
 
   setMovies(movies : ISimplifiedMovie[]){
-    this.movies = movies; 
+    this.movies = movies.slice(0); 
   }
 
   initIcons() : void {
     this.movies.forEach(movie => {
         movie.watchLaterListIconSrc = movie.isInWatchLater ? this.watchLaterIcon : this.emptyWatchLaterIcon;
         movie.favoriteListIconSrc = movie.isInFavoriteList ? this.favoriteIcon : this.emptyFavoriteIcon;
-        movie.hashtagIconSrc = movie.hasHashtag ? this.hashtagIonc : this.emptyHashtagIonc;
+        movie.tagIconSrc = movie.hasTags ? this.hashtagIonc : this.emptyHashtagIonc;
         movie.reviewIconSrc = movie.hasReview ? this.reviewIcon : this.emptyReviewIcon;
         movie.shareIconSrc = this.emptyShareIcon;
         movie.shareViaGoogleIconSrc = this.shareViaGoogleIcon;
@@ -86,13 +84,13 @@ changeHashtagIcon(index : number) : void{
   }
 }
 
-changeReviewIcon(index : number) : void{
-  const actualsrc = this.movies[index].reviewIconSrc;
-  if(actualsrc){
-    this.movies[index].reviewIconSrc = actualsrc === this.reviewIcon ? this.emptyReviewIcon : this.reviewIcon;
-  }else {
-    this.movies[index].reviewIconSrc = this.emptyReviewIcon;
-  }
-}
+// changeReviewIcon(index : number) : void{
+//   const actualsrc = this.movies[index].reviewIconSrc;
+//   if(actualsrc){
+//     this.movies[index].reviewIconSrc = actualsrc === this.reviewIcon ? this.emptyReviewIcon : this.reviewIcon;
+//   }else {
+//     this.movies[index].reviewIconSrc = this.emptyReviewIcon;
+//   }
+// }
 
 }

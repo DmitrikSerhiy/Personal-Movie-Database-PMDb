@@ -25,5 +25,8 @@ namespace PMDb.Domain.Interfaces
         bool IsTagAttachedToMovie(string tagName, string movieName);
         void DeleteTag(string tagName, string movieName);
         void DeleteMovie(string movieName);
+        int? GetWatchLaterListId();
+        int? GetFavoriteListId();
+        bool IsMovieInList(string movieTitle, int listId);
     }
 }

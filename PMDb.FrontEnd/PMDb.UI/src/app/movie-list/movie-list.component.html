@@ -100,10 +100,10 @@
 
           <span class="btn-group" dropdown #dropdown="bs-dropdown" [autoClose]="false">
             <button [disabled]='!unclicableButtons' dropdownToggle type="button" class="btn btn-outline-light p-0 customButtons" (click)='AddHashtag(i); toggleClickability()'>
-              <img [src]='movies[i].hashtagIconSrc' alt="icon" width="24dp" height="23dp">
+              <img [src]='movies[i].tagIconSrc' alt="icon" width="24dp" height="23dp">
               <span class="caret"></span>
             </button>
-            <ul id="dropdown-triggers-manual" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-triggers-manual"
+            <ul id="dropdown-triggers-manual" *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="button-triggers-manual"
               style="width: 250px;">
               <li role="menuitem" class="w-100">
                 <div class="input-group align-self-center">

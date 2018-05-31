@@ -148,7 +148,7 @@ export class MovieListComponent implements OnInit {
   ShowReview(index: number): void {
     this.currReviewTitle = this.movies[index].title;
     this.currReviewText = this.movies[index].review;
-    this._ListInitializer.changeReviewIcon(index);
+    //this._ListInitializer.changeReviewIcon(index);
   }
 
   ShareViaGoogle(index: number): void {

@@ -14,6 +14,8 @@ namespace PMDb.Services.Mappers
             var simplifiedMovieModel = Mapper.Map<SimplifiedMovieModel>(movie);
             simplifiedMovieModel.Tags = TagMapper.Map(movie.MovieTag);
 
+            simplifiedMovieModel.ListsWithCurrMovie = ListOfMovieListsMapper.Map(movie.MovieListMovie);
+
             return simplifiedMovieModel;
         }
     }

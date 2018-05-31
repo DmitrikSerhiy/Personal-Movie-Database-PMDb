@@ -128,6 +128,7 @@ namespace PMDb.Infrastructure.Data
                 .Include(ma => ma.MovieTag).ThenInclude(t => t.Tag)
                 .Include(mw => mw.MovieWriter).ThenInclude(w => w.Writer)
                 .Include(r => r.Rating)
+                .Include(mlm => mlm.MovieListMovie)
                 .FirstOrDefault(m => m.Id == movieId);
         }
 
@@ -140,6 +141,7 @@ namespace PMDb.Infrastructure.Data
                .Include(ma => ma.MovieTag).ThenInclude(t => t.Tag)
                .Include(mw => mw.MovieWriter).ThenInclude(w => w.Writer)
                .Include(r => r.Rating)
+               .Include(mlm => mlm.MovieListMovie)
                .FirstOrDefault(m => m.Title == title);
         }
 
@@ -148,6 +150,7 @@ namespace PMDb.Infrastructure.Data
             return context.Movies
                    .Include(ma => ma.MovieTag).ThenInclude(t => t.Tag)
                    .Include(r => r.Rating)
+                   .Include(mlm => mlm.MovieListMovie)
                    .OrderBy(m => m.Title);
         }
 
@@ -186,6 +189,26 @@ namespace PMDb.Infrastructure.Data
         {
             var movie = context.Movies.FirstOrDefault(m => m.Title == movieName);
             context.Movies.Remove(movie);
+        }
+
+        public int? GetWatchLaterListId()
+        {
+            return context.MovieLists.FirstOrDefault(ml => ml.Name == "WatchLater")?.Id;
+        }
+
+        public int? GetFavoriteListId()
+        {
+            return context.MovieLists.FirstOrDefault(ml => ml.Name == "Favorite")?.Id;
+        }
+        public bool IsMovieInList(string movieTitle, int listId)
+        {
+            var movieTitles = context.Movies.Where(m => m.Title == movieTitle).Select(m => m.Title);
+            var movieListMovie = context.MovieLists
+                .Where(ml => ml.Id == listId)
+                .SelectMany(mlm => mlm.MovieListMovies)
+                .Where(mlm => movieTitles.Contains( mlm.Movie.Title));
+
+            return movieListMovie.Count() == 0 ? false : true;
         }
     }
 }

@@ -33,6 +33,10 @@ namespace PMDb.Services.Helpers
             AddRange(Items);
         }
 
+        public PagedList()
+        {
+
+        }
 
         public PagedList(int CurrentPage,
                          int TotalPages,

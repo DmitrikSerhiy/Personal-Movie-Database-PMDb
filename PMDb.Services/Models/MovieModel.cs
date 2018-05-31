@@ -19,5 +19,11 @@ namespace PMDb.Services.Models
         public List<ActorModel> ActorModels { get; set; }
         public List<TagModel> TagModels { get; set; }
         public RatingModel Ratings { get; set; }
+        public List<ListOfMovieListsModel> ListsWithCurrMovie { get; set; }
+        public bool IsInWatchLater { get; set; }
+        public bool IsInFavoriteList { get; set; }
+        public bool HasTags { get; set; }
+        public bool HasReview { get; set; }
+
     }
 }
