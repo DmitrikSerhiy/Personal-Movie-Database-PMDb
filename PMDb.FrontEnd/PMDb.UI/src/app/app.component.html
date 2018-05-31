@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" [routerLink]="['/welcome']">
+    <a class="navbar-brand" [routerLink]="['/']">
         <img src="/assets/tempLogo-icon.png" width="30" height="30" alt="">
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -9,10 +9,10 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
-          <a class="nav-link"  [routerLink]="['/welcome']">PMDb <span class="sr-only">(current)</span></a>
+          <a class="nav-link"  [routerLink]="['/']">PMDb <span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link"  [routerLink]="['/movies']">Library</a>
+          <a class="nav-link"  [routerLink]="['/library']">Library</a>
         </li>
 
         <li class="nav-item dropdown">
@@ -20,19 +20,19 @@
               Movie lists
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="#">Watch later</a>
-              <a class="dropdown-item" href="#">Favorite</a>
-              <a class="dropdown-item" href="#">Tagged</a>
-              <a class="dropdown-item" href="#">Reviewed</a>
+              <a class="dropdown-item" [routerLink]="['/#']">Watch later</a>
+              <a class="dropdown-item" [routerLink]="['/#']">Favorite</a>
+              <!-- <a class="dropdown-item" href="#">Tagged</a>
+              <a class="dropdown-item" href="#">Reviewed</a> -->
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="#">Custom list 1</a>
-              <a class="dropdown-item" href="#">Custom list 2</a>
+              <a class="dropdown-item" [routerLink]="['/#']">Custom list 1</a>
+              <a class="dropdown-item" [routerLink]="['/#']">Custom list 2</a>
             </div>
           </li>
 
-        <li class="nav-item">
-          <a class="nav-link disabled" href="#">Disabled</a>
-        </li>
+        <!-- <li class="nav-item">
+          <a class="nav-link disabled" [routerLink]="['/#']">Disabled</a>
+        </li> -->
       </ul>
       <form class="form-inline my-2 my-lg-0">
         <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">

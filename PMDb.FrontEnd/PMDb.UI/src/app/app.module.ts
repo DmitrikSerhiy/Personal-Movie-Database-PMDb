@@ -37,11 +37,11 @@ import {MatFormFieldModule} from '@angular/material/form-field';
     MatSliderModule,
     MatFormFieldModule,
     RouterModule.forRoot([
-      {path: 'welcome', component: WelcomeComponent },
-      {path: 'movies', component: MovieLibraryComponent},
-      {path: 'tempList', component: MovieListComponent}
-      //{path: '', redirectTo: 'welcome', pathMatch: 'full'},
-      //{path: '**',  redirectTo: 'NotFoundComponent', pathMatch: 'full'}
+      {path: '', component: WelcomeComponent },
+      {path: 'library', component: MovieLibraryComponent},
+      {path: 'tempList', component: MovieListComponent},
+      {path: '#', component: NotFoundComponent },
+      {path: '**', component: NotFoundComponent }
     ])
   ],
   declarations: [
