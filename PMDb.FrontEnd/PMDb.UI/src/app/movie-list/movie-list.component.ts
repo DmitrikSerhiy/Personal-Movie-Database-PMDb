@@ -1,11 +1,15 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input, SimpleChanges } from '@angular/core';
-import { MovieService } from './movie.service';
+import { MovieService } from '../services/movie.service';
 import { ISimplifiedMovie } from '../shared/interfaces/ISimplifiedMovie';
 import { ListInitializerService } from '../list-initializer/list-initializer.service';
 import { PopoverModule } from 'ngx-bootstrap/popover';
 import { Triggers } from 'ngx-popper';
 import { CustomeDecimalPipePipe } from '../Shared/custome-decimal-pipe.pipe';
 import { ChangeDetectorRef } from '@angular/core';
+import { GetListService } from '../services/get-list.service';
+import { JsonReaderService } from '../services/json-reader.service';
+import { Subscription } from 'rxjs/internal/Subscription';
+
 
 
 
@@ -35,16 +39,37 @@ export class MovieListComponent implements OnInit {
   currReviewText: string = '';
 
 
-  constructor(private _movieService: MovieService,
+
+  movieListName: string = 'watchLater';
+  urlWithoutMovieListName: string;
+  errorMessage;
+  currSubscription: Subscription;
+
+
+  constructor(
+    private movieService: MovieService,
     private _ListInitializer: ListInitializerService,
-    private cdRef: ChangeDetectorRef) {
+    private cdRef: ChangeDetectorRef,
+    //private getListService : GetListService,
+    //private jsonReader: JsonReaderService
+  ) {
   }
 
   ngOnInit() {
-    this._movieService.getMovies()
+
+    //  this.currSubscription = this.jsonReader.getJSON().subscribe((json: any) => {
+    //   this.urlWithoutMovieListName = json.getList;
+    // },
+    //   error => this.errorMessage = <any>error),
+    //   () => console.log('json loaded');
+
+    //   this.currSubscription.unsubscribe();
+
+
+    this.movieService.getMovies(this.getURLForList())
       .subscribe(
-        (movies: ISimplifiedMovie[]) => {
-          this.movies = movies;
+        (movieList: any) => {
+          this.movies = movieList.movies as ISimplifiedMovie[];
           this._ListInitializer.setMovies(this.movies);
           this._ListInitializer.initIcons();
           this.setMoviesRatings();
@@ -52,6 +77,16 @@ export class MovieListComponent implements OnInit {
         error => console.log(<any>error)),
       () => console.log('ITS DONE!');
   }
+
+  // private getURLForList(): string {
+  //   return this.urlWithoutMovieListName + "/" + this.movieListName;
+  // }
+
+  private getURLForList(): string {
+    return "http://localhost:56756/api/movieList/Favorite";
+  }
+
+
 
   toggleClickability(): void {
     this.unclicableButtons = !this.unclicableButtons;

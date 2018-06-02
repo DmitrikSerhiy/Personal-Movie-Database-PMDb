@@ -59,13 +59,6 @@ namespace PMDb.API
             app.UseMvcWithDefaultRoute();
             app.UseDefaultFiles();
             app.UseStaticFiles();
-            //if (env.IsDevelopment())
-            //{
-            //    app.UseDeveloperExceptionPage();
-            //}
-
-            //app.UseMvc();
-
         }
     }
 }

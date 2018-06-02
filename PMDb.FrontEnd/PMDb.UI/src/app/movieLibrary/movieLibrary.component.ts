@@ -1,11 +1,11 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input, SimpleChanges } from '@angular/core';
-import { MovieService } from '../movie-list/movie.service';
 import { ISimplifiedMovie } from '../shared/interfaces/ISimplifiedMovie';
 import { ListInitializerService } from '../list-initializer/list-initializer.service';
 import { PopoverModule } from 'ngx-bootstrap/popover';
 import { Triggers } from 'ngx-popper';
 import { CustomeDecimalPipePipe } from '../Shared/custome-decimal-pipe.pipe';
 import { ChangeDetectorRef } from '@angular/core';
+import { MovieService } from '../services/movie.service';
 
 
 
@@ -51,16 +51,16 @@ export class MovieLibraryComponent implements OnInit{
 
     ngOnInit() : void {
         
-        this._movieService.getMovies()
-                .subscribe( 
-                        (movies : ISimplifiedMovie[]) => {
-                            this.movies = movies;
-                            this._ListInitializer.setMovies(this.movies);
-                            this._ListInitializer.initIcons();
-                            this.setMoviesRatings();
-                        },
-                        error => this.errorMessage = <any>error),
-                        () => console.log('ITS DONE!');
+        // this._movieService.getMovies()
+        //         .subscribe( 
+        //                 (movies : ISimplifiedMovie[]) => {
+        //                     this.movies = movies;
+        //                     this._ListInitializer.setMovies(this.movies);
+        //                     this._ListInitializer.initIcons();
+        //                     this.setMoviesRatings();
+        //                 },
+        //                 error => this.errorMessage = <any>error),
+        //                 () => console.log('ITS DONE!');
     }
     
     

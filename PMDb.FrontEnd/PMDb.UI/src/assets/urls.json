@@ -1,0 +1,4 @@
+{
+    "getLibrary" : "http://localhost:56756/api/movies",
+    "getList" : "http://localhost:56756/api/movieList/"
+}

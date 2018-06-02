@@ -11,7 +11,7 @@ import { compile, compileFromFile } from 'json-schema-to-typescript'
 @Injectable()
 export class MovieService {
 
-    private _getMoviesURL = 'http://localhost:56756/api/movies';
+    //private _getMoviesURL = 'http://localhost:56756/api/movies';
 
     constructor(private _http : HttpClient){
 
@@ -19,9 +19,9 @@ export class MovieService {
     
 
 
-    getMovies() : Observable<ISimplifiedMovie[]>
+    getMovies(_getMoviesURL : string) : Observable<ISimplifiedMovie[]>
     {
-        return this._http.get<ISimplifiedMovie[]>(this._getMoviesURL)
+        return this._http.get<ISimplifiedMovie[]>(_getMoviesURL)
             .do(data => console.log('All: ' + JSON.stringify(data)))
             .catch(this.handleError);
     }
