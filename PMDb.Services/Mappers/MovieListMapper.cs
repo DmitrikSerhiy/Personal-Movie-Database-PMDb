@@ -11,7 +11,16 @@ namespace PMDb.Services.Mappers
     {
         public static MovieListModel Map(MovieList movieList)
         {
-            return Mapper.Map<MovieListModel>(movieList);
+            var movieListModel = Mapper.Map<MovieListModel>(movieList);
+
+            for (int i = 0; i < movieListModel.Movies.Count; i++)
+            {
+                movieListModel.Movies[i].Tags = TagMapper.Map(movieList.MovieListMovies[i].Movie.MovieTag);
+            }
+
+            //movieListModel.Movies.ForEach(m => m.ListsWithCurrMovie = ListOfMovieListsMapper.Map(movieList.MovieListMovies));
+            //that's bool shit, but let it be here, so far
+            return movieListModel; 
         }
     }
 }

@@ -17,6 +17,5 @@ namespace PMDb.Services.ServicesAbstraction
         MovieListModel AddMovieToList(string movieName, string movieListName);
         MovieListModel DeleteMovieFromList(string movieName, string movieListName);
         MovieListModel UpdateMovieListName(string oldName, string newName);
-
     }
 }

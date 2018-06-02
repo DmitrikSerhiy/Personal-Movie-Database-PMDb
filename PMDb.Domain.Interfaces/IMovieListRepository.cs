@@ -18,5 +18,6 @@ namespace PMDb.Domain.Interfaces
         MovieList DeleteMovieFromList(string movieName, string movieListName);
         MovieList UpdateMovieListName(string oldName, string newName);
         void Save();
+        List<string> GetDefaultListsName();
     }
 }

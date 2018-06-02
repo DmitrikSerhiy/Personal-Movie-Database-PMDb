@@ -80,7 +80,23 @@ namespace PMDb.Services
             var movieList = movieListRepository.GetMovieList(MovieListName);
             var mapppedMovieList = MovieListMapper.Map(movieList);
             PageMovieList(ref mapppedMovieList);
+            InitBoolFields(ref mapppedMovieList);
             return mapppedMovieList;
+        }
+
+        public void InitBoolFields(ref MovieListModel moviesList)
+        {
+            bool isWatchLater = false, isFavorite = false;
+            if (moviesList.Name == "WatchLater") isWatchLater = true;
+            if (moviesList.Name == "Favorite") isFavorite = true;
+
+            moviesList.Movies.ForEach(m =>
+            {
+                m.IsInWatchLater = isWatchLater;
+                m.IsInFavoriteList = isFavorite;
+                m.HasTags = m.Tags != null;
+                m.HasReview = !String.IsNullOrEmpty(m.Review);
+            });
         }
 
         public MovieListModel UpdateMovieListName(string oldName, string newName)

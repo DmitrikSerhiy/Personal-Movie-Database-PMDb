@@ -66,7 +66,13 @@ namespace PMDb.Infrastructure.Data
         {
             return context.MovieLists
                 .Include(ml => ml.MovieListMovies)
-                .ThenInclude(m => m.Movie)
+                    .ThenInclude(m => m.Movie)
+                        .ThenInclude(r => r.Rating)
+
+                .Include(ml => ml.MovieListMovies)
+                    .ThenInclude(m => m.Movie)
+                        .ThenInclude(mt => mt.MovieTag)
+                            .ThenInclude(t => t.Tag)
                 .FirstOrDefault(ml => ml.Name == Name);
         }
 
@@ -106,5 +112,12 @@ namespace PMDb.Infrastructure.Data
         {
             context.SaveChanges();
         }
+
+        public List<string> GetDefaultListsName()
+        {
+            List<string> listsNames = new List<string>();
+            listsNames.AddRange(context.MovieLists.Where(m => m.IsDefault).Select(ml => ml.Name));
+            return listsNames;
+        } 
     }
 }

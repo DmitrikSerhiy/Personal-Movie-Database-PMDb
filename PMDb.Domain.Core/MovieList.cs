@@ -9,7 +9,7 @@ namespace PMDb.Domain.Core
         public int Id { get; set; }
         public string Name { get; set; }
         public bool IsDefault { get; set; }
-        public IList<MovieListMovie> MovieListMovies { get; set; }
+        public List<MovieListMovie> MovieListMovies { get; set; }
 
         public MovieList()
         {
