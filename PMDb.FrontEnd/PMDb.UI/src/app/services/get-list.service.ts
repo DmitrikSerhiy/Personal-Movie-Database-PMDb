@@ -25,15 +25,15 @@ export class GetListService  {
 
   getMovieList(url : string) : Observable<ISimplifiedMovie[]>
   {
-    return this.http.get<ISimplifiedMovie[]>(url)
+      return this.http.get<ISimplifiedMovie[]>(url)
           .do(data => console.log('All: ' + JSON.stringify(data)))
           .catch(this.handleError);
   }
 
   private handleError(err : HttpErrorResponse){
-    console.log(err.message);
-    return Observable.throw(err.message);
-}
+      console.log(err.message);
+      return Observable.throw(err.message);
+  }
 
   // setListName(listName : string){
   //   this.listName = listName;

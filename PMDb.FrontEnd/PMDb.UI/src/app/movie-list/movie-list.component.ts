@@ -42,31 +42,30 @@ export class MovieListComponent implements OnInit {
 
   movieListName: string = 'watchLater';
   urlWithoutMovieListName: string;
+  fullURL;
   errorMessage;
   currSubscription: Subscription;
 
 
   constructor(
-    private movieService: MovieService,
+    //private movieService: MovieService,
     private _ListInitializer: ListInitializerService,
     private cdRef: ChangeDetectorRef,
-    //private getListService : GetListService,
-    //private jsonReader: JsonReaderService
+    private getListService : GetListService,
+    private jsonReader: JsonReaderService
   ) {
   }
 
   ngOnInit() {
-
-    //  this.currSubscription = this.jsonReader.getJSON().subscribe((json: any) => {
-    //   this.urlWithoutMovieListName = json.getList;
-    // },
-    //   error => this.errorMessage = <any>error),
-    //   () => console.log('json loaded');
-
-    //   this.currSubscription.unsubscribe();
+    this.jsonReader.getJSON().subscribe((json: any) => {
+      this.urlWithoutMovieListName = json.getList;
+      this.fullURL = this.setURLForList(this.urlWithoutMovieListName);
+    },
+      error => this.errorMessage = <any>error),
+      () => console.log('json loaded');
 
 
-    this.movieService.getMovies(this.getURLForList())
+    this.getListService.getMovieList(this.fullURL)
       .subscribe(
         (movieList: any) => {
           this.movies = movieList.movies as ISimplifiedMovie[];
@@ -76,15 +75,16 @@ export class MovieListComponent implements OnInit {
         },
         error => console.log(<any>error)),
       () => console.log('ITS DONE!');
+
+
+
   }
 
-  // private getURLForList(): string {
-  //   return this.urlWithoutMovieListName + "/" + this.movieListName;
-  // }
-
-  private getURLForList(): string {
-    return "http://localhost:56756/api/movieList/Favorite";
+  private setURLForList(partialURl : string): string {
+    return partialURl + this.movieListName;
   }
+
+ // "http://localhost:56756/api/movieList/Favorite"
 
 
 

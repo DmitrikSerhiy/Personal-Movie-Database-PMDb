@@ -94,7 +94,7 @@ namespace PMDb.Services
             {
                 m.IsInWatchLater = isWatchLater;
                 m.IsInFavoriteList = isFavorite;
-                m.HasTags = m.Tags != null;
+                m.HasTags = m.Tags.Count != 0;
                 m.HasReview = !String.IsNullOrEmpty(m.Review);
             });
         }
