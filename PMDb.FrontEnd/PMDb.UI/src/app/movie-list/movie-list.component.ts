@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input, SimpleChanges } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, Input, SimpleChanges, OnDestroy } from '@angular/core';
 import { MovieService } from '../services/movie.service';
 import { ISimplifiedMovie } from '../shared/interfaces/ISimplifiedMovie';
 import { ListInitializerService } from '../list-initializer/list-initializer.service';
@@ -9,6 +9,9 @@ import { ChangeDetectorRef } from '@angular/core';
 import { GetListService } from '../services/get-list.service';
 import { JsonReaderService } from '../services/json-reader.service';
 import { Subscription } from 'rxjs/internal/Subscription';
+import { Observable } from 'rxjs/Observable';
+import { retryWhen, retry } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 
 
@@ -18,7 +21,8 @@ import { Subscription } from 'rxjs/internal/Subscription';
   templateUrl: './movie-list.component.html',
   styleUrls: ['./movie-list.component.css']
 })
-export class MovieListComponent implements OnInit {
+export class MovieListComponent implements OnInit, OnDestroy {
+
 
   movies: ISimplifiedMovie[] = [];
   moviesRatings: [number[], number[]];
@@ -39,55 +43,64 @@ export class MovieListComponent implements OnInit {
   currReviewText: string = '';
 
 
-
-  movieListName: string = 'watchLater';
   urlWithoutMovieListName: string;
-  fullURL;
-  errorMessage;
-  currSubscription: Subscription;
-
+  fullURL = '';
+  errorMessage : string = '';
+  observer : Subscription;
+  movieListName: string = '';
 
   constructor(
-    //private movieService: MovieService,
     private _ListInitializer: ListInitializerService,
     private cdRef: ChangeDetectorRef,
-    private getListService : GetListService,
-    private jsonReader: JsonReaderService
+    private getListService: GetListService,
+    private jsonReaderService: JsonReaderService,
+    private Router : Router
   ) {
   }
 
   ngOnInit() {
-    this.jsonReader.getJSON().subscribe((json: any) => {
-      this.urlWithoutMovieListName = json.getList;
-      this.fullURL = this.setURLForList(this.urlWithoutMovieListName);
-    },
-      error => this.errorMessage = <any>error),
-      () => console.log('json loaded');
 
+    this.setMovieListName();
 
-    this.getListService.getMovieList(this.fullURL)
+    this.observer = this.jsonReaderService.getJSON()
       .subscribe(
-        (movieList: any) => {
-          this.movies = movieList.movies as ISimplifiedMovie[];
-          this._ListInitializer.setMovies(this.movies);
-          this._ListInitializer.initIcons();
-          this.setMoviesRatings();
+        (json: any) => {
+          this.urlWithoutMovieListName = json.getList;
+          this.fullURL = this.setURLForList(this.urlWithoutMovieListName);
         },
-        error => console.log(<any>error)),
-      () => console.log('ITS DONE!');
-
-
-
+        (error) => {
+          this.errorMessage = <any>error;
+          console.log(this.errorMessage)
+        },
+        () => {
+          console.log("json with urls has been loaded");
+          this.getListService.getMovieList(this.fullURL)
+            .subscribe(
+              (movieList: any) => {
+                this.movies = movieList.movies as ISimplifiedMovie[];
+                this._ListInitializer.setMovies(this.movies);
+                this._ListInitializer.initIcons();
+                this.setMoviesRatings();
+              },
+              error => console.log(<any>error));
+              });
   }
 
-  private setURLForList(partialURl : string): string {
+  setMovieListName(){
+    let currSegment = this.Router.url.toString().substr(1)
+    this.movieListName = currSegment;
+  }
+
+
+  ngOnDestroy(): void {
+    this.observer.unsubscribe();
+    console.clear();
+  }
+
+  private setURLForList(partialURl: string): string {
     return partialURl + this.movieListName;
   }
-
- // "http://localhost:56756/api/movieList/Favorite"
-
-
-
+  
   toggleClickability(): void {
     this.unclicableButtons = !this.unclicableButtons;
   }

@@ -40,6 +40,8 @@ import {MatFormFieldModule} from '@angular/material/form-field';
       {path: '', component: WelcomeComponent },
       {path: 'library', component: MovieLibraryComponent},
       {path: 'tempList', component: MovieListComponent},
+      {path: 'watchLater', component: MovieListComponent},
+      {path: 'favorite', component: MovieListComponent},
       {path: '#', component: NotFoundComponent },
       {path: '**', component: NotFoundComponent }
     ])
