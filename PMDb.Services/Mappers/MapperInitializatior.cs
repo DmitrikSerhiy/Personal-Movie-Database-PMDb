@@ -36,7 +36,8 @@ namespace PMDb.Services.Mappers
                 cfg.CreateMap<RatingModel, Rating>()
                     .ForMember(r => r.OwnRating, model => model.MapFrom(rm => rm.Mark))
                     .ReverseMap().ForMember(model => model.Mark, r => r.MapFrom(rr => rr.OwnRating));
-                cfg.CreateMap<MovieListMovie, ListOfMovieListsModel>();
+                cfg.CreateMap<MovieListMovie, ListOfMovieListsModel>()
+                    .ForMember(lomlm => lomlm.MovieListName, model => model.MapFrom(mlm => mlm.MovieList.Name));
 
                 cfg.CreateMap<string, double>().ConvertUsing(s => Convert.ToDouble(s));
                 cfg.CreateMap<string, int>().ConvertUsing(s => Convert.ToInt32(s));

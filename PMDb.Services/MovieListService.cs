@@ -5,6 +5,7 @@ using PMDb.Services.Models;
 using PMDb.Services.ServicesAbstraction;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace PMDb.Services
@@ -86,16 +87,14 @@ namespace PMDb.Services
 
         public void InitBoolFields(ref MovieListModel moviesList)
         {
-            bool isWatchLater = false, isFavorite = false;
-            if (moviesList.Name == "WatchLater") isWatchLater = true;
-            if (moviesList.Name == "Favorite") isFavorite = true;
-
             moviesList.Movies.ForEach(m =>
             {
-                m.IsInWatchLater = isWatchLater;
-                m.IsInFavoriteList = isFavorite;
                 m.HasTags = m.Tags.Count != 0;
                 m.HasReview = !String.IsNullOrEmpty(m.Review);
+                m.ListsWithCurrMovie = ListOfMovieListsMapper.Map(
+                    movieListRepository.GetMovieListMovieForMovie(m.Title));
+                m.IsInWatchLater = m.ListsWithCurrMovie.Any(lwcm => lwcm.MovieListName == "WatchLater");
+                m.IsInFavoriteList = m.ListsWithCurrMovie.Any(lwcm => lwcm.MovieListName == "Favorite");
             });
         }
 

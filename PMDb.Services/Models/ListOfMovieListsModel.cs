@@ -6,6 +6,6 @@ namespace PMDb.Services.Models
 {
     public class ListOfMovieListsModel
     {
-        public int MovieListId { get; set; }
+        public string MovieListName { get; set; }
     }
 }

@@ -170,18 +170,12 @@ namespace PMDb.Services
 
         public void InitBoolFields(ref PagedList<SimplifiedMovieModel> movies)
         {
-            //if wl or favorite is not exist so it'll be added to 
-            //ADD EXEPTIONS WHETHER WATCHLATER OR ANOTHER DEFAULT LIST IS INDEED EXIST
-            // I'd probably shoud throw an exeption and pass it 
-
             foreach (var movie in movies)
             {
                 foreach (var list in movie.ListsWithCurrMovie)
                 {
-                    if (!movie.IsInWatchLater)
-                        movie.IsInWatchLater = list.MovieListId == movieRepository?.GetWatchLaterListId().Value;
-                    if (!movie.IsInFavoriteList)
-                        movie.IsInFavoriteList = list.MovieListId == movieRepository?.GetFavoriteListId().Value;
+                    if (!movie.IsInWatchLater) movie.IsInWatchLater = list.MovieListName == "WatchLater";
+                    if (!movie.IsInFavoriteList) movie.IsInFavoriteList = list.MovieListName == "Favorite";
                 }
                 movie.HasTags = movie.Tags.Count == 0 ? false : true;
                 movie.HasReview = !String.IsNullOrEmpty(movie.Review);
@@ -190,13 +184,10 @@ namespace PMDb.Services
 
         public void InitBoolFields(ref MovieModel movie)
         {
-            //the same problemm as for overloaded version of this function
             foreach (var list in movie.ListsWithCurrMovie)
             {
-                if(!movie.IsInWatchLater)
-                    movie.IsInWatchLater = list.MovieListId == movieRepository?.GetWatchLaterListId().Value;
-                if (!movie.IsInFavoriteList)
-                    movie.IsInFavoriteList = list.MovieListId == movieRepository?.GetFavoriteListId().Value;
+                if(!movie.IsInWatchLater) movie.IsInWatchLater = list.MovieListName == "WatchLater";
+                if (!movie.IsInFavoriteList) movie.IsInFavoriteList = list.MovieListName == "Favorite";
             }
             movie.HasTags = movie.TagModels.Count == 0 ? false : true;
             movie.HasReview = !String.IsNullOrEmpty(movie.Review);

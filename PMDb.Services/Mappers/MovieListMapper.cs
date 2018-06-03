@@ -18,8 +18,6 @@ namespace PMDb.Services.Mappers
                 movieListModel.Movies[i].Tags = TagMapper.Map(movieList.MovieListMovies[i].Movie.MovieTag);
             }
 
-            //movieListModel.Movies.ForEach(m => m.ListsWithCurrMovie = ListOfMovieListsMapper.Map(movieList.MovieListMovies));
-            //that's bool shit, but let it be here, so far
             return movieListModel; 
         }
     }

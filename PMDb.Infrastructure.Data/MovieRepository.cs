@@ -128,7 +128,7 @@ namespace PMDb.Infrastructure.Data
                 .Include(ma => ma.MovieTag).ThenInclude(t => t.Tag)
                 .Include(mw => mw.MovieWriter).ThenInclude(w => w.Writer)
                 .Include(r => r.Rating)
-                .Include(mlm => mlm.MovieListMovie)
+                .Include(mlm => mlm.MovieListMovie).ThenInclude(ml => ml.MovieList)
                 .FirstOrDefault(m => m.Id == movieId);
         }
 
@@ -141,7 +141,7 @@ namespace PMDb.Infrastructure.Data
                .Include(ma => ma.MovieTag).ThenInclude(t => t.Tag)
                .Include(mw => mw.MovieWriter).ThenInclude(w => w.Writer)
                .Include(r => r.Rating)
-               .Include(mlm => mlm.MovieListMovie)
+               .Include(mlm => mlm.MovieListMovie).ThenInclude(ml => ml.MovieList)
                .FirstOrDefault(m => m.Title == title);
         }
 
@@ -150,7 +150,7 @@ namespace PMDb.Infrastructure.Data
             return context.Movies
                    .Include(ma => ma.MovieTag).ThenInclude(t => t.Tag)
                    .Include(r => r.Rating)
-                   .Include(mlm => mlm.MovieListMovie)
+                   .Include(mlm => mlm.MovieListMovie).ThenInclude(ml => ml.MovieList)
                    .OrderBy(m => m.Title);
         }
 

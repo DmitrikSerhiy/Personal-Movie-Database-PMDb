@@ -71,9 +71,23 @@ namespace PMDb.Infrastructure.Data
 
                 .Include(ml => ml.MovieListMovies)
                     .ThenInclude(m => m.Movie)
+                        .ThenInclude(r => r.MovieListMovie)
+                            .ThenInclude(mll => mll.MovieList)
+
+                .Include(ml => ml.MovieListMovies)
+                    .ThenInclude(m => m.Movie)
                         .ThenInclude(mt => mt.MovieTag)
                             .ThenInclude(t => t.Tag)
                 .FirstOrDefault(ml => ml.Name == Name);
+        }
+
+        public List<MovieListMovie> GetMovieListMovieForMovie(string movieTitle)
+        {
+            return context.Movies
+                .Where(ml => ml.Title == movieTitle)
+                .SelectMany(mlm => mlm.MovieListMovie).ToList();
+
+              
         }
 
 
