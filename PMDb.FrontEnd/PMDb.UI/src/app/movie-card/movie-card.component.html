@@ -1,0 +1,129 @@
+<div class="container" style="width: 120%; max-width: 1400px;margin-left: -100px;">
+  <div class="d-flex flex-row flex-wrap">
+
+    <div *ngFor='let movie of movies; let i = index;' class="card border-secondary mx-2 my-2 " style="width: 300px;">
+      <div class="card-header py-1 px-1">
+        <h6 class="card-title mb-0">{{movie.title}}</h6>
+      </div>
+      <div class="card-body text-secondary py-1 px-1">
+
+        <div class="row">
+          <div class="col-sm-4">
+            <img src={{movie.poster}} [title]='movie.title' [style.width.px]='120' [style.height.px]='160'>
+          </div>
+
+          <div class="col-sm-8 text-dark" style="padding-left: 30px">
+
+            <p class="mb-0 ">Year:
+              <span class="text-secondary">{{movie.year}}</span>
+            </p>
+            <p class="mb-0">Runtime:
+              <span class="text-secondary">{{movie.runtime | customRuntime}}</span>
+            </p>
+            <p class="mb-0 " *ngIf='movie.tags.length != 0'>Tags:
+              <span *ngFor='let tag of movie.tags' class="text-secondary"> {{tag.name}}</span>
+            </p>
+
+
+            <div style="width: 110% " class="mx-0 row align-items-center">
+              <rating style="width: 75%" [popover]="popTemplate" placement="right" #pop="bs-popover" triggers='click' [outsideClick]='true'
+                (onShown)='setMark(moviesRatings[0][i], i);' (onHidden)='isRateTen = false;' [max]="maxRating" [(ngModel)]='moviesRatings[0][i]'
+                [readonly]='isRatingReadonly' [titles]='["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]'>
+              </rating>
+            </div>
+            <!-- popup for rating -->
+            <ng-template #popTemplate class="p-0">
+              <div class="float: left;">
+                <mat-slider #currSlider='matSlider' (onShown)='currSlider.focus()' *ngIf='!isRateTen' class="m-0; p-0;" thumbLabel [displayWith]="formatRateLabel.bind(this)"
+                  vertical=t rue tickInterval="1" min="0" max="9" [value]='setFirstPosition(i)'>
+                </mat-slider>
+
+              </div>
+              <div class="float: left; clear: left;" style="text-align: center;">
+                <button type="button" class="btn btn-outline-dark btn-sm" (click)="submitMark(); pop.hide();">OK</button>
+              </div>
+            </ng-template>
+
+            <div class="row" style="padding-left: 12px">
+              <h5 align="center" style="width: 20%;" class="xfont-weight-bold my-0 mx-1 border border-dark rounded">
+                {{moviesRatings[0][i]}}{{moviesRatings[1][i] === 0 ? '' : '.' + moviesRatings[1][i]}}</h5>
+              <span *ngIf='!isCurrListWatchLater '>
+                <button name="watchLater_butom" class="btn btn-outline-light p-0 customButtons" tooltip="'{{movies[i].title}}' {{  movies[i].isInWatchLater ? 'added to' : 'removed from'}}  watch later "
+                  placement="top" hide-delay="800" trigger='click'>
+                  <img [src]='movies[i].watchLaterListIconSrc' alt="icon" width="24dp" height="23dp" (click)='AddToWatchLater(i)'>
+                </button>
+              </span>
+              <span *ngIf='!isCurrListFavorite'>
+                <button name="favorite_butom" class="btn btn-outline-light p-0 customButtons" tooltip="'{{movies[i].title}}' {{  movies[i].isInFavoriteList ? 'added to' : 'removed from'}}  favorite "
+                  placement="top" hide-delay="800" trigger='click'>
+                  <img [src]='movies[i].favoriteListIconSrc' alt="icon" width="24dp" height="23dp" (click)='AddToFavorite(i)'>
+                </button>
+              </span>
+              <span class="btn-group" dropdown #dropdown="bs-dropdown" [autoClose]="false">
+                <button [disabled]='!unclicableButtons' dropdownToggle type="button" class="btn btn-outline-light p-0 customButtons" (click)='AddHashtag(i); toggleClickability()'>
+                  <img [src]='movies[i].tagIconSrc' alt="icon" width="24dp" height="23dp">
+                  <span class="caret"></span>
+                </button>
+                <ul id="dropdown-triggers-manual" *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="button-triggers-manual"
+                  style="width: 250px;">
+                  <li role="menuitem" class="w-100">
+                    <div class="input-group align-self-center">
+                      <input type="text" class="form-control border border-light" placeholder="tags" aria-label="tags" aria-describedby="basic-addon2"
+                        [(ngModel)]="currTags" style="widows: 120px;">
+                      <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="button" (click)="dropdown.toggle(true); toggleClickability()">OK</button>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </span>
+              <span>
+                <button name="addReview_button" class="btn btn-outline-light p-0 customButtons" [disabled]='!unclicableButtons' (click)='ShowReview(i)'
+                  data-toggle="modal" data-target="#exampleModalCenter">
+                  <img [src]='movies[i].reviewIconSrc' alt="icon" width="24dp" height="23dp">
+                </button>
+
+                <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalCenterTitle"> '{{currReviewTitle}}' review </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <p>{{currReviewText}}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </span>
+              <span>
+                <button [popper]="ShowShareButtons" [popperShowOnStart]="false" [popperTrigger]="'click'" [popperPlacement]="'right'" (popperOnHidden)='ShowShareIcons(i)'
+                  (popperOnShown)='ShowShareIcons(i)' name="share_button" class="btn btn-outline-light p-0 customButtons">
+                  <img *ngIf='movies[i]' [src]='movies[i].shareIconSrc' alt="icon" width="24dp" height="23dp">
+                </button>
+
+                <popper-content #ShowShareButtons>
+                  <div *ngIf='movies[i]'>
+                    <span>
+                      <button name="google_button" class="btn btn-outline-light p-0 customButtons">
+                        <img [src]='movies[i].shareViaGoogleIconSrc' alt="icon" width="24dp" height="23dp">
+                      </button>
+                    </span>
+                    <span>
+                      <button name="google_button" class="btn btn-outline-light p-0 customButtons">
+                        <img [src]='movies[i].shareViaFacebookIconSrc' alt="icon" width="24dp" height="23dp">
+                      </button>
+                    </span>
+                  </div>
+                </popper-content>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

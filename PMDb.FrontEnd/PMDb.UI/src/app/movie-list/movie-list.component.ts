@@ -18,7 +18,8 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-movie-list',
-  templateUrl: './movie-list.component.html',
+  templateUrl: //'../movie-card/movie-card.component.html',
+                 './movie-list.component.html',
   styleUrls: ['./movie-list.component.css']
 })
 export class MovieListComponent implements OnInit, OnDestroy {
@@ -41,13 +42,20 @@ export class MovieListComponent implements OnInit, OnDestroy {
   currTags: string[] = [];
   currReviewTitle: string = '';
   currReviewText: string = '';
-
+  isCurrListWatchLater : boolean = false;
+  isCurrListFavorite : boolean = false;
+  viewStyle = "grid";
+  showTableView = true;
+  showCardView = false;
 
   urlWithoutMovieListName: string;
   fullURL = '';
   errorMessage : string = '';
   observer : Subscription;
   movieListName: string = '';
+
+  viewListIconpath : string = './assets/viewList_icon.png';
+  viewCardIconpath : string = './assets/viewCard_icon.png';
 
   constructor(
     private _ListInitializer: ListInitializerService,
@@ -86,9 +94,16 @@ export class MovieListComponent implements OnInit, OnDestroy {
               });
   }
 
+  changeViewStyle(){
+    this.showTableView = !this.showTableView; 
+    this.showCardView = !this.showCardView;
+  }
   setMovieListName(){
     let currSegment = this.Router.url.toString().substr(1)
     this.movieListName = currSegment;
+    if(this.movieListName === 'watchLater') this.isCurrListWatchLater = true;
+    if(this.movieListName === 'favorite') this.isCurrListFavorite = true;
+    console.log(this.movieListName);
   }
 
 
