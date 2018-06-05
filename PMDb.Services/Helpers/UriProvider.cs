@@ -27,12 +27,26 @@ namespace PMDb.Services.Helpers
                         pageNumber = getMoviesParameters.PageNumber + 1,
                         pageSize = getMoviesParameters.PageSize
                     });
-                default:
-                    return urlHelper.Link("GetMovies", new
+                default: return null;
+            }
+        }
+
+        public static string CreateGetMovieListUri(PaginationParameters getMoviesParameters,
+            UriType type, UrlHelper urlHelper)
+        {
+            switch(type)
+            {
+                case UriType.NextPage : return urlHelper.Link("GetMovieList", new
                     {
-                        pageNumber = getMoviesParameters.PageNumber,
+                        pageNumber = getMoviesParameters.PageNumber + 1,
                         pageSize = getMoviesParameters.PageSize
                     });
+                case UriType.PreviousPage : return urlHelper.Link("GetMovieList", new
+                    {
+                        pageNumber = getMoviesParameters.PageNumber - 1,
+                        pageSize = getMoviesParameters.PageSize
+                    });
+                default: return null;
             }
         }
     }

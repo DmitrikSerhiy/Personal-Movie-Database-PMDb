@@ -17,14 +17,16 @@ namespace PMDb.Services
         private Models.DownloadedMovieModel serializedMovie;
         private MovieModel mappedMovie;
         private List<string> failures;
-        private LinksGenetator linksGenetator;
+        //private LinksGenetator linksGenetator;
         DownloadedMovieModelValidator validator;
 
-        public SearchService(LinksGenetator LinksGenetator)
+        public SearchService(
+            //LinksGenetator LinksGenetator)
+            )
         {
             failures = new List<string>();
             validator = new DownloadedMovieModelValidator();
-            linksGenetator = LinksGenetator;
+            //linksGenetator = LinksGenetator;
         }
 
         public void Serialize(string MovieString)
@@ -59,7 +61,7 @@ namespace PMDb.Services
 
         public void AddLinks()
         {
-            linksGenetator.CreateLinksForSearchMovie(mappedMovie, mappedMovie.Title);
+            //linksGenetator.CreateLinksForSearchMovie(mappedMovie, mappedMovie.Title);
         }
 
         public bool IsExist()

@@ -6,7 +6,7 @@ namespace PMDb.Services.Helpers
 {
     public class PaginationParameters
     {
-        private const int maxPageSize = 20;
+        private const int maxPageSize = 25;
         public int PageNumber { get; set; } = 1;
 
         private int pageSize = 10;

@@ -10,5 +10,6 @@ namespace PMDb.Services.Models
         public string Name { get; set; }
         public bool IsDefault { get; set; }
         public PagedList<SimplifiedMovieModel> Movies { get; set; }
+
     }
 }

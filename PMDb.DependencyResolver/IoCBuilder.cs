@@ -10,6 +10,7 @@ using PMDb.Domain.Interfaces;
 using PMDb.Infrastructure.Data;
 using PMDb.Services;
 using PMDb.Services.Helpers;
+using PMDb.Services.Models;
 using PMDb.Services.ServicesAbstraction;
 
 namespace PMDb.DependencyResolver
@@ -84,9 +85,12 @@ namespace PMDb.DependencyResolver
                 .As<IMovieListService>()
                 .InstancePerLifetimeScope();
 
-            builder.RegisterType<LinksGenetator>()
-                .AsSelf()
+            builder.RegisterType<LinksGenetator<LinkedResourceBase, PaginationParameters>>()
+                .As<ILinksGenerator<LinkedResourceBase, PaginationParameters>>()
                 .InstancePerLifetimeScope();
+            //builder.RegisterType<LinksGenetator>()
+            //   .As<ILinksGenerator>()
+            //   .InstancePerLifetimeScope();
 
             container = builder.Build();
 

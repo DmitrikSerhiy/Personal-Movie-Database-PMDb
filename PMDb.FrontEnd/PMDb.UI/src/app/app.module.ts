@@ -16,7 +16,6 @@ import { NgxPopperModule } from 'ngx-popper';
 import { TooltipModule } from 'ng2-tooltip-directive';
 import { AccordionModule, BsDropdownModule,  PaginationModule,  PopoverModule, RatingModule  } from 'ngx-bootstrap';
 import { ButtonsModule } from 'ngx-bootstrap';
-//import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BarRatingModule } from "ngx-bar-rating";
 import {MatSliderModule} from '@angular/material/slider';
 import {MatFormFieldModule} from '@angular/material/form-field';

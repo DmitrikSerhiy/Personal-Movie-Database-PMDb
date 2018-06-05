@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using PMDb.Services.Helpers;
+using PMDb.Services.Models;
 using PMDb.Services.ServicesAbstraction;
 
 namespace PMDb.API.Controllers
@@ -12,35 +14,40 @@ namespace PMDb.API.Controllers
     public class MovieListController : Controller
     {
         IMovieListService movieListService;
-        public MovieListController(IMovieListService MovieListService)
+        ILinksGenerator<LinkedResourceBase, PaginationParameters> linksGenerator;
+        //ILinksGenerator linksGenerator;
+        public MovieListController(IMovieListService MovieListService,
+            ILinksGenerator<LinkedResourceBase, PaginationParameters> LinksGenerator)
+          // ILinksGenerator LinksGenerator)
         {
             movieListService = MovieListService;
+            linksGenerator = LinksGenerator;
         }
 
 
         [HttpGet("{Name}", Name ="GetMovieList")]
-        public IActionResult GetMovieList(string Name)
+        public IActionResult GetMovieList(string Name, PaginationParameters paginationParameters)
         {
             if (movieListService.IsMovieListExist(Name) == false)
                 return NotFound();
-
-            var movieList = movieListService.GetMovieList(Name);
+            var movieList = movieListService.GetMovieList(Name, paginationParameters);
+            movieList.Links.AddRange(linksGenerator.CreateLinksForMovieList(movieList, paginationParameters));
             return Ok(movieList);
         }
 
         [HttpPost("{Name}")]
-        public IActionResult CreateMovieList(string Name, [FromQuery] bool isDefault = false)
+        public IActionResult CreateMovieList(string Name, PaginationParameters PaginationParameters, [FromQuery] bool isDefault = false)
         {
             if (movieListService.IsMovieListExist(Name))
                 //check whether movieList with such name is in db already
                 return BadRequest();//409 needs
 
-            var movieList = movieListService.CreateMovieList(Name, isDefault);
+            var movieList = movieListService.CreateMovieList(Name, PaginationParameters, isDefault);
             return CreatedAtRoute("GetMovieList", new { Name }, movieList);
         }
 
         [HttpPost("{MovieListName}/{MovieTitle}", Name = "AddMovieToList")]
-        public IActionResult AddMovieToList(string MovieListName, string MovieTitle)
+        public IActionResult AddMovieToList(string MovieListName, string MovieTitle, PaginationParameters PaginationParameters)
         {
             if (movieListService.IsMovieListExist(MovieListName) != true)
                 return NotFound();
@@ -49,22 +56,22 @@ namespace PMDb.API.Controllers
             if (movieListService.IsMovieExistInList(MovieListName, MovieTitle))
                 return BadRequest();
 
-            var movieList = movieListService.AddMovieToList(MovieListName, MovieTitle);
+            var movieList = movieListService.AddMovieToList(MovieListName, MovieTitle, PaginationParameters);
 
             return CreatedAtRoute("GetMovieList", new { Name = MovieListName }, movieList);
         }
 
         [HttpDelete("{MovieListName}/{MovieTitle}")]
-        public IActionResult DeleteMovieFromList(string MovieListName, string MovieTitle)
+        public IActionResult DeleteMovieFromList(string MovieListName, string MovieTitle, PaginationParameters PaginationParameters)
         {
             if (movieListService.IsMovieListExist(MovieListName) != true)
                 return NotFound();
             if (movieListService.IsMovieExistInList(MovieListName, MovieTitle) != true)
                 return BadRequest();
 
-            var movieList = movieListService.DeleteMovieFromList(MovieTitle, MovieListName);
+            var movieList = movieListService.DeleteMovieFromList(MovieTitle, MovieListName, PaginationParameters);
 
-            return NoContent();
+            return Ok(movieList);
         }
 
         [HttpDelete("{Name}")]
@@ -74,13 +81,13 @@ namespace PMDb.API.Controllers
                 return NotFound();
 
             movieListService.DeleteMovieList(Name);
-            //movieListService.DeleteDefaultMovieList(Name);
+            //movieListService.DeleteDefaultMovieList(Name);//
 
             return NoContent();
         }
 
         [HttpPatch("{OldName}/{NewName}")]
-        public IActionResult UpdateName(string OldName, string NewName)
+        public IActionResult UpdateName(string OldName, string NewName, PaginationParameters PaginationParameters)
         {
             if(movieListService.IsMovieListExist(OldName) != true)
                 return NotFound();
@@ -88,9 +95,9 @@ namespace PMDb.API.Controllers
             if (movieListService.IsMovieListExist(NewName))
                 return BadRequest();//is already in db
 
-            var movieList = movieListService.UpdateMovieListName(OldName, NewName);
+            var movieList = movieListService.UpdateMovieListName(OldName, NewName, PaginationParameters);
 
-            return NoContent();
+            return Ok(movieList);
 
 
 

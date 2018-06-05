@@ -20,16 +20,17 @@ namespace PMDb.Services
             movieListRepository = MovieListRepository;
         }
 
-        public MovieListModel AddMovieToList(string movieName, string movieListName)
+        public MovieListModel AddMovieToList(string movieName, string movieListName, PaginationParameters PaginationParameters)
         {
             var movieList = movieListRepository.AddMovieToList(movieName, movieListName);
             movieListRepository.Save();
             var mapppedMovieList = MovieListMapper.Map(movieList);
-            PageMovieList(ref mapppedMovieList);
+            PageMovieList(ref mapppedMovieList, PaginationParameters);
+            InitBoolFields(ref mapppedMovieList);
             return mapppedMovieList;
         }
 
-        public MovieListModel CreateMovieList(string Name, bool IsDefault = false)
+        public MovieListModel CreateMovieList(string Name, PaginationParameters PaginationParameters, bool IsDefault = false)
         {
             var movieList = IsDefault != true ? 
                 movieListRepository.CreateMovieList(Name) :
@@ -37,27 +38,28 @@ namespace PMDb.Services
 
             movieListRepository.Save();
             var mapppedMovieList = MovieListMapper.Map(movieList);
-            PageMovieList(ref mapppedMovieList);
+            PageMovieList(ref mapppedMovieList, PaginationParameters);
+            InitBoolFields(ref mapppedMovieList);
             return mapppedMovieList;
         }
 
 
-        private void PageMovieList(ref MovieListModel movieListModel)
+        private void PageMovieList(ref MovieListModel movieListModel, PaginationParameters PaginationParameters)
         {
-            PaginationParameters defaultParameters = new PaginationParameters();
             movieListModel.Movies = PagedList<SimplifiedMovieModel>.Create(
                 movieListModel.Movies,
-                defaultParameters.PageNumber,
-                defaultParameters.PageSize);
+                PaginationParameters.PageNumber,
+                PaginationParameters.PageSize);
         }
 
-        public MovieListModel DeleteMovieFromList(string movieName, string movieListName)
+        public MovieListModel DeleteMovieFromList(string movieName, string movieListName, PaginationParameters PaginationParameters)
         {
             var movieList = movieListRepository.DeleteMovieFromList(movieName, movieListName);
             movieListRepository.Save();
 
             var mapppedMovieList = MovieListMapper.Map(movieList);
-            PageMovieList(ref mapppedMovieList);
+            PageMovieList(ref mapppedMovieList, PaginationParameters);
+            InitBoolFields(ref mapppedMovieList);
             return mapppedMovieList;
         }
 
@@ -76,11 +78,11 @@ namespace PMDb.Services
             movieListRepository.Save();
         }
 
-        public MovieListModel GetMovieList(string MovieListName)
+        public MovieListModel GetMovieList(string MovieListName, PaginationParameters PaginationParameters)
         {
             var movieList = movieListRepository.GetMovieList(MovieListName);
             var mapppedMovieList = MovieListMapper.Map(movieList);
-            PageMovieList(ref mapppedMovieList);
+            PageMovieList(ref mapppedMovieList, PaginationParameters);
             InitBoolFields(ref mapppedMovieList);
             return mapppedMovieList;
         }
@@ -98,12 +100,13 @@ namespace PMDb.Services
             });
         }
 
-        public MovieListModel UpdateMovieListName(string oldName, string newName)
+        public MovieListModel UpdateMovieListName(string oldName, string newName, PaginationParameters PaginationParameters)
         {
             var movieList = movieListRepository.UpdateMovieListName(oldName, newName);
             movieListRepository.Save();
             var mapppedMovieList = MovieListMapper.Map(movieList);
-            PageMovieList(ref mapppedMovieList);
+            PageMovieList(ref mapppedMovieList, PaginationParameters);
+            InitBoolFields(ref mapppedMovieList);
             return mapppedMovieList;
         }
 
