@@ -69,16 +69,13 @@ namespace PMDb.Services.Helpers
 
 
 
-            //links.Add(new LinkModel());
-            //new LinkModel(urlHelper.Link(
-            //    "GetMovieList",
-            //    new
-            //    {
-            //        Name = movieList.Name,
-            //        paginationParameters = GenerateNextPageLink(paggedMovies.HasNext, paginationParameters)
-            //    }),
-            //"get_next_movieList",
-            //"GET"));
+            links.Add(new LinkModel());
+            //    new LinkModel(urlHelper.Link(
+            //        "GetMovieList", 
+            //        new {Name = movieList.Name,
+            //            paginationParameters = GenerateNextPageLink(paggedMovies.HasNext, paginationParameters)}),
+            //    "get_next_movieList",
+            //    "GET"));
 
             //links.Add(
             //new LinkModel(urlHelper.Link(
