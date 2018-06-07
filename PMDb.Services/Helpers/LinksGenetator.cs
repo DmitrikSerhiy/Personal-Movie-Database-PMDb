@@ -53,38 +53,29 @@ namespace PMDb.Services.Helpers
             var movieList = (Resource as MovieListModel);
             var paggedMovies = movieList.Movies;
 
-            //PP paginationLinks = new PaginationParameters()
-            //{
-            //    PageNumber
-            //}
-            //var paginationMetada = new  
-            //{
-            //    totalCount = paggedMovies.TotalCount,
-            //    pageSize = paggedMovies.PageSize,
-            //    currentPage = paggedMovies.CurrentPage,
-            //    totalPages = paggedMovies.TotalPages,
-            //    previousPageLink = GeneratePreviousPageLink(paggedMovies.HasPrevious, paginationParameters),
-            //    nextPageLink = GenerateNextPageLink(paggedMovies.HasNext, paginationParameters)
-            //};
+            links.Add(new LinkModel(
+                 UriProvider.ProvideGetMovieListURI(
+                     paginationParameters, UriType.NextPage, urlHelper, movieList),
+                "get_next_movieList",
+                "GET"));
 
+            links.Add(new LinkModel(
+                 UriProvider.ProvideGetMovieListURI(
+                     paginationParameters, UriType.PreviousPage, urlHelper, movieList),
+                "get_previous_movieList",
+                "GET"));
 
+            links.Add(new LinkModel(
+                UriProvider.ProvideDeleteMovieListURI(urlHelper, movieList),
+                "delete_movieList",
+                "DELETE"));
 
-            links.Add(new LinkModel());
-            //    new LinkModel(urlHelper.Link(
-            //        "GetMovieList", 
-            //        new {Name = movieList.Name,
-            //            paginationParameters = GenerateNextPageLink(paggedMovies.HasNext, paginationParameters)}),
-            //    "get_next_movieList",
-            //    "GET"));
-
-            //links.Add(
-            //new LinkModel(urlHelper.Link(
-            //    "GetMovieList",
-            //    new {Name = movieList.Name,
-            //        paginationParameters = GenerateNextPageLink(paggedMovies.HasPrevious, paginationParameters)}),
-            //"get_previous_movieList",
-            //"GET"));
-
+            links.Add(new LinkModel(
+                UriProvider.ProvideUpdateMovieListName(
+                    paginationParameters, urlHelper, movieList, "putHereNewName"),
+                "update_movieList_name",
+                "PATCH"));
+                    
             return links;
 
             //foreach (var movie in (Resource as MovieListModel).Movies)
@@ -115,18 +106,18 @@ namespace PMDb.Services.Helpers
 
         }
 
-        public string GenerateNextPageLink(bool nextPage, PaginationParameters getMoviesParameters)
-        {
-            return nextPage ?
-               UriProvider.CreateGetMovieListUri(getMoviesParameters,
-               UriType.NextPage, urlHelper as UrlHelper) : null;
-        }
+        //public string Valid(bool nextPage, PaginationParameters getMoviesParameters)
+        //{
+        //    return nextPage ?
+        //       UriProvider.CreateGetMovieListUri(getMoviesParameters,
+        //       UriType.NextPage, urlHelper as UrlHelper) : null;
+        //}
 
-        public string GeneratePreviousPageLink(bool previousPage, PaginationParameters getMoviesParameters)
-        {
-            return previousPage ?
-               UriProvider.CreateGetMovieListUri(getMoviesParameters,
-               UriType.PreviousPage, urlHelper as UrlHelper) : null;
-        }
+        //public string GeneratePreviousPageLink(bool previousPage, PaginationParameters getMoviesParameters)
+        //{
+        //    return previousPage ?
+        //       UriProvider.CreateGetMovieListUri(getMoviesParameters,
+        //       UriType.PreviousPage, urlHelper as UrlHelper) : null;
+        //}
     }
 }

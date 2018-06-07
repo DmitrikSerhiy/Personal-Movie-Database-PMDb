@@ -74,7 +74,7 @@ namespace PMDb.API.Controllers
             return Ok(movieList);
         }
 
-        [HttpDelete("{Name}")]
+        [HttpDelete("{Name}", Name = "DeleteMovieList")]
         public IActionResult DeleteMovieList(string Name)
         {
             if (movieListService.IsMovieListExist(Name) != true)
@@ -86,7 +86,7 @@ namespace PMDb.API.Controllers
             return NoContent();
         }
 
-        [HttpPatch("{OldName}/{NewName}")]
+        [HttpPatch("{OldName}/{NewName}", Name = "UpdateMovieListName")]
         public IActionResult UpdateName(string OldName, string NewName, PaginationParameters PaginationParameters)
         {
             if(movieListService.IsMovieListExist(OldName) != true)
