@@ -33,7 +33,7 @@ namespace PMDb.Services.Helpers
             }
         }
 
-        public static string ProvideGetMovieListURI(PaginationParameters parameters,
+        public static string ProvideURIForGetMovieList(PaginationParameters parameters,
             UriType type, IUrlHelper urlHelper, MovieListModel MovieList)
         {
             switch (type)
@@ -54,14 +54,14 @@ namespace PMDb.Services.Helpers
             }
         }
 
-        public static string ProvideDeleteMovieListURI(IUrlHelper urlHelper, 
+        public static string ProvideURIForDeleteMovieList(IUrlHelper urlHelper, 
             MovieListModel MovieList)
         {
             return !MovieList.IsDefault ?
                 (urlHelper as UrlHelper).Link("DeleteMovieList", new {MovieList.Name,}) : null;
         }
 
-        public static string ProvideUpdateMovieListName(PaginationParameters parameters, 
+        public static string ProvideURIForUpdateMovieListName(PaginationParameters parameters, 
             IUrlHelper urlHelper, MovieListModel MovieList, string NewName)
         {
             return (urlHelper as UrlHelper).Link("UpdateMovieListName", new
@@ -73,6 +73,27 @@ namespace PMDb.Services.Helpers
             });
         }
 
+        public static string ProvideURIForGetMovieInMovieList(IUrlHelper urlHelper, string MovieName)
+        {
+            var uri = (urlHelper as UrlHelper).Link("GetMovie", new { title = "!/!@#$%^&*" });
+            return FixSpaces(uri);
+        }
+
+        public static string ProvideURIForAddMarkToMovieInMovieList(IUrlHelper urlHelper, string MovieName, double mark)
+        {
+            var uri = (urlHelper as UrlHelper).Link("AddMark", new { title = FixSpaces(MovieName), mark });
+            return FixSpaces(uri);
+        }
+
+        private static string FixSpaces (string uriParameters)
+        {
+            if(uriParameters.Contains("%20"))
+            {
+                uriParameters = uriParameters.Replace("%20", " ");
+                return uriParameters;
+            }
+            return uriParameters;
+        }
 
     }
 }

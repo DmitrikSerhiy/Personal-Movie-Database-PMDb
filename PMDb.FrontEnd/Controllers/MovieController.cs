@@ -39,7 +39,7 @@ namespace PMDb.API.Controllers
         {
             if (movieService.IsMarkValid(mark) != true)
                 return BadRequest();
-            if (movieService.IsMovieExist(title) != true)
+            if (movieService.IsMovieExist(title) != true) 
                 return NotFound();
 
             movieService.AddMark(mark, title);

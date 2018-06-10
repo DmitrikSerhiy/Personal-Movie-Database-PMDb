@@ -16,108 +16,69 @@ namespace PMDb.Services.Helpers
             urlHelper = UrlHelper;
         }
 
-        public void CreateLinksForSearchMovie(LinkedResourceBase Resource, string MovieName)
-        {
-            Resource.Links.Add(new LinkModel(
-                urlHelper.Link("AddMovieToList",
-                new { MovieListName = "WatchLater", MovieTitle = MovieName }),
-                "add_movie_to_watchLater",
-                "POST"));
-
-            //Add Mark
-            //Add to any other list
-        }
-
-        public void CreateLinksForGetMovie(LinkedResourceBase Resource, string MovieName)
-        {
-            Resource.Links.Add(new LinkModel(
-                urlHelper.Link("GetMovie", new { title = MovieName }),
-                "self",
-                "GET"));
-
-            Resource.Links.Add(new LinkModel(
-                urlHelper.Link("AddMovieToList", 
-                new { MovieListName = "WatchLater", MovieTitle = MovieName }),
-                "add_movie_to_watchLater",
-                "POST"));
-
-            //resource.Links.Add(new LinkModel(
-            //    urlHelper.Link("AddMovie", new { movieModel = movie }),
-            //    "add_to_library",
-            //    "POST"));
-        }
-
         public List<LinkModel> CreateLinksForMovieList(LRB Resource, PP paginationParameters)
         {
             var links = new List<LinkModel>();
             var movieList = (Resource as MovieListModel);
             var paggedMovies = movieList.Movies;
 
-            links.Add(new LinkModel(
-                 UriProvider.ProvideGetMovieListURI(
+            links.Add(new LinkModel{
+                Href = UriProvider.ProvideURIForGetMovieList(
                      paginationParameters, UriType.NextPage, urlHelper, movieList),
-                "get_next_movieList",
-                "GET"));
+                Rel = "get_next_movieList",
+                Method = "GET"
+            });
 
-            links.Add(new LinkModel(
-                 UriProvider.ProvideGetMovieListURI(
+            links.Add(new LinkModel{
+                Href = UriProvider.ProvideURIForGetMovieList(
                      paginationParameters, UriType.PreviousPage, urlHelper, movieList),
-                "get_previous_movieList",
-                "GET"));
+                Rel = "get_previous_movieList",
+                Method = "GET"
+            });
 
-            links.Add(new LinkModel(
-                UriProvider.ProvideDeleteMovieListURI(urlHelper, movieList),
-                "delete_movieList",
-                "DELETE"));
+            links.Add(new LinkModel {
+                Href = UriProvider.ProvideURIForDeleteMovieList(urlHelper, movieList),
+                Rel = "delete_movieList",
+                Method = "DELETE"});
 
-            links.Add(new LinkModel(
-                UriProvider.ProvideUpdateMovieListName(
+            links.Add(new LinkModel{
+                Href = UriProvider.ProvideURIForUpdateMovieListName(
                     paginationParameters, urlHelper, movieList, "putHereNewName"),
-                "update_movieList_name",
-                "PATCH"));
-                    
+                Rel = "update_movieList_name",
+                Method = "PATCH"
+            });
+
+            movieList.Movies.ForEach(movie =>
+            {
+                movie.Links.AddRange(CreateLinksForMovieInMovieList(movie));
+            });
+            
+
+
             return links;
-
-            //foreach (var movie in (Resource as MovieListModel).Movies)
-            //{
-            //    movie.Links.Add(
-            //        new LinkModel(urlHelper.Link("GetMovie", new { title = movie.Title}),
-            //        "get_movie",
-            //        "GET"));
-
-            //    movie.Links.Add(
-            //        new LinkModel(urlHelper.Link("AddMovieToList", 
-            //            new { MovieListName = "WatchLater", MovieTitle = movie.Title }),
-            //        "add_movie_to_watchLater",
-            //        "POST"));
-
-            //    movie.Links.Add(
-            //        new LinkModel(urlHelper.Link("DeleteMark", new { title = movie.Title }),
-            //        "delete_movie",
-            //        "DELETE"));
-
-            //    movie.Links.Add(
-            //        new LinkModel(urlHelper.Link("DeleteMark", new { title = movie.Title }),
-            //        "delete_movie",
-            //        "DELETE"));
-
-            //let it be...
-
 
         }
 
-        //public string Valid(bool nextPage, PaginationParameters getMoviesParameters)
-        //{
-        //    return nextPage ?
-        //       UriProvider.CreateGetMovieListUri(getMoviesParameters,
-        //       UriType.NextPage, urlHelper as UrlHelper) : null;
-        //}
+        public List<LinkModel> CreateLinksForMovieInMovieList(SimplifiedMovieModel movie)
+        {
+            var links = new List<LinkModel>();
 
-        //public string GeneratePreviousPageLink(bool previousPage, PaginationParameters getMoviesParameters)
-        //{
-        //    return previousPage ?
-        //       UriProvider.CreateGetMovieListUri(getMoviesParameters,
-        //       UriType.PreviousPage, urlHelper as UrlHelper) : null;
-        //}
+            links.Add(new LinkModel {
+                Href = UriProvider.ProvideURIForGetMovieInMovieList(urlHelper, movie.Title),
+                Rel = "get_movie",
+                Method = "GET"
+            });
+
+            links.Add(new LinkModel
+            {
+                Href = UriProvider.ProvideURIForAddMarkToMovieInMovieList(urlHelper, movie.Title, 0),//put here new mark
+                Rel = "add_mark",
+                Method = "PATCH"
+            });
+
+            return links;
+
+            
+        }
     }
 }
