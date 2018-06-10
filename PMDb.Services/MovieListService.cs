@@ -13,11 +13,14 @@ namespace PMDb.Services
     public class MovieListService : IMovieListService
     {
         private IMovieListRepository movieListRepository;
+        ILinksGenerator<LinkedResourceBase, PaginationParameters> linksGenerator;
 
 
-        public MovieListService(IMovieListRepository MovieListRepository)
+        public MovieListService(IMovieListRepository MovieListRepository,
+            ILinksGenerator<LinkedResourceBase, PaginationParameters> LinksGenerator)
         {
             movieListRepository = MovieListRepository;
+            linksGenerator = LinksGenerator;
         }
 
         public MovieListModel AddMovieToList(string movieName, string movieListName, PaginationParameters PaginationParameters)
@@ -27,6 +30,7 @@ namespace PMDb.Services
             var mapppedMovieList = MovieListMapper.Map(movieList);
             PageMovieList(ref mapppedMovieList, PaginationParameters);
             InitBoolFields(ref mapppedMovieList);
+            InitLinks(ref mapppedMovieList, PaginationParameters);
             return mapppedMovieList;
         }
 
@@ -40,16 +44,8 @@ namespace PMDb.Services
             var mapppedMovieList = MovieListMapper.Map(movieList);
             PageMovieList(ref mapppedMovieList, PaginationParameters);
             InitBoolFields(ref mapppedMovieList);
+            InitLinks(ref mapppedMovieList, PaginationParameters);
             return mapppedMovieList;
-        }
-
-
-        private void PageMovieList(ref MovieListModel movieListModel, PaginationParameters PaginationParameters)
-        {
-            movieListModel.Movies = PagedList<SimplifiedMovieModel>.Create(
-                movieListModel.Movies,
-                PaginationParameters.PageNumber,
-                PaginationParameters.PageSize);
         }
 
         public MovieListModel DeleteMovieFromList(string movieName, string movieListName, PaginationParameters PaginationParameters)
@@ -60,6 +56,7 @@ namespace PMDb.Services
             var mapppedMovieList = MovieListMapper.Map(movieList);
             PageMovieList(ref mapppedMovieList, PaginationParameters);
             InitBoolFields(ref mapppedMovieList);
+            InitLinks(ref mapppedMovieList, PaginationParameters);
             return mapppedMovieList;
         }
 
@@ -84,20 +81,8 @@ namespace PMDb.Services
             var mapppedMovieList = MovieListMapper.Map(movieList);
             PageMovieList(ref mapppedMovieList, PaginationParameters);
             InitBoolFields(ref mapppedMovieList);
+            InitLinks(ref mapppedMovieList, PaginationParameters);
             return mapppedMovieList;
-        }
-
-        public void InitBoolFields(ref MovieListModel moviesList)
-        {
-            moviesList.Movies.ForEach(m =>
-            {
-                m.HasTags = m.Tags.Count != 0;
-                m.HasReview = !String.IsNullOrEmpty(m.Review);
-                m.ListsWithCurrMovie = ListOfMovieListsMapper.Map(
-                    movieListRepository.GetMovieListMovieForMovie(m.Title));
-                m.IsInWatchLater = m.ListsWithCurrMovie.Any(lwcm => lwcm.MovieListName == "WatchLater");
-                m.IsInFavoriteList = m.ListsWithCurrMovie.Any(lwcm => lwcm.MovieListName == "Favorite");
-            });
         }
 
         public MovieListModel UpdateMovieListName(string oldName, string newName, PaginationParameters PaginationParameters)
@@ -107,6 +92,7 @@ namespace PMDb.Services
             var mapppedMovieList = MovieListMapper.Map(movieList);
             PageMovieList(ref mapppedMovieList, PaginationParameters);
             InitBoolFields(ref mapppedMovieList);
+            InitLinks(ref mapppedMovieList, PaginationParameters);
             return mapppedMovieList;
         }
 
@@ -125,5 +111,33 @@ namespace PMDb.Services
         {
             return movieListRepository.IsMovieExist(movieName);
         }
+
+        private void PageMovieList(ref MovieListModel movieListModel, PaginationParameters PaginationParameters)
+        {
+            movieListModel.Movies = PagedList<SimplifiedMovieModel>.Create(
+                movieListModel.Movies,
+                PaginationParameters.PageNumber,
+                PaginationParameters.PageSize);
+            movieListModel.ListLength = movieListRepository.GetMovieListLenght(movieListModel.Name);
+        }
+
+        private void InitBoolFields(ref MovieListModel moviesList)
+        {
+            moviesList.Movies.ForEach(m =>
+            {
+                m.HasTags = m.Tags.Count != 0;
+                m.HasReview = !String.IsNullOrEmpty(m.Review);
+                m.ListsWithCurrMovie = ListOfMovieListsMapper.Map(
+                    movieListRepository.GetMovieListMovieForMovie(m.Title));
+                m.IsInWatchLater = m.ListsWithCurrMovie.Any(lwcm => lwcm.MovieListName == "WatchLater");
+                m.IsInFavoriteList = m.ListsWithCurrMovie.Any(lwcm => lwcm.MovieListName == "Favorite");
+            });
+        }
+
+        private void InitLinks(ref MovieListModel movieList, PaginationParameters paginationParameters)
+        {
+            movieList.Links.AddRange(linksGenerator.CreateLinksForMovieList(movieList, paginationParameters));
+        }
+            
     }
 }

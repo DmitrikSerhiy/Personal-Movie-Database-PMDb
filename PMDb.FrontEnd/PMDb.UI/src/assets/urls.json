@@ -1,4 +1,9 @@
 {
     "getLibrary" : "http://localhost:56756/api/movies",
-    "getList" : "http://localhost:56756/api/movieList/"
+    "getList" : "http://localhost:56756/api/movieList/",
+    "parameters" : 
+    {
+        "currPage" : "currPage=",
+        "pageSize" : "pageSize="
+    }
 }

@@ -18,6 +18,7 @@ namespace PMDb.Services
     public class MovieService : IMovieService
     {
         private IMovieRepository movieRepository;
+        private ILinksGenerator<LinkedResourceBase, PaginationParameters> linksGenerator;
         //private LinksGenetator linksGenetator;
         private MovieModel MovieModel;
         public Movie movieToAdd;
@@ -25,7 +26,8 @@ namespace PMDb.Services
         public IUrlHelper urlHelper;
         public MovieModelValidator validator;
 
-        public MovieService(IMovieRepository MovieRepository, IUrlHelper UrlHelper
+        public MovieService(IMovieRepository MovieRepository, IUrlHelper UrlHelper,
+            ILinksGenerator<LinkedResourceBase, PaginationParameters> LinksGenerator
             //LinksGenetator LinksGenetator
             )
         {
@@ -33,6 +35,7 @@ namespace PMDb.Services
             urlHelper = UrlHelper;
             //linksGenetator = LinksGenetator;
             validator = new MovieModelValidator();
+            linksGenerator = LinksGenerator;
         }
 
         public void MapToModel(Movie movie)
@@ -148,26 +151,33 @@ namespace PMDb.Services
         }
 
 
-        public IList<SimplifiedMovieModel> GetMovies(PaginationParameters getMoviesParameters)
+        public MovieListModel GetMovies(PaginationParameters paginationParameters)
         {
             var MovieCollectionBeforePaging = movieRepository.GetMovies();
 
             var movies = PagedList<Movie>.Create(MovieCollectionBeforePaging,
-                getMoviesParameters.PageNumber,
-                getMoviesParameters.PageSize);
+                paginationParameters.PageNumber,
+                paginationParameters.PageSize);
 
             var PagedSimplifiedMovies = new PagedList<SimplifiedMovieModel>(
                 movies.CurrentPage, movies.TotalPages, movies.PageSize,
                 movies.TotalCount, movies.HasPrevious, movies.HasNext);
 
             foreach (var item in movies)
-            {
                 PagedSimplifiedMovies.Add(SimplifiedMovieMapper.Map(item));
-            }
 
             InitBoolFields(ref PagedSimplifiedMovies);
-            
-            return PagedSimplifiedMovies;
+            var movieList = new MovieListModel
+            {
+                IsDefault = true,
+                Name = "Library",
+                ListLength = MovieCollectionBeforePaging.Count(),
+                Movies = PagedSimplifiedMovies
+            };
+            movieList.Links = linksGenerator
+                .CreateLinksForMovieList(movieList, paginationParameters);
+
+            return movieList;
         }
 
         public void InitBoolFields(ref PagedList<SimplifiedMovieModel> movies)
@@ -193,21 +203,6 @@ namespace PMDb.Services
             }
             movie.HasTags = movie.TagModels.Count == 0 ? false : true;
             movie.HasReview = !String.IsNullOrEmpty(movie.Review);
-        }
-
-
-        public string GenerateNextPageLink(bool nextPage, PaginationParameters getMoviesParameters)
-        {
-            return nextPage ?
-               UriProvider.CreateMoviesUri(getMoviesParameters,
-               UriType.NextPage, urlHelper as UrlHelper) : null;
-        }
-
-        public string GeneratePreviousPageLink(bool previousPage, PaginationParameters getMoviesParameters)
-        {
-            return previousPage ?
-               UriProvider.CreateMoviesUri(getMoviesParameters,
-               UriType.PreviousPage, urlHelper as UrlHelper) : null;
         }
 
         public bool IsMovieExist(int movieId)

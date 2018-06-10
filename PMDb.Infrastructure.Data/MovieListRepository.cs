@@ -34,6 +34,12 @@ namespace PMDb.Infrastructure.Data
 
         }
 
+        public int GetMovieListLenght(string movieListName)
+        {
+            return context.MovieLists.Where(ml => ml.Name == movieListName)
+                .SelectMany(m => m.MovieListMovies).Count();
+        }
+
         public MovieList CreateMovieList(string Name, bool IsDefault = false)
         {
             var movieList = new MovieList { IsDefault = IsDefault, Name = Name };

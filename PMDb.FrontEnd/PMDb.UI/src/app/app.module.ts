@@ -41,7 +41,7 @@ import { MovieCardComponent } from './movie-card/movie-card.component';
     MatFormFieldModule,
     RouterModule.forRoot([
       {path: '', component: WelcomeComponent },
-      {path: 'library', component: MovieLibraryComponent},
+      {path: 'library', component: MovieListComponent},
       {path: 'tempList', component: MovieListComponent},
       {path: 'watchLater', component: MovieListComponent},
       {path: 'favorite', component: MovieListComponent},

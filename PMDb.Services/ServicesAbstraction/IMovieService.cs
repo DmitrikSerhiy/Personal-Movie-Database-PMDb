@@ -10,7 +10,7 @@ namespace PMDb.Services.ServicesAbstraction
     {
         MovieModel GetMovie(int Id);
         MovieModel GetMovie(string title);
-        IList<SimplifiedMovieModel> GetMovies(PaginationParameters getMoviesParameters);
+        MovieListModel GetMovies(PaginationParameters getMoviesParameters);
         void MapToMovie(MovieModel movieModel);
         void AddMovie();
         void AddMark(double mark, string movieTitle);
@@ -28,8 +28,8 @@ namespace PMDb.Services.ServicesAbstraction
         bool IsMovieExist(string movieName);
         void UpdateMark(string movieName, double newMark);
         void DeleteMark(string movieName);
-        string GeneratePreviousPageLink(bool hasPrevious, PaginationParameters getMoviesParameters);
-        string GenerateNextPageLink(bool hasNext, PaginationParameters getMoviesParameters);
+        //string GeneratePreviousPageLink(bool hasPrevious, PaginationParameters getMoviesParameters);
+        //string GenerateNextPageLink(bool hasNext, PaginationParameters getMoviesParameters);
         void DeleteMovie(string movieName);
 
     }

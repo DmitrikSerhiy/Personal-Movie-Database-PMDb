@@ -20,5 +20,6 @@ namespace PMDb.Domain.Interfaces
         void Save();
         List<string> GetDefaultListsName();
         List<MovieListMovie> GetMovieListMovieForMovie(string movieTitle);
+        int GetMovieListLenght(string movieListName);
     }
 }

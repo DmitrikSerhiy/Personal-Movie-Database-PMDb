@@ -7,7 +7,7 @@
           <span class="input-group-text" id="inputGroup-sizing-default">Filter:</span>
         </div>
         <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" alt="Input some text"
-           placeholder="Input some text">
+          placeholder="Input some text">
       </div>
     </div>
 
@@ -29,18 +29,37 @@
 
     <div class="col-sm">
       <div class="btn-group">
-        <label class="btn btn-outline-secondary" [(ngModel)]="viewStyle"
-          uncheckable btnRadio="grid" (click)='changeViewStyle()'	tabindex="0" role="button">
-            <img [src]='viewListIconpath' alt="icon" width="24dp" height="23dp"> 
-          </label>
-        <label class="btn btn-outline-secondary" [(ngModel)]="viewStyle"
-          uncheckable btnRadio="card" (click)='changeViewStyle()' tabindex="0" role="button">
+        <label class="btn btn-outline-secondary" [(ngModel)]="viewStyle" uncheckable btnRadio="grid" (click)='changeViewStyle()'
+          tabindex="0" role="button">
+          <img [src]='viewListIconpath' alt="icon" width="24dp" height="23dp">
+        </label>
+        <label class="btn btn-outline-secondary" [(ngModel)]="viewStyle" uncheckable btnRadio="card" (click)='changeViewStyle()'
+          tabindex="0" role="button">
           <img [src]='viewCardIconpath' alt="icon" width="24dp" height="23dp">
         </label>
       </div>
+    </div>
 
 
-
+    <div class="col-sm">
+      <div class="btn-group" dropdown #dropdown="bs-dropdown" [autoClose]="true">
+        <button dropdownToggle type="button" class="btn btn-outline-secondary" style="border-radius: 3px; min-width: 50px; width: 90px">
+          Page size
+          <span class="caret"></span>
+        </button>
+        <ul id="dropdown-triggers-manual" *dropdownMenu class="dropdown-menu" style="min-width: fit-content; width: 90px;" role="menu" aria-labelledby="button-triggers-manual">
+          <li role="menuitem">
+            <div class="row">
+              <div class="col-sm-6 pr-0" style="text-align: center;">
+                <button class="btn btn-outline-secondary" (click)="dropdown.hide(); ChangePagination(10); ">10</button>
+              </div>
+              <div class="col-sm-6 pl-0" style="text-align: center;">
+                <button class="btn btn-outline-secondary" (click)="dropdown.hide(); ChangePagination(25);" >25</button>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
     </div>
 
   </div>
@@ -61,21 +80,17 @@
 
       <tr *ngFor='let movie of movies; let i = index;'>
         <td>{{movie.title}}</td>
-        <td>{{movie.year}}</td>
-        <td>{{movie.runtime | customRuntime}}</td>
-        <td>
+        <td align='center'>{{movie.year}}</td>
+        <td align='center'>{{movie.runtime | customRuntime}}</td>
+        <td align='center'>
           <span *ngFor='let tag of movie.tags'>{{tag.name}} </span>
         </td>
         <!-- ratings -->
-        <td>
-          <div style="width: 110% " class="mx-0 row align-items-center">
-            <rating style="width: 75%" [popover]="popTemplate" placement="right" #pop="bs-popover" triggers='click' [outsideClick]='true'
-              (onShown)='setMark(moviesRatings[0][i], i);' (onHidden)='isRateTen = false;' [max]="maxRating" [(ngModel)]='moviesRatings[0][i]'
-              [readonly]='isRatingReadonly' [titles]='["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]'>
-            </rating>
-            <h5 align="center" style="width: 15%;" class="xfont-weight-bold my-0 mx-1 border border-dark rounded">
-              {{moviesRatings[0][i]}}{{moviesRatings[1][i] === 0 ? '' : '.' + moviesRatings[1][i]}}</h5>
-          </div>
+        <td class="px-2" style="width: 10%">
+          <rating [popover]="popTemplate" placement="right" #pop="bs-popover" triggers='click' [outsideClick]='true' (onShown)='setMark(moviesRatings[0][i], i);'
+            (onHidden)='isRateTen = false;' [max]="maxRating" [(ngModel)]='moviesRatings[0][i]' [readonly]='isRatingReadonly'
+            [titles]='["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]'>
+          </rating>
 
           <ng-template #popTemplate class="p-0">
             <div class="float: left;">
@@ -89,6 +104,12 @@
             </div>
           </ng-template>
 
+        </td>
+        <td class="px-0">
+          <div class="align-items-center ">
+            <h5 align="center" class="xfont-weight-bold my-0 mx-1 border border-dark rounded">
+              {{moviesRatings[0][i]}}{{moviesRatings[1][i] === 0 ? '' : '.' + moviesRatings[1][i]}}</h5>
+          </div>
         </td>
 
         <!-- icons -->
@@ -308,9 +329,18 @@
     </div>
   </div>
 
-
-  <pagination [boundaryLinks]="true" [totalItems]="movies.count" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;"
+<!--   
+  <pagination  [boundaryLinks]="true" [totalItems]="movies.count" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;"
     lastText="&raquo;">
-  </pagination>
+  </pagination> -->
+
+  <div class="row" *ngIf='isMovieLoaded'>
+      <div class="col-xs-12 col-12">
+        <pagination boundaryLinks="true" totalItems={{movieAmount}} [(ngModel)]="currPageValue" (click)="changePage()"
+          previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"></pagination>
+      </div>
+    </div>
+     
+    <!-- <button type="button" class="btn btn-info" (click)="setPage(3)">Set current page to: 3</button> -->
 
 </div>

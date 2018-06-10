@@ -14,14 +14,10 @@ namespace PMDb.API.Controllers
     public class MovieListController : Controller
     {
         IMovieListService movieListService;
-        ILinksGenerator<LinkedResourceBase, PaginationParameters> linksGenerator;
-        //ILinksGenerator linksGenerator;
-        public MovieListController(IMovieListService MovieListService,
-            ILinksGenerator<LinkedResourceBase, PaginationParameters> LinksGenerator)
-          // ILinksGenerator LinksGenerator)
+
+        public MovieListController(IMovieListService MovieListService)
         {
             movieListService = MovieListService;
-            linksGenerator = LinksGenerator;
         }
 
 
@@ -31,7 +27,6 @@ namespace PMDb.API.Controllers
             if (movieListService.IsMovieListExist(Name) == false)
                 return NotFound();
             var movieList = movieListService.GetMovieList(Name, paginationParameters);
-            movieList.Links.AddRange(linksGenerator.CreateLinksForMovieList(movieList, paginationParameters));
             return Ok(movieList);
         }
 

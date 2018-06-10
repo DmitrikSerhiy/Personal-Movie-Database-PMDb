@@ -44,14 +44,20 @@ export class MovieListComponent implements OnInit, OnDestroy {
   currReviewText: string = '';
   isCurrListWatchLater : boolean = false;
   isCurrListFavorite : boolean = false;
+  isCurrListLibrary : boolean = false;
   viewStyle = "grid";
   showTableView = true;
   showCardView = false;
+  currPageValue : number = 1;
+  pageSizeValue : number = 2;
+  movieAmount : number = 0;
+  isMovieLoaded : boolean = false;
 
   urlWithoutMovieListName: string;
   fullURL = '';
   errorMessage : string = '';
   observer : Subscription;
+  internalObserver : Subscription;
   movieListName: string = '';
 
   viewListIconpath : string = './assets/viewList_icon.png';
@@ -73,8 +79,13 @@ export class MovieListComponent implements OnInit, OnDestroy {
     this.observer = this.jsonReaderService.getJSON()
       .subscribe(
         (json: any) => {
-          this.urlWithoutMovieListName = json.getList;
-          this.fullURL = this.setURLForList(this.urlWithoutMovieListName);
+          if(!this.isCurrListLibrary){
+            this.urlWithoutMovieListName = json.getList;
+            this.fullURL = this.setURLForList(this.urlWithoutMovieListName);
+          }
+          else
+            this.fullURL = json.getLibrary;
+          this.setPagination(json);
         },
         (error) => {
           this.errorMessage = <any>error;
@@ -82,10 +93,12 @@ export class MovieListComponent implements OnInit, OnDestroy {
         },
         () => {
           console.log("json with urls has been loaded");
-          this.getListService.getMovieList(this.fullURL)
+          this.internalObserver = this.getListService.getMovieList(this.fullURL)
             .subscribe(
               (movieList: any) => {
                 this.movies = movieList.movies as ISimplifiedMovie[];
+                  this.movieAmount = movieList.listLength;
+                  this.isMovieLoaded = true;
                 this._ListInitializer.setMovies(this.movies);
                 this._ListInitializer.initIcons();
                 this.setMoviesRatings();
@@ -99,20 +112,39 @@ export class MovieListComponent implements OnInit, OnDestroy {
     this.showCardView = !this.showCardView;
   }
   setMovieListName(){
+
     let currSegment = this.Router.url.toString().substr(1)
     this.movieListName = currSegment;
     if(this.movieListName === 'watchLater') this.isCurrListWatchLater = true;
     if(this.movieListName === 'favorite') this.isCurrListFavorite = true;
+    if(this.movieListName === 'library') this.isCurrListLibrary = true;
     console.log(this.movieListName);
   }
 
-
   ngOnDestroy(): void {
+    this.internalObserver.unsubscribe();
     this.observer.unsubscribe();
     console.clear();
   }
 
-  private setURLForList(partialURl: string): string {
+  setPagination(json : any){
+    this.fullURL = this.fullURL + "?" + json.parameters.currPage + this.currPageValue + '&';
+    this.fullURL =  this.fullURL + json.parameters.pageSize + this.pageSizeValue;
+  }
+
+  ChangePagination(pageSize : number){
+    this.pageSizeValue = pageSize;
+  }
+
+  changePage() : void{
+    //this.fullURL
+    let nextPage = this.currPageValue;
+    // this.ngOnDestroy();
+    // this.ngOnInit();
+   // this.
+  }
+
+  setURLForList(partialURl: string): string {
     return partialURl + this.movieListName;
   }
   

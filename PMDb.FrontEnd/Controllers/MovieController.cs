@@ -65,27 +65,11 @@ namespace PMDb.API.Controllers
         [HttpGet(Name = "GetMovies")]
         public IActionResult GetMovies(PaginationParameters getMoviesParameters)
         {
-            var movieModels = movieService.GetMovies(getMoviesParameters) 
-                as PagedList<SimplifiedMovieModel>;
-            
+            var movieModels = movieService.GetMovies(getMoviesParameters);
+            //get library
             if (movieModels == null)
-            {
                 return (NotFound());
-            }
-
-            var paginationMetada = new
-            {
-                totalCount = movieModels.TotalCount,
-                pageSize = movieModels.PageSize,
-                currentPage = movieModels.CurrentPage,
-                totalPages = movieModels.TotalPages,
-                previousPageLink = movieService.GeneratePreviousPageLink(movieModels.HasPrevious, getMoviesParameters),
-                nextPageLink = movieService.GenerateNextPageLink(movieModels.HasNext, getMoviesParameters)
-            };
-
-            Response.Headers.Add("X-Pagination",
-                Newtonsoft.Json.JsonConvert.SerializeObject(paginationMetada));
-
+            
             return Ok(movieModels);
         }
 

@@ -12,7 +12,6 @@ namespace PMDb.Services.Helpers
         public static string CreateMoviesUri(PaginationParameters getMoviesParameters, 
                                             UriType type, 
                                             UrlHelper urlHelper)
-
         {
             switch (type)
             {
@@ -32,6 +31,11 @@ namespace PMDb.Services.Helpers
                 default: return null;
             }
         }
+
+        //public static string ProvideURIForGetMovies()
+        //{
+
+        //}
 
         public static string ProvideURIForGetMovieList(PaginationParameters parameters,
             UriType type, IUrlHelper urlHelper, MovieListModel MovieList)
@@ -64,24 +68,25 @@ namespace PMDb.Services.Helpers
         public static string ProvideURIForUpdateMovieListName(PaginationParameters parameters, 
             IUrlHelper urlHelper, MovieListModel MovieList, string NewName)
         {
-            return (urlHelper as UrlHelper).Link("UpdateMovieListName", new
-            {
-                OldName = MovieList.Name,
-                NewName = NewName,
-                pageNumber = parameters.PageNumber,
-                pageSize = parameters.PageSize
-            });
+            return MovieList.Name != "Library" ?
+                (urlHelper as UrlHelper).Link("UpdateMovieListName", new
+                {
+                    OldName = MovieList.Name,
+                    NewName = NewName,
+                    pageNumber = parameters.PageNumber,
+                    pageSize = parameters.PageSize
+                }) : null;
         }
 
         public static string ProvideURIForGetMovieInMovieList(IUrlHelper urlHelper, string MovieName)
         {
-            var uri = (urlHelper as UrlHelper).Link("GetMovie", new { title = "!/!@#$%^&*" });
+            var uri = (urlHelper as UrlHelper).Link("GetMovie", new { title = MovieName });
             return FixSpaces(uri);
         }
 
         public static string ProvideURIForAddMarkToMovieInMovieList(IUrlHelper urlHelper, string MovieName, double mark)
         {
-            var uri = (urlHelper as UrlHelper).Link("AddMark", new { title = FixSpaces(MovieName), mark });
+            var uri = (urlHelper as UrlHelper).Link("AddMark", new { title = MovieName, mark });
             return FixSpaces(uri);
         }
 

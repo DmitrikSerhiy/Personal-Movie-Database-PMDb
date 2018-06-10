@@ -24,4 +24,5 @@ export interface ISimplifiedMovie{
         runtime : string;
         tags : any[]; 
         review : string;
+        listLength : number;
 }
