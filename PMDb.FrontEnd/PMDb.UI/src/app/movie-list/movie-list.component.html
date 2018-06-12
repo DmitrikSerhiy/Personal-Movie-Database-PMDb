@@ -1,6 +1,15 @@
 <div class="container mt-3">
   <div class="row">
 
+      <div class="col-sm" >
+        <div class="row" *ngIf='isMovieLoaded'>
+            <h3>{{movieListName}}</h3>
+            <button class="btn btn-outline-light p-0 customButtons mx-2" *ngIf='!isListDefault' style="max-height: 33px">
+                <img [src]="editIcon"  alt="edit" width="23dp" height="23dp" class="mx-1">
+            </button>
+            
+        </div>
+      </div>
     <div class="col-sm">
       <div class="input-group mb-3">
         <div class="input-group-prepend">
@@ -43,18 +52,19 @@
 
     <div class="col-sm">
       <div class="btn-group" dropdown #dropdown="bs-dropdown" [autoClose]="true">
-        <button dropdownToggle type="button" class="btn btn-outline-secondary" style="border-radius: 3px; min-width: 50px; width: 90px">
+        <button dropdownToggle type="button" class="btn btn-outline-secondary" style="border-radius: 3px; min-width: 50px; width: 90px" [disabled]='pagesAmount === 1'>
           Page size
           <span class="caret"></span>
         </button>
-        <ul id="dropdown-triggers-manual" *dropdownMenu class="dropdown-menu" style="min-width: fit-content; width: 90px;" role="menu" aria-labelledby="button-triggers-manual">
+        <ul id="dropdown-triggers-manual" *dropdownMenu class="dropdown-menu" style="min-width: fit-content; width: 90px;" role="menu"
+          aria-labelledby="button-triggers-manual">
           <li role="menuitem">
             <div class="row">
               <div class="col-sm-6 pr-0" style="text-align: center;">
-                <button class="btn btn-outline-secondary" (click)="dropdown.hide(); ChangePagination(10); ">10</button>
+                <button class="btn btn-outline-secondary" (click)="dropdown.hide(); resizeList(10);">10</button>
               </div>
               <div class="col-sm-6 pl-0" style="text-align: center;">
-                <button class="btn btn-outline-secondary" (click)="dropdown.hide(); ChangePagination(25);" >25</button>
+                <button class="btn btn-outline-secondary" (click)="dropdown.hide(); resizeList(25);">25</button>
               </div>
             </div>
           </li>
@@ -79,10 +89,10 @@
     <tbody>
 
       <tr *ngFor='let movie of movies; let i = index;'>
-        <td>{{movie.title}}</td>
+        <td style="width: 320px;">{{movie.title}}</td>
         <td align='center'>{{movie.year}}</td>
         <td align='center'>{{movie.runtime | customRuntime}}</td>
-        <td align='center'>
+        <td align='center' style="width: 210px;">
           <span *ngFor='let tag of movie.tags'>{{tag.name}} </span>
         </td>
         <!-- ratings -->
@@ -328,19 +338,6 @@
       </div>
     </div>
   </div>
-
-<!--   
-  <pagination  [boundaryLinks]="true" [totalItems]="movies.count" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;"
-    lastText="&raquo;">
-  </pagination> -->
-
-  <div class="row" *ngIf='isMovieLoaded'>
-      <div class="col-xs-12 col-12">
-        <pagination boundaryLinks="true" totalItems={{movieAmount}} [(ngModel)]="currPageValue" (click)="changePage()"
-          previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"></pagination>
-      </div>
-    </div>
-     
-    <!-- <button type="button" class="btn btn-info" (click)="setPage(3)">Set current page to: 3</button> -->
-
+    <pagination *ngIf='pagesAmount != 1 && isMovieLoaded' boundaryLinks="true" [totalItems]='moviesAmount' [itemsPerPage]='pageSize' [(ngModel)]="currPage" [maxSize]='10'
+      (click)="changePage()" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"></pagination>
 </div>

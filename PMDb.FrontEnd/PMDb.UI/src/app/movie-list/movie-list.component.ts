@@ -19,7 +19,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-movie-list',
   templateUrl: //'../movie-card/movie-card.component.html',
-                 './movie-list.component.html',
+    './movie-list.component.html',
   styleUrls: ['./movie-list.component.css']
 })
 export class MovieListComponent implements OnInit, OnDestroy {
@@ -42,33 +42,39 @@ export class MovieListComponent implements OnInit, OnDestroy {
   currTags: string[] = [];
   currReviewTitle: string = '';
   currReviewText: string = '';
-  isCurrListWatchLater : boolean = false;
-  isCurrListFavorite : boolean = false;
-  isCurrListLibrary : boolean = false;
+  isCurrListWatchLater: boolean = false;
+  isCurrListFavorite: boolean = false;
+  isCurrListLibrary: boolean = false;
+  isListDefault : boolean = false;
   viewStyle = "grid";
   showTableView = true;
   showCardView = false;
-  currPageValue : number = 1;
-  pageSizeValue : number = 2;
-  movieAmount : number = 0;
-  isMovieLoaded : boolean = false;
+  currPage: number = 1;
+  pageSize: number = 10;
+  moviesAmount: number = 0;
+  pagesAmount: number = 0;
+  isMovieLoaded: boolean = false;
+
+  links: any[];//not used by far
+  linksForPagination: any[];
 
   urlWithoutMovieListName: string;
-  fullURL = '';
-  errorMessage : string = '';
-  observer : Subscription;
-  internalObserver : Subscription;
+  fullURL;
+  errorMessage: string = '';
+  observer: Subscription;
+  internalObserver: Subscription;
   movieListName: string = '';
 
-  viewListIconpath : string = './assets/viewList_icon.png';
-  viewCardIconpath : string = './assets/viewCard_icon.png';
+  viewListIconpath: string = './assets/viewList_icon.png';
+  viewCardIconpath: string = './assets/viewCard_icon.png';
+  editIcon : string = './assets/edit_icon.png';
 
   constructor(
     private _ListInitializer: ListInitializerService,
     private cdRef: ChangeDetectorRef,
     private getListService: GetListService,
     private jsonReaderService: JsonReaderService,
-    private Router : Router
+    private Router: Router
   ) {
   }
 
@@ -79,13 +85,16 @@ export class MovieListComponent implements OnInit, OnDestroy {
     this.observer = this.jsonReaderService.getJSON()
       .subscribe(
         (json: any) => {
-          if(!this.isCurrListLibrary){
-            this.urlWithoutMovieListName = json.getList;
-            this.fullURL = this.setURLForList(this.urlWithoutMovieListName);
+          if (!this.fullURL) {
+            if (!this.isCurrListLibrary) {
+              this.urlWithoutMovieListName = json.getList;
+              this.fullURL = this.setURLForList(this.urlWithoutMovieListName);
+            }
+            else {
+              this.fullURL = json.getLibrary;
+            }
+            this.setPagination(json);
           }
-          else
-            this.fullURL = json.getLibrary;
-          this.setPagination(json);
         },
         (error) => {
           this.errorMessage = <any>error;
@@ -97,57 +106,78 @@ export class MovieListComponent implements OnInit, OnDestroy {
             .subscribe(
               (movieList: any) => {
                 this.movies = movieList.movies as ISimplifiedMovie[];
-                  this.movieAmount = movieList.listLength;
-                  this.isMovieLoaded = true;
+                this.moviesAmount = movieList.listLength;
+                this.movieListName = movieList.name;
+                this.isMovieLoaded = true;
+                this.isListDefault = movieList.isDefault;
+                this.setLinks(movieList);
+                this.pagesAmount = this.linksForPagination.length;
                 this._ListInitializer.setMovies(this.movies);
                 this._ListInitializer.initIcons();
                 this.setMoviesRatings();
+                console.log("page loaded with movies");
               },
               error => console.log(<any>error));
-              });
-  }
-
-  changeViewStyle(){
-    this.showTableView = !this.showTableView; 
-    this.showCardView = !this.showCardView;
-  }
-  setMovieListName(){
-
-    let currSegment = this.Router.url.toString().substr(1)
-    this.movieListName = currSegment;
-    if(this.movieListName === 'watchLater') this.isCurrListWatchLater = true;
-    if(this.movieListName === 'favorite') this.isCurrListFavorite = true;
-    if(this.movieListName === 'library') this.isCurrListLibrary = true;
-    console.log(this.movieListName);
+        });
   }
 
   ngOnDestroy(): void {
     this.internalObserver.unsubscribe();
     this.observer.unsubscribe();
     console.clear();
+    console.log("page destroyed")
   }
 
-  setPagination(json : any){
-    this.fullURL = this.fullURL + "?" + json.parameters.currPage + this.currPageValue + '&';
-    this.fullURL =  this.fullURL + json.parameters.pageSize + this.pageSizeValue;
+  changeViewStyle() {
+    this.showTableView = !this.showTableView;
+    this.showCardView = !this.showCardView;
   }
 
-  ChangePagination(pageSize : number){
-    this.pageSizeValue = pageSize;
+  setMovieListName() {
+    let currSegment = this.Router.url.toString().substr(1)
+    this.movieListName = currSegment;
+    if (this.movieListName === 'watchLater') this.isCurrListWatchLater = true;
+    if (this.movieListName === 'favorite') this.isCurrListFavorite = true;
+    if (this.movieListName === 'library') this.isCurrListLibrary = true;
+    console.log(this.movieListName);
   }
 
-  changePage() : void{
-    //this.fullURL
-    let nextPage = this.currPageValue;
-    // this.ngOnDestroy();
-    // this.ngOnInit();
-   // this.
+  setPagination(json: any) {
+    this.fullURL = this.fullURL + "?" + json.parameters.currPage + this.currPage + '&';
+    this.fullURL = this.fullURL + json.parameters.pageSize + this.pageSize;
+  }
+
+  setLinks(movieList: any) {
+    this.linksForPagination = movieList.linksForPagination;
+    this.links = movieList.links;
+  }
+
+  resizeList(newPageSize: number) {
+    //RETARDED CODE!!!
+    this.pageSize = newPageSize;
+    let ps = 'pageSize=';
+    let oldURL = this.fullURL as string;
+    let index = oldURL.indexOf(ps);
+    let stringToReplace = ps + oldURL.charAt(index + 9) + oldURL.charAt(index + 10);
+    this.fullURL = oldURL.replace(stringToReplace, ps+newPageSize.toString());
+    console.log("new url:" + this.fullURL);
+    this.ngOnDestroy();
+    this.ngOnInit();
+  }
+
+  changePage(): void {
+    console.log("old uri" + this.fullURL);
+    this.ngOnDestroy();
+    this.fullURL = this.linksForPagination[this.currPage-1].href;
+    console.log("new uri" + this.fullURL);
+    this.ngOnInit();
+    
   }
 
   setURLForList(partialURl: string): string {
     return partialURl + this.movieListName;
   }
-  
+
   toggleClickability(): void {
     this.unclicableButtons = !this.unclicableButtons;
   }

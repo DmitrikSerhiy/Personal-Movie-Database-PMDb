@@ -8,5 +8,8 @@ namespace PMDb.Services.Models
     {
         public List<LinkModel> Links { get; set; }
         = new List<LinkModel>();
+
+        public List<LinkModel> LinksForPagination { get; set; } = null;
+
     }
 }

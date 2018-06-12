@@ -137,6 +137,8 @@ namespace PMDb.Services
         private void InitLinks(ref MovieListModel movieList, PaginationParameters paginationParameters)
         {
             movieList.Links.AddRange(linksGenerator.CreateLinksForMovieList(movieList, paginationParameters));
+            movieList.LinksForPagination = new List<LinkModel>();
+            movieList.LinksForPagination.AddRange(linksGenerator.CreateLinksForMovieListsPages(movieList, paginationParameters));
         }
             
     }

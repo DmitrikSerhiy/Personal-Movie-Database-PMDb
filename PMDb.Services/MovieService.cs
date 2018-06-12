@@ -174,13 +174,21 @@ namespace PMDb.Services
                 ListLength = MovieCollectionBeforePaging.Count(),
                 Movies = PagedSimplifiedMovies
             };
-            movieList.Links = linksGenerator
-                .CreateLinksForMovieList(movieList, paginationParameters);
+
+            InitLinks(ref movieList, paginationParameters);
 
             return movieList;
         }
 
-        public void InitBoolFields(ref PagedList<SimplifiedMovieModel> movies)
+        private void InitLinks(ref MovieListModel movieList, PaginationParameters paginationParameters)
+        {
+            movieList.Links = linksGenerator
+               .CreateLinksForMovieList(movieList, paginationParameters);
+            movieList.LinksForPagination = new List<LinkModel>();
+            movieList.LinksForPagination.AddRange(linksGenerator.CreateLinksForMovieListsPages(movieList, paginationParameters));
+        }
+
+        private void InitBoolFields(ref PagedList<SimplifiedMovieModel> movies)
         {
             foreach (var movie in movies)
             {
@@ -194,7 +202,7 @@ namespace PMDb.Services
             }
         }
 
-        public void InitBoolFields(ref MovieModel movie)
+        private void InitBoolFields(ref MovieModel movie)
         {
             foreach (var list in movie.ListsWithCurrMovie)
             {

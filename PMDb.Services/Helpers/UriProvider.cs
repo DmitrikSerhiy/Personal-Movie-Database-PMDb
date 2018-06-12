@@ -37,7 +37,7 @@ namespace PMDb.Services.Helpers
 
         //}
 
-        public static string ProvideURIForGetMovieList(PaginationParameters parameters,
+        public static string ProvideForGetMovieList(PaginationParameters parameters,
             UriType type, IUrlHelper urlHelper, MovieListModel MovieList)
         {
             switch (type)
@@ -58,14 +58,14 @@ namespace PMDb.Services.Helpers
             }
         }
 
-        public static string ProvideURIForDeleteMovieList(IUrlHelper urlHelper, 
+        public static string ProvideForDeleteMovieList(IUrlHelper urlHelper, 
             MovieListModel MovieList)
         {
             return !MovieList.IsDefault ?
                 (urlHelper as UrlHelper).Link("DeleteMovieList", new {MovieList.Name,}) : null;
         }
 
-        public static string ProvideURIForUpdateMovieListName(PaginationParameters parameters, 
+        public static string ProvideForUpdateMovieListName(PaginationParameters parameters, 
             IUrlHelper urlHelper, MovieListModel MovieList, string NewName)
         {
             return MovieList.Name != "Library" ?
@@ -78,13 +78,13 @@ namespace PMDb.Services.Helpers
                 }) : null;
         }
 
-        public static string ProvideURIForGetMovieInMovieList(IUrlHelper urlHelper, string MovieName)
+        public static string ProvideForGetMovieInMovieList(IUrlHelper urlHelper, string MovieName)
         {
             var uri = (urlHelper as UrlHelper).Link("GetMovie", new { title = MovieName });
             return FixSpaces(uri);
         }
 
-        public static string ProvideURIForAddMarkToMovieInMovieList(IUrlHelper urlHelper, string MovieName, double mark)
+        public static string ProvideForAddMarkToMovieInMovieList(IUrlHelper urlHelper, string MovieName, double mark)
         {
             var uri = (urlHelper as UrlHelper).Link("AddMark", new { title = MovieName, mark });
             return FixSpaces(uri);
@@ -100,5 +100,22 @@ namespace PMDb.Services.Helpers
             return uriParameters;
         }
 
+        public static string ProvideLinksForPagesInMovieList(PaginationParameters parameters,
+            string movieListName, IUrlHelper urlHelper, int currPage)
+        {
+            return movieListName != "Library" ?
+                (urlHelper as UrlHelper).Link("GetMovieList", new
+                {
+                    Name = movieListName,
+                    pageNumber = currPage,
+                    pageSize = parameters.PageSize
+                }) :
+                (urlHelper as UrlHelper).Link("GetMovies", new
+                {
+                    pageNumber = currPage,
+                    pageSize = parameters.PageSize
+                });
+
+        }
     }
 }

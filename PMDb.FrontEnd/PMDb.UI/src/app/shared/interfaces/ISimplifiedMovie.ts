@@ -25,4 +25,7 @@ export interface ISimplifiedMovie{
         tags : any[]; 
         review : string;
         listLength : number;
+
+        links : any[];
+        linksForPagination : any[];
 }
