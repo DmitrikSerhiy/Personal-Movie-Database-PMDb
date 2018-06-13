@@ -1,11 +1,12 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input, SimpleChanges } from '@angular/core';
 import { ISimplifiedMovie } from '../shared/interfaces/ISimplifiedMovie';
-import { ListInitializerService } from '../list-initializer/list-initializer.service';
+
 import { PopoverModule } from 'ngx-bootstrap/popover';
 import { Triggers } from 'ngx-popper';
 import { CustomeDecimalPipePipe } from '../Shared/custome-decimal-pipe.pipe';
 import { ChangeDetectorRef } from '@angular/core';
 import { MovieService } from '../services/movie.service';
+import { ListInitializerService } from '../services/list-initializer.service';
 
 
 

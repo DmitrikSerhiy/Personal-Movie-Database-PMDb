@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input, SimpleChanges, OnDestroy } from '@angular/core';
 import { MovieService } from '../services/movie.service';
 import { ISimplifiedMovie } from '../shared/interfaces/ISimplifiedMovie';
-import { ListInitializerService } from '../list-initializer/list-initializer.service';
+import { ListInitializerService } from '../services/list-initializer.service';
 import { PopoverModule } from 'ngx-bootstrap/popover';
 import { Triggers } from 'ngx-popper';
 import { CustomeDecimalPipePipe } from '../Shared/custome-decimal-pipe.pipe';
@@ -12,6 +12,8 @@ import { Subscription } from 'rxjs/internal/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { retryWhen, retry } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { WordsFilterService } from '../services/words-filter.service';
+
 
 
 
@@ -37,7 +39,6 @@ export class MovieListComponent implements OnInit, OnDestroy {
   public isShareIconsShowen: boolean = false;
   isRateTen = false;
   unclicableButtons: boolean = true;
-  listFilter: string = '';
   toolTipText: string = '';
   currTags: string[] = [];
   currReviewTitle: string = '';
@@ -54,6 +55,8 @@ export class MovieListComponent implements OnInit, OnDestroy {
   moviesAmount: number = 0;
   pagesAmount: number = 0;
   isMovieLoaded: boolean = false;
+  firstPageOfMovies;
+  setFilter : string = 'none';
 
   links: any[];//not used by far
   linksForPagination: any[];
@@ -65,18 +68,24 @@ export class MovieListComponent implements OnInit, OnDestroy {
   internalObserver: Subscription;
   movieListName: string = '';
 
+
   viewListIconpath: string = './assets/viewList_icon.png';
   viewCardIconpath: string = './assets/viewCard_icon.png';
   editIcon : string = './assets/edit_icon.png';
 
   constructor(
-    private _ListInitializer: ListInitializerService,
+    private listInitializer: ListInitializerService,
     private cdRef: ChangeDetectorRef,
     private getListService: GetListService,
     private jsonReaderService: JsonReaderService,
-    private Router: Router
+    private router: Router,
+    private wordsFilterService : WordsFilterService
   ) {
   }
+
+  _listFilter: string;
+  filtredMovies: ISimplifiedMovie[];
+
 
   ngOnInit() {
 
@@ -112,9 +121,11 @@ export class MovieListComponent implements OnInit, OnDestroy {
                 this.isListDefault = movieList.isDefault;
                 this.setLinks(movieList);
                 this.pagesAmount = this.linksForPagination.length;
-                this._ListInitializer.setMovies(this.movies);
-                this._ListInitializer.initIcons();
+                this.listInitializer.setMovies(this.movies);
+                this.listInitializer.initIcons();
                 this.setMoviesRatings();
+                this.firstPageOfMovies = this.movies;
+                this.wordsFilterService.passMoviesToFilter(this.movies);
                 console.log("page loaded with movies");
               },
               error => console.log(<any>error));
@@ -128,13 +139,27 @@ export class MovieListComponent implements OnInit, OnDestroy {
     console.log("page destroyed")
   }
 
+  changeFilter(filter : string){
+    this.setFilter = filter;
+  }
+
+  filterMovies(filterBy : string){
+    this.wordsFilterService.passFilterCriteria(filterBy);
+    this.wordsFilterService.filters = this.wordsFilterService.filters;
+    if(this.wordsFilterService.filters || this.wordsFilterService.filters.length != 0){
+      this.movies = this.wordsFilterService.filteredMovies;
+    }
+    else
+      this.movies = this.firstPageOfMovies.slice(0);
+  }
+
   changeViewStyle() {
     this.showTableView = !this.showTableView;
     this.showCardView = !this.showCardView;
   }
 
   setMovieListName() {
-    let currSegment = this.Router.url.toString().substr(1)
+    let currSegment = this.router.url.toString().substr(1)
     this.movieListName = currSegment;
     if (this.movieListName === 'watchLater') this.isCurrListWatchLater = true;
     if (this.movieListName === 'favorite') this.isCurrListFavorite = true;
@@ -241,21 +266,21 @@ export class MovieListComponent implements OnInit, OnDestroy {
 
   ShowShareIcons(index: number): void {
     this.isShareIconsShowen = !this.isShareIconsShowen;
-    this._ListInitializer.changeShareIcon(index);
+    this.listInitializer.changeShareIcon(index);
   }
 
   AddToWatchLater(index: number): void {
 
     this.movies[index].isInWatchLater = !this.movies[index].isInWatchLater;
 
-    this._ListInitializer.changeWatchLaterIcon(index);
+    this.listInitializer.changeWatchLaterIcon(index);
   }
 
   AddToFavorite(index: number): void {
 
     this.movies[index].isInFavoriteList = !this.movies[index].isInFavoriteList;
 
-    this._ListInitializer.changeFavoriteIcon(index);
+    this.listInitializer.changeFavoriteIcon(index);
   }
 
   AddHashtag(index: number): void {
@@ -266,7 +291,7 @@ export class MovieListComponent implements OnInit, OnDestroy {
     }
 
 
-    this._ListInitializer.changeHashtagIcon(index);
+    this.listInitializer.changeHashtagIcon(index);
 
   }
 

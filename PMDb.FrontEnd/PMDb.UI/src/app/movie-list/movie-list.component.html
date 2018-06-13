@@ -10,29 +10,31 @@
             
         </div>
       </div>
-    <div class="col-sm">
+
+    <!-- <div class="col-sm">
       <div class="input-group mb-3">
         <div class="input-group-prepend">
           <span class="input-group-text" id="inputGroup-sizing-default">Filter:</span>
         </div>
-        <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" alt="Input some text"
-          placeholder="Input some text">
+        <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" alt="text"
+          placeholder="text" [(ngModel)]="wordsFilterService.filters" (ngModelChange)="filterMovies()">
       </div>
-    </div>
+    </div> -->
 
     <div class="col-sm">
       <div class="input-group mb-3">
         <div class="input-group-prepend">
-          <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Filter by:</button>
+          <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+           Filter by: </button>
           <div class="dropdown-menu">
-            <a class="dropdown-item" href="#">Genre</a>
-            <a class="dropdown-item" href="#">Tag</a>
-            <a class="dropdown-item" href="#">Year</a>
-            <a class="dropdown-item" href="#">Mark</a>
-            <a class="dropdown-item" href="#">Runtime</a>
+            <button *ngFor ='let filter of wordsFilterService.filterList; let i = index;' class="dropdown-item"
+            (click)='changeFilter(wordsFilterService.filterList[i].filter)'>
+              {{wordsFilterService.filterList[i].filter}} </button>
           </div>
         </div>
-        <input type="text" class="form-control" aria-label="Text input with dropdown button">
+        <input [disabled]='setFilter === "none" || !setFilter' type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" alt="Input filter"
+          [placeholder]="setFilter === 'none' ? '' : setFilter" [(ngModel)]="wordsFilterService.filters" (ngModelChange)="filterMovies(setFilter)">
       </div>
     </div>
 
