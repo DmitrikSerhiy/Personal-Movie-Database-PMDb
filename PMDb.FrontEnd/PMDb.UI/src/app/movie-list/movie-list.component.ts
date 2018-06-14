@@ -46,7 +46,7 @@ export class MovieListComponent implements OnInit, OnDestroy {
   isCurrListWatchLater: boolean = false;
   isCurrListFavorite: boolean = false;
   isCurrListLibrary: boolean = false;
-  isListDefault : boolean = false;
+  isListDefault: boolean = false;
   viewStyle = "grid";
   showTableView = true;
   showCardView = false;
@@ -56,7 +56,8 @@ export class MovieListComponent implements OnInit, OnDestroy {
   pagesAmount: number = 0;
   isMovieLoaded: boolean = false;
   firstPageOfMovies;
-  setFilter : string = 'none';
+  setFilter: string = 'none';
+  subscriptinIsCanceled: boolean = false;
 
   links: any[];//not used by far
   linksForPagination: any[];
@@ -71,7 +72,7 @@ export class MovieListComponent implements OnInit, OnDestroy {
 
   viewListIconpath: string = './assets/viewList_icon.png';
   viewCardIconpath: string = './assets/viewCard_icon.png';
-  editIcon : string = './assets/edit_icon.png';
+  editIcon: string = './assets/edit_icon.png';
 
   constructor(
     private listInitializer: ListInitializerService,
@@ -79,57 +80,55 @@ export class MovieListComponent implements OnInit, OnDestroy {
     private getListService: GetListService,
     private jsonReaderService: JsonReaderService,
     private router: Router,
-    private wordsFilterService : WordsFilterService
+    private wordsFilterService: WordsFilterService
   ) {
   }
 
-  _listFilter: string;
-  filtredMovies: ISimplifiedMovie[];
-
 
   ngOnInit() {
+    if (!this.subscriptinIsCanceled) {
+      this.setMovieListName();
 
-    this.setMovieListName();
-
-    this.observer = this.jsonReaderService.getJSON()
-      .subscribe(
-        (json: any) => {
-          if (!this.fullURL) {
-            if (!this.isCurrListLibrary) {
-              this.urlWithoutMovieListName = json.getList;
-              this.fullURL = this.setURLForList(this.urlWithoutMovieListName);
+      this.observer = this.jsonReaderService.getJSON()
+        .subscribe(
+          (json: any) => {
+            if (!this.fullURL) {
+              if (!this.isCurrListLibrary) {
+                this.urlWithoutMovieListName = json.getList;
+                this.fullURL = this.setURLForList(this.urlWithoutMovieListName);
+              }
+              else {
+                this.fullURL = json.getLibrary;
+              }
+              this.setPagination(json);
             }
-            else {
-              this.fullURL = json.getLibrary;
-            }
-            this.setPagination(json);
-          }
-        },
-        (error) => {
-          this.errorMessage = <any>error;
-          console.log(this.errorMessage)
-        },
-        () => {
-          console.log("json with urls has been loaded");
-          this.internalObserver = this.getListService.getMovieList(this.fullURL)
-            .subscribe(
-              (movieList: any) => {
-                this.movies = movieList.movies as ISimplifiedMovie[];
-                this.moviesAmount = movieList.listLength;
-                this.movieListName = movieList.name;
-                this.isMovieLoaded = true;
-                this.isListDefault = movieList.isDefault;
-                this.setLinks(movieList);
-                this.pagesAmount = this.linksForPagination.length;
-                this.listInitializer.setMovies(this.movies);
-                this.listInitializer.initIcons();
-                this.setMoviesRatings();
-                this.firstPageOfMovies = this.movies;
-                this.wordsFilterService.passMoviesToFilter(this.movies);
-                console.log("page loaded with movies");
-              },
-              error => console.log(<any>error));
-        });
+          },
+          (error) => {
+            this.errorMessage = <any>error;
+            console.log(this.errorMessage)
+          },
+          () => {
+            console.log("json with urls has been loaded");
+            this.internalObserver = this.getListService.getMovieList(this.fullURL)
+              .subscribe(
+                (movieList: any) => {
+                  this.movies = movieList.movies as ISimplifiedMovie[];
+                  this.moviesAmount = movieList.listLength;
+                  this.movieListName = movieList.name;
+                  this.isMovieLoaded = true;
+                  this.isListDefault = movieList.isDefault;
+                  this.setLinks(movieList);
+                  this.pagesAmount = this.linksForPagination.length;
+                  this.listInitializer.setMovies(this.movies);
+                  this.listInitializer.initIcons();
+                  this.setMoviesRatings();
+                  this.firstPageOfMovies = this.movies;
+                  this.wordsFilterService.passMoviesToFilter(this.movies);
+                  console.log("page loaded with movies");
+                },
+                error => console.log(<any>error));
+          });
+    }
   }
 
   ngOnDestroy(): void {
@@ -139,18 +138,29 @@ export class MovieListComponent implements OnInit, OnDestroy {
     console.log("page destroyed")
   }
 
-  changeFilter(filter : string){
+  changeFilter(filter: string) {
     this.setFilter = filter;
   }
 
-  filterMovies(filterBy : string){
-    this.wordsFilterService.passFilterCriteria(filterBy);
-    this.wordsFilterService.filters = this.wordsFilterService.filters;
-    if(this.wordsFilterService.filters || this.wordsFilterService.filters.length != 0){
-      this.movies = this.wordsFilterService.filteredMovies;
+  filterMovies(filterBy: string) {
+    this.wordsFilterService.filterCriteria = filterBy;
+    if (this.wordsFilterService.filters || this.wordsFilterService.filters.length != 0) {
+      let filteredM = this.wordsFilterService.performFilter(this.wordsFilterService.filters);
+      this.movies = filteredM;
     }
     else
       this.movies = this.firstPageOfMovies.slice(0);
+    //this.reloadWithoutSub();
+
+    this.setMoviesRatings();
+  }
+
+  reloadWithoutSub() {
+    this.ngOnDestroy();
+    this.subscriptinIsCanceled = true;
+    //this.movies = this.movies[4];
+    this.ngOnInit();
+    this.subscriptinIsCanceled = false;
   }
 
   changeViewStyle() {
@@ -184,7 +194,7 @@ export class MovieListComponent implements OnInit, OnDestroy {
     let oldURL = this.fullURL as string;
     let index = oldURL.indexOf(ps);
     let stringToReplace = ps + oldURL.charAt(index + 9) + oldURL.charAt(index + 10);
-    this.fullURL = oldURL.replace(stringToReplace, ps+newPageSize.toString());
+    this.fullURL = oldURL.replace(stringToReplace, ps + newPageSize.toString());
     console.log("new url:" + this.fullURL);
     this.ngOnDestroy();
     this.ngOnInit();
@@ -193,10 +203,10 @@ export class MovieListComponent implements OnInit, OnDestroy {
   changePage(): void {
     console.log("old uri" + this.fullURL);
     this.ngOnDestroy();
-    this.fullURL = this.linksForPagination[this.currPage-1].href;
+    this.fullURL = this.linksForPagination[this.currPage - 1].href;
     console.log("new uri" + this.fullURL);
     this.ngOnInit();
-    
+
   }
 
   setURLForList(partialURl: string): string {
@@ -229,6 +239,17 @@ export class MovieListComponent implements OnInit, OnDestroy {
     if (!currRate)
       return 0;
     return currRate;
+  }
+
+  definePlaceholderForFilter(filterBy : string) : string{
+      switch (filterBy) {
+        case 'Title': return 'title';
+        case 'Tag': return 'tag';
+        case "Year": return 'year';
+        case "Mark": return 'fraction part only';
+        case "Runtime": return 'hours';
+        default: return '';
+      }
   }
 
   formatRateLabel(value: number) {

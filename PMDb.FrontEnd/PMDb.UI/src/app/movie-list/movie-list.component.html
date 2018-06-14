@@ -26,7 +26,7 @@
         <div class="input-group-prepend">
           <button class="btn btn-outline-secondary dropdown-toggle" type="button"
            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-           Filter by: </button>
+           Filter by: {{setFilter === 'none' ? '' : setFilter}} </button>
           <div class="dropdown-menu">
             <button *ngFor ='let filter of wordsFilterService.filterList; let i = index;' class="dropdown-item"
             (click)='changeFilter(wordsFilterService.filterList[i].filter)'>
@@ -34,7 +34,7 @@
           </div>
         </div>
         <input [disabled]='setFilter === "none" || !setFilter' type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" alt="Input filter"
-          [placeholder]="setFilter === 'none' ? '' : setFilter" [(ngModel)]="wordsFilterService.filters" (ngModelChange)="filterMovies(setFilter)">
+          [placeholder]="definePlaceholderForFilter(setFilter)" [(ngModel)]="wordsFilterService.filters" (ngModelChange)="filterMovies(setFilter)">
       </div>
     </div>
 
