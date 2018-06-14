@@ -57,7 +57,7 @@ export class MovieListComponent implements OnInit, OnDestroy {
   isMovieLoaded: boolean = false;
   firstPageOfMovies;
   setFilter: string = 'none';
-  subscriptinIsCanceled: boolean = false;
+  showPagination : boolean = true;
 
   links: any[];//not used by far
   linksForPagination: any[];
@@ -68,11 +68,12 @@ export class MovieListComponent implements OnInit, OnDestroy {
   observer: Subscription;
   internalObserver: Subscription;
   movieListName: string = '';
+  cardViewIconSrc;
+  listViewIconSrc;
+  editIconSrc;
 
+  currShareIcon = this.listInitializer.emptyShareIcon;
 
-  viewListIconpath: string = './assets/viewList_icon.png';
-  viewCardIconpath: string = './assets/viewCard_icon.png';
-  editIcon: string = './assets/edit_icon.png';
 
   constructor(
     private listInitializer: ListInitializerService,
@@ -82,11 +83,13 @@ export class MovieListComponent implements OnInit, OnDestroy {
     private router: Router,
     private wordsFilterService: WordsFilterService
   ) {
+    this.cardViewIconSrc = this.listInitializer.viewCardIconpath;
+    this.listViewIconSrc = this.listInitializer.viewListIconpath;;
+    this.editIconSrc = this.listInitializer.editIcon;
   }
 
 
   ngOnInit() {
-    if (!this.subscriptinIsCanceled) {
       this.setMovieListName();
 
       this.observer = this.jsonReaderService.getJSON()
@@ -128,7 +131,6 @@ export class MovieListComponent implements OnInit, OnDestroy {
                 },
                 error => console.log(<any>error));
           });
-    }
   }
 
   ngOnDestroy(): void {
@@ -145,22 +147,14 @@ export class MovieListComponent implements OnInit, OnDestroy {
   filterMovies(filterBy: string) {
     this.wordsFilterService.filterCriteria = filterBy;
     if (this.wordsFilterService.filters || this.wordsFilterService.filters.length != 0) {
-      let filteredM = this.wordsFilterService.performFilter(this.wordsFilterService.filters);
-      this.movies = filteredM;
+      this.movies = this.wordsFilterService.performFilter(this.wordsFilterService.filters);
+      this.showPagination = false;
     }
-    else
+    else{
       this.movies = this.firstPageOfMovies.slice(0);
-    //this.reloadWithoutSub();
-
+      this.showPagination = true;
+    }
     this.setMoviesRatings();
-  }
-
-  reloadWithoutSub() {
-    this.ngOnDestroy();
-    this.subscriptinIsCanceled = true;
-    //this.movies = this.movies[4];
-    this.ngOnInit();
-    this.subscriptinIsCanceled = false;
   }
 
   changeViewStyle() {
@@ -280,8 +274,6 @@ export class MovieListComponent implements OnInit, OnDestroy {
     let localDecimalPipe = new CustomeDecimalPipePipe();
     this.moviesRatings[0][this.currMovieMarkToSet[1]] = localDecimalPipe.transform(this.updatedMark[0], false);
     this.moviesRatings[1][this.currMovieMarkToSet[1]] = localDecimalPipe.transform(this.updatedMark[0], true);
-
-    //sent updatedMark first : mark, second index of movies array
     var markToUpdate = this.updatedMark;
   }
 

@@ -5,21 +5,10 @@
         <div class="row" *ngIf='isMovieLoaded'>
             <h3>{{movieListName}}</h3>
             <button class="btn btn-outline-light p-0 customButtons mx-2" *ngIf='!isListDefault' style="max-height: 33px">
-                <img [src]="editIcon"  alt="edit" width="23dp" height="23dp" class="mx-1">
+                <img [src]="editIconSrc"  alt="edit" width="23dp" height="23dp" class="mx-1">
             </button>
-            
         </div>
       </div>
-
-    <!-- <div class="col-sm">
-      <div class="input-group mb-3">
-        <div class="input-group-prepend">
-          <span class="input-group-text" id="inputGroup-sizing-default">Filter:</span>
-        </div>
-        <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" alt="text"
-          placeholder="text" [(ngModel)]="wordsFilterService.filters" (ngModelChange)="filterMovies()">
-      </div>
-    </div> -->
 
     <div class="col-sm">
       <div class="input-group mb-3">
@@ -42,11 +31,11 @@
       <div class="btn-group">
         <label class="btn btn-outline-secondary" [(ngModel)]="viewStyle" uncheckable btnRadio="grid" (click)='changeViewStyle()'
           tabindex="0" role="button">
-          <img [src]='viewListIconpath' alt="icon" width="24dp" height="23dp">
+          <img [src]='listViewIconSrc' alt="icon" width="24dp" height="23dp">
         </label>
         <label class="btn btn-outline-secondary" [(ngModel)]="viewStyle" uncheckable btnRadio="card" (click)='changeViewStyle()'
           tabindex="0" role="button">
-          <img [src]='viewCardIconpath' alt="icon" width="24dp" height="23dp">
+          <img [src]='cardViewIconSrc' alt="icon" width="24dp" height="23dp">
         </label>
       </div>
     </div>
@@ -340,6 +329,6 @@
       </div>
     </div>
   </div>
-    <pagination *ngIf='pagesAmount != 1 && isMovieLoaded' boundaryLinks="true" [totalItems]='moviesAmount' [itemsPerPage]='pageSize' [(ngModel)]="currPage" [maxSize]='10'
+    <pagination *ngIf='pagesAmount != 1 && isMovieLoaded && showPagination' boundaryLinks="true" [totalItems]='moviesAmount' [itemsPerPage]='pageSize' [(ngModel)]="currPage" [maxSize]='10'
       (click)="changePage()" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"></pagination>
 </div>

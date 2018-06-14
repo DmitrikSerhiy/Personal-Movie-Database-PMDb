@@ -22,7 +22,6 @@ export class WordsFilterService {
   }
   set filters(value: string) {
     this._filters = value;
-    //this.filteredMovies = this.filters ? this.performFilter(this.filters) : this.movies;
   }
 
   filterList: IFilters[] = [
@@ -53,8 +52,6 @@ export class WordsFilterService {
         case "Year": {filter = movie.year; break;}
         case "Mark": {filter = new CustomeDecimalPipePipe().transform(movie.mark, false).toString(); break;}
         case "Runtime": {filter = new CustomRuntimePipe().transform(+movie.runtime, true); break;}
-        // {filter = movie.runtime; break;}
-         
         default: {filter = movie.title; break}//tha's kind of stupid code
       }
     }

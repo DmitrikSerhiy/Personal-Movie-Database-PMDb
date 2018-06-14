@@ -18,6 +18,9 @@ export class ListInitializerService {
 
   shareViaGoogleIcon : string = 'assets/google_icon.png';
   shareViaFacebookIcon : string = 'assets/facebook_icon.png';
+  viewListIconpath: string = './assets/viewList_icon.png';
+  viewCardIconpath: string = './assets/viewCard_icon.png';
+  editIcon: string = './assets/edit_icon.png';
   
   private movies;
 
