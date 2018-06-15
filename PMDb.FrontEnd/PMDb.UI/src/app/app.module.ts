@@ -20,6 +20,8 @@ import { BarRatingModule } from "ngx-bar-rating";
 import {MatSliderModule} from '@angular/material/slider';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { MovieCardComponent } from './movie-card/movie-card.component';
+//import { OrderByPipe } from './shared/order-by.pipe';
+import { OrderModule } from 'ngx-order-pipe';
 
 
 
@@ -39,6 +41,7 @@ import { MovieCardComponent } from './movie-card/movie-card.component';
     BarRatingModule,
     MatSliderModule,
     MatFormFieldModule,
+    OrderModule,
     RouterModule.forRoot([
       {path: '', component: WelcomeComponent },
       {path: 'library', component: MovieListComponent},
@@ -58,6 +61,7 @@ import { MovieCardComponent } from './movie-card/movie-card.component';
     CustomeDecimalPipePipe,
     MovieListComponent,
     MovieCardComponent,
+    //OrderByPipe,
     
   ],
 

@@ -13,6 +13,7 @@ import { Observable } from 'rxjs/Observable';
 import { retryWhen, retry } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { WordsFilterService } from '../services/words-filter.service';
+import { OrderPipe } from 'ngx-order-pipe';
 
 
 
@@ -57,7 +58,7 @@ export class MovieListComponent implements OnInit, OnDestroy {
   isMovieLoaded: boolean = false;
   firstPageOfMovies;
   setFilter: string = 'none';
-  showPagination : boolean = true;
+  showPagination: boolean = true;
 
   links: any[];//not used by far
   linksForPagination: any[];
@@ -68,12 +69,21 @@ export class MovieListComponent implements OnInit, OnDestroy {
   observer: Subscription;
   internalObserver: Subscription;
   movieListName: string = '';
+
   cardViewIconSrc;
   listViewIconSrc;
   editIconSrc;
+  currSortIconSrc;
 
-  currShareIcon = this.listInitializer.emptyShareIcon;
+  sortedByTitle: boolean = false;
+  sortedByYear: boolean = false;
+  sortedByRuntime: boolean = false;
+  sortedByTags: boolean = false;
+  sortedByMark: boolean = false;
+  isSorted = false;
 
+  order: string = '';
+  reverse: boolean = false;
 
   constructor(
     private listInitializer: ListInitializerService,
@@ -81,56 +91,57 @@ export class MovieListComponent implements OnInit, OnDestroy {
     private getListService: GetListService,
     private jsonReaderService: JsonReaderService,
     private router: Router,
-    private wordsFilterService: WordsFilterService
+    private wordsFilterService: WordsFilterService,
+    private orderPipe: OrderPipe
   ) {
     this.cardViewIconSrc = this.listInitializer.viewCardIconpath;
     this.listViewIconSrc = this.listInitializer.viewListIconpath;;
     this.editIconSrc = this.listInitializer.editIcon;
+    this.currSortIconSrc = this.listInitializer.descendSortIconSrc;
   }
 
-
   ngOnInit() {
-      this.setMovieListName();
+    this.setMovieListName();
 
-      this.observer = this.jsonReaderService.getJSON()
-        .subscribe(
-          (json: any) => {
-            if (!this.fullURL) {
-              if (!this.isCurrListLibrary) {
-                this.urlWithoutMovieListName = json.getList;
-                this.fullURL = this.setURLForList(this.urlWithoutMovieListName);
-              }
-              else {
-                this.fullURL = json.getLibrary;
-              }
-              this.setPagination(json);
+    this.observer = this.jsonReaderService.getJSON()
+      .subscribe(
+        (json: any) => {
+          if (!this.fullURL) {
+            if (!this.isCurrListLibrary) {
+              this.urlWithoutMovieListName = json.getList;
+              this.fullURL = this.setURLForList(this.urlWithoutMovieListName);
             }
-          },
-          (error) => {
-            this.errorMessage = <any>error;
-            console.log(this.errorMessage)
-          },
-          () => {
-            console.log("json with urls has been loaded");
-            this.internalObserver = this.getListService.getMovieList(this.fullURL)
-              .subscribe(
-                (movieList: any) => {
-                  this.movies = movieList.movies as ISimplifiedMovie[];
-                  this.moviesAmount = movieList.listLength;
-                  this.movieListName = movieList.name;
-                  this.isMovieLoaded = true;
-                  this.isListDefault = movieList.isDefault;
-                  this.setLinks(movieList);
-                  this.pagesAmount = this.linksForPagination.length;
-                  this.listInitializer.setMovies(this.movies);
-                  this.listInitializer.initIcons();
-                  this.setMoviesRatings();
-                  this.firstPageOfMovies = this.movies;
-                  this.wordsFilterService.passMoviesToFilter(this.movies);
-                  console.log("page loaded with movies");
-                },
-                error => console.log(<any>error));
-          });
+            else {
+              this.fullURL = json.getLibrary;
+            }
+            this.setPagination(json);
+          }
+        },
+        (error) => {
+          this.errorMessage = <any>error;
+          console.log(this.errorMessage)
+        },
+        () => {
+          console.log("json with urls has been loaded");
+          this.internalObserver = this.getListService.getMovieList(this.fullURL)
+            .subscribe(
+              (movieList: any) => {
+                this.movies = movieList.movies as ISimplifiedMovie[];
+                this.moviesAmount = movieList.listLength;
+                this.movieListName = movieList.name;
+                this.isMovieLoaded = true;
+                this.isListDefault = movieList.isDefault;
+                this.setLinks(movieList);
+                this.pagesAmount = this.linksForPagination.length;
+                this.listInitializer.setMovies(this.movies);
+                this.listInitializer.initIcons();
+                this.setMoviesRatings();
+                this.firstPageOfMovies = this.movies;
+                this.wordsFilterService.passMoviesToFilter(this.movies);
+                console.log("page loaded with movies");
+              },
+              error => console.log(<any>error));
+        });
   }
 
   ngOnDestroy(): void {
@@ -139,6 +150,70 @@ export class MovieListComponent implements OnInit, OnDestroy {
     console.clear();
     console.log("page destroyed")
   }
+
+  setOrder(order: string) {
+    this.isSorted = true;
+    this.hideRestSorts();
+    if (this.order != order) {
+      this.showSortIcon(order);
+    }
+    this.showSortIcon(order)
+    this.reverse = !this.reverse;
+    this.order = order;
+    this.currSortIconSrc = this.listInitializer.changeSortIcon(this.currSortIconSrc);
+    this.movies = this.orderPipe.transform(this.movies, order, this.reverse, false);
+    this.setMoviesRatings();
+
+
+  }
+
+  toggleSortIcon(sortingCriteria: string) {//i know that i'm retarded
+    //this one no one must to see!
+    switch (sortingCriteria) {
+      case 'title': this.sortedByTitle = !this.sortedByTitle; break;
+      case 'year': this.sortedByYear = !this.sortedByYear; break;
+      case 'runtime': this.sortedByRuntime = !this.sortedByRuntime; break;
+      case 'tags': this.sortedByTags = !this.sortedByTags; break;
+      case 'mark': this.sortedByMark = !this.sortedByMark; break;
+      default: this.sortedByTitle = !this.sortedByTitle;
+    }
+  }
+
+  showSortIcon(sortingCriteria: string) {
+  switch (sortingCriteria) {
+    case 'title': this.sortedByTitle = true; break;
+    case 'year': this.sortedByYear = true; break;
+    case 'runtime': this.sortedByRuntime = true; break;
+    case 'tags': this.sortedByTags = true; break;
+    case 'mark': this.sortedByMark = true; break;
+    default: this.sortedByTitle = true;
+  }
+}
+
+hideSortIcon(sortingCriteria: string) {
+  switch (sortingCriteria) {
+    case 'title': this.sortedByTitle = false; break;
+    case 'year': this.sortedByYear = false; break;
+    case 'runtime': this.sortedByRuntime = false; break;
+    case 'tags': this.sortedByTags = false; break;
+    case 'mark': this.sortedByMark = false; break;
+    default: this.sortedByTitle = false;
+  }
+}
+
+  hideRestSorts() {
+    this.sortedByTitle = false;
+    this.sortedByYear = false;
+    this.sortedByRuntime = false;
+    this.sortedByTags = false;
+    this.sortedByMark = false;
+  }
+
+  removeSorting(){
+    this.hideRestSorts();
+    this.movies = this.firstPageOfMovies;
+  }
+
 
   changeFilter(filter: string) {
     this.setFilter = filter;
@@ -150,7 +225,7 @@ export class MovieListComponent implements OnInit, OnDestroy {
       this.movies = this.wordsFilterService.performFilter(this.wordsFilterService.filters);
       this.showPagination = false;
     }
-    else{
+    else {
       this.movies = this.firstPageOfMovies.slice(0);
       this.showPagination = true;
     }
@@ -235,15 +310,15 @@ export class MovieListComponent implements OnInit, OnDestroy {
     return currRate;
   }
 
-  definePlaceholderForFilter(filterBy : string) : string{
-      switch (filterBy) {
-        case 'Title': return 'title';
-        case 'Tag': return 'tag';
-        case "Year": return 'year';
-        case "Mark": return 'fraction part only';
-        case "Runtime": return 'hours';
-        default: return '';
-      }
+  definePlaceholderForFilter(filterBy: string): string {
+    switch (filterBy) {
+      case 'Title': return 'title';
+      case 'Tag': return 'tag';
+      case "Year": return 'year';
+      case "Mark": return 'fraction part only';
+      case "Runtime": return 'hours';
+      default: return '';
+    }
   }
 
   formatRateLabel(value: number) {

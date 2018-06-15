@@ -5,7 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class CustomRuntimePipe implements PipeTransform {
 
-  transform(value: number, getHoursOnly: boolean): string {
+  transform(value: number, getHoursOnly?: boolean): string {
     let temp = value * 60;
     let hours = Math.floor((temp / 3600));
     let minutes: number = value % 60;//Math.floor((temp/ 60));
