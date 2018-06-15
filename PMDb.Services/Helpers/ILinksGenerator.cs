@@ -9,5 +9,6 @@ namespace PMDb.Services.Helpers
     {
         List<LinkModel> CreateLinksForMovieList(T Recource, U paginationParameters);
         List<LinkModel> CreateLinksForMovieListsPages(T Resource, U paginationParameters);
+        List<LinkModel> CreateLinksForSearchedMovieListPages(T Resource, U paginationParameters);
     }
 }

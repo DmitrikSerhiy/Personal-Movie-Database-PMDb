@@ -1,4 +1,5 @@
-﻿using PMDb.Services.Models;
+﻿using PMDb.Services.Helpers;
+using PMDb.Services.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,10 +9,18 @@ namespace PMDb.Services.ServicesAbstraction
    public interface ISearchService
     {
         bool IsExist();
-        void Serialize(string MovieString);
-        void MapToModel();
+        void SerializeMovie(string MovieString);
+        void SerializeMovieList(string MovieString);
+        void MapToMovieModel();
+        int CalculatePages(int amount);
+        
         MovieModel GetMovie();
-        void Validate();
-        void AddLinks();
+        List<DowloadedMovieInMovieListModel> GetMovies();
+        void ValidateMovie();
+        List<DowloadedMovieInMovieListModel> ValidateMovieList();
+        SearchedMovieListModel CreatePagedLinkedMovieList(
+            List<DowloadedMovieInMovieListModel> composedMovies, string movieTitle,
+            PaginationParameters paginationParameters);
+        int GetMovieAmount();
     }
 }

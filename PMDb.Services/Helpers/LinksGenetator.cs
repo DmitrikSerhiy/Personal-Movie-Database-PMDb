@@ -87,7 +87,7 @@ namespace PMDb.Services.Helpers
         public List<LinkModel> CreateLinksForMovieListsPages(LRB Resource, PP paginationParameters)
         {
             var movieList = (Resource as MovieListModel);
-            List<LinkModel> links = new List<LinkModel>();
+            var links = new List<LinkModel>();
             for (int pageNumber = 1; pageNumber <= movieList.Movies.TotalPages; pageNumber++)
             {
                 links.Add(new LinkModel
@@ -99,6 +99,28 @@ namespace PMDb.Services.Helpers
                 });
             }
             return links;
+        }
+
+        public List<LinkModel> CreateLinksForSearchedMovieListPages(LRB Resource, PP paginationParameters)
+        {
+            var movieList = (Resource as SearchedMovieListModel);
+            var links = new List<LinkModel>();
+            for (int pageNumber = 1; pageNumber <= movieList.Movies.TotalPages; pageNumber++)
+            {
+                links.Add(new LinkModel
+                {
+                    Href = UriProvider.ProvideLinksForPagesInSearchedMovieList(paginationParameters,
+                        urlHelper, pageNumber, movieList.searchedMovie),
+                    Rel = "get_page" + pageNumber.ToString() + "_of_searchedMovieList",
+                    Method = "GET"
+                });
+            }
+
+            return links;
+        }
+        public List<LinkModel> CreateLinksForSearchedMovieList()
+        {
+            return null;
         }
 
     }

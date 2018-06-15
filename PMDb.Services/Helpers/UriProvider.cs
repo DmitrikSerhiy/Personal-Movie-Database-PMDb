@@ -9,19 +9,19 @@ namespace PMDb.Services.Helpers
 {
     public class UriProvider
     {
-        public static string CreateMoviesUri(PaginationParameters getMoviesParameters, 
-                                            UriType type, 
+        public static string CreateMoviesUri(PaginationParameters getMoviesParameters,
+                                            UriType type,
                                             UrlHelper urlHelper)
         {
             switch (type)
             {
                 case UriType.PreviousPage:
                     return urlHelper.Link("GetMovies", new
-                         {
-                             pageNumber = getMoviesParameters.PageNumber - 1,
-                             pageSize = getMoviesParameters.PageSize
-                         });
-                    
+                    {
+                        pageNumber = getMoviesParameters.PageNumber - 1,
+                        pageSize = getMoviesParameters.PageSize
+                    });
+
                 case UriType.NextPage:
                     return urlHelper.Link("GetMovies", new
                     {
@@ -42,30 +42,34 @@ namespace PMDb.Services.Helpers
         {
             switch (type)
             {
-                case UriType.NextPage : return MovieList.Movies.HasNext ?
-                        (urlHelper as UrlHelper).Link("GetMovieList", new {
-                            MovieList.Name,
-                            pageNumber = parameters.PageNumber + 1,
-                            pageSize = parameters.PageSize
-                        }) : null;
-                case UriType.PreviousPage : return MovieList.Movies.HasPrevious ?
-                        (urlHelper as UrlHelper).Link("GetMovieList", new {
-                            MovieList.Name,
-                            pageNumber = parameters.PageNumber - 1,
-                            pageSize = parameters.PageSize
-                        }) : null;
+                case UriType.NextPage:
+                    return MovieList.Movies.HasNext ?
+    (urlHelper as UrlHelper).Link("GetMovieList", new
+    {
+        MovieList.Name,
+        pageNumber = parameters.PageNumber + 1,
+        pageSize = parameters.PageSize
+    }) : null;
+                case UriType.PreviousPage:
+                    return MovieList.Movies.HasPrevious ?
+(urlHelper as UrlHelper).Link("GetMovieList", new
+{
+    MovieList.Name,
+    pageNumber = parameters.PageNumber - 1,
+    pageSize = parameters.PageSize
+}) : null;
                 default: return null;
             }
         }
 
-        public static string ProvideForDeleteMovieList(IUrlHelper urlHelper, 
+        public static string ProvideForDeleteMovieList(IUrlHelper urlHelper,
             MovieListModel MovieList)
         {
             return !MovieList.IsDefault ?
-                (urlHelper as UrlHelper).Link("DeleteMovieList", new {MovieList.Name,}) : null;
+                (urlHelper as UrlHelper).Link("DeleteMovieList", new { MovieList.Name, }) : null;
         }
 
-        public static string ProvideForUpdateMovieListName(PaginationParameters parameters, 
+        public static string ProvideForUpdateMovieListName(PaginationParameters parameters,
             IUrlHelper urlHelper, MovieListModel MovieList, string NewName)
         {
             return MovieList.Name != "Library" ?
@@ -90,9 +94,9 @@ namespace PMDb.Services.Helpers
             return FixSpaces(uri);
         }
 
-        private static string FixSpaces (string uriParameters)
+        private static string FixSpaces(string uriParameters)
         {
-            if(uriParameters.Contains("%20"))
+            if (uriParameters.Contains("%20"))
             {
                 uriParameters = uriParameters.Replace("%20", " ");
                 return uriParameters;
@@ -116,6 +120,17 @@ namespace PMDb.Services.Helpers
                     pageSize = parameters.PageSize
                 });
 
+        }
+
+        public static string ProvideLinksForPagesInSearchedMovieList(PaginationParameters parameters,
+            IUrlHelper urlHelper, int currPage, string searchedMovieTitle)
+        {
+            return (urlHelper as UrlHelper).Link("SearchMovies", new
+            {
+                movieTitle = searchedMovieTitle,
+                pageNumber = currPage,
+                pageSize = parameters.PageSize
+            });
         }
     }
 }
