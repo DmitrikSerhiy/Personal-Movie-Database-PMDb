@@ -4,7 +4,7 @@ import { AppComponent } from './app.component';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule} from '@angular/common/http';
 import { MovieLibraryComponent } from './movieLibrary/movieLibrary.component';
-import { RouterModule } from '@angular/router';
+import { RouterModule, RouteReuseStrategy, Routes } from '@angular/router';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { WelcomeComponent } from './welcome/welcome.component';
 import { MovieListComponent } from './movie-list/movie-list.component';
@@ -20,10 +20,25 @@ import { BarRatingModule } from "ngx-bar-rating";
 import {MatSliderModule} from '@angular/material/slider';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { MovieCardComponent } from './movie-card/movie-card.component';
-//import { OrderByPipe } from './shared/order-by.pipe';
 import { OrderModule } from 'ngx-order-pipe';
+import { SearchListComponent } from './search-list/search-list.component';
+import { CustomReuseStrategy } from './services/CustomReuseStrategy';
+import { AppGuard } from './shared/AppGuard';
+import { EmptyComponentComponent } from './empty-component/empty-component.component';
 
 
+
+const routes: Routes = [
+  {path: '', component: WelcomeComponent },
+  {path: 'library', component: MovieListComponent},
+  {path: 'tempList', component: MovieListComponent},
+  {path: 'watchLater', component: MovieListComponent},
+  {path: 'favorite', component: MovieListComponent},
+  {path: 'empty/:movieTitle', component: EmptyComponentComponent},
+  {path: 'search/:movieTitle', component: SearchListComponent, runGuardsAndResolvers: 'always'},
+  {path: '#', component: NotFoundComponent },
+  {path: '**', component: NotFoundComponent },
+];
 
 @NgModule({
   imports: [
@@ -42,16 +57,9 @@ import { OrderModule } from 'ngx-order-pipe';
     MatSliderModule,
     MatFormFieldModule,
     OrderModule,
-    RouterModule.forRoot([
-      {path: '', component: WelcomeComponent },
-      {path: 'library', component: MovieListComponent},
-      {path: 'tempList', component: MovieListComponent},
-      {path: 'watchLater', component: MovieListComponent},
-      {path: 'favorite', component: MovieListComponent},
-      {path: '#', component: NotFoundComponent },
-      {path: '**', component: NotFoundComponent }
-    ])
-  ],
+    RouterModule.forRoot(routes, {
+      onSameUrlNavigation: 'reload'
+    })],
   declarations: [
     AppComponent,
     MovieLibraryComponent,
@@ -61,11 +69,11 @@ import { OrderModule } from 'ngx-order-pipe';
     CustomeDecimalPipePipe,
     MovieListComponent,
     MovieCardComponent,
-    //OrderByPipe,
-    
+    SearchListComponent,
+    EmptyComponentComponent,
   ],
 
-  providers: [],
+  providers: [{provide: RouteReuseStrategy, useClass: CustomReuseStrategy}, AppGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

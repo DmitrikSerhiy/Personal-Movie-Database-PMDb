@@ -64,6 +64,7 @@ namespace PMDb.API.Controllers
                 var amount = searchService.GetMovieAmount();
                 if (amount == 0) return NotFound();
                 var pages = searchService.CalculatePages(amount);
+                if (pages > 10) pages = 10;
 
                 var uriForPage = $"http://www.omdbapi.com/?apikey={key}&s={movieTitle}&page=";
                 var validMovies = new List<DowloadedMovieInMovieListModel>();

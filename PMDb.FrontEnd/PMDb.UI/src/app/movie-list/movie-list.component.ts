@@ -148,7 +148,6 @@ export class MovieListComponent implements OnInit, OnDestroy {
     this.internalObserver.unsubscribe();
     this.observer.unsubscribe();
     console.clear();
-    console.log("page destroyed")
   }
 
   setOrder(order: string) {
@@ -275,7 +274,6 @@ hideSortIcon(sortingCriteria: string) {
     this.fullURL = this.linksForPagination[this.currPage - 1].href;
     console.log("new uri" + this.fullURL);
     this.ngOnInit();
-
   }
 
   setURLForList(partialURl: string): string {

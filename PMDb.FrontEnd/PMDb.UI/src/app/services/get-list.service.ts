@@ -11,8 +11,7 @@ export class GetListService  {
 
   private listName : string = '';
 
-  constructor(private jsonReader : JsonReaderService,
-              private http: HttpClient) { }
+  constructor(private http: HttpClient) { }
 
 
   getMovieList(url : string) : Observable<ISimplifiedMovie[]>
