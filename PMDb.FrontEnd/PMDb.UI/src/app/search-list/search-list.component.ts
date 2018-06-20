@@ -14,7 +14,7 @@ import { SeachedListInitializerService } from '../services/seached-list-initiali
 })
 export class SearchListComponent implements OnInit, OnDestroy {
 
-  
+
   errorMessage: string = '';
   private routeSubscription: Subscription;
   private querySubscription: Subscription;
@@ -40,11 +40,12 @@ export class SearchListComponent implements OnInit, OnDestroy {
     private searchMovieService: SearchMovieService,
     private seachedListInitializerService: SeachedListInitializerService,
     private router: Router) {
-    }
+  }
 
-    setMovieToSearch(movie : string){
-      this.movieToSearch = movie;
-    }
+  setMovieToSearch(movie: string) {
+    this.movieToSearch = movie;
+  }
+  
   ngOnInit() {
 
     this.routeSubscription = this.route.params.subscribe(params => this.movieToSearch = params['movieTitle']);

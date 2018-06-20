@@ -25,6 +25,7 @@ import { SearchListComponent } from './search-list/search-list.component';
 import { CustomReuseStrategy } from './services/CustomReuseStrategy';
 import { AppGuard } from './shared/AppGuard';
 import { EmptyComponentComponent } from './empty-component/empty-component.component';
+import { MoviePageComponent } from './movie-page/movie-page.component';
 
 
 
@@ -34,6 +35,7 @@ const routes: Routes = [
   {path: 'tempList', component: MovieListComponent},
   {path: 'watchLater', component: MovieListComponent},
   {path: 'favorite', component: MovieListComponent},
+  {path: 'movie/:movieTitle', component: MoviePageComponent},
   {path: 'empty/:movieTitle', component: EmptyComponentComponent},
   {path: 'search/:movieTitle', component: SearchListComponent, runGuardsAndResolvers: 'always'},
   {path: '#', component: NotFoundComponent },
@@ -71,6 +73,7 @@ const routes: Routes = [
     MovieCardComponent,
     SearchListComponent,
     EmptyComponentComponent,
+    MoviePageComponent,
   ],
 
   providers: [{provide: RouteReuseStrategy, useClass: CustomReuseStrategy}, AppGuard],
