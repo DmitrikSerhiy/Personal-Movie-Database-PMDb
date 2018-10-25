@@ -2,7 +2,7 @@
 
 ## **Main task**
 
-Create personal library of films (such as "IMDb" or "Кинопоиск")
+Create personal library of films
 
 ## **Features**
 
@@ -21,15 +21,3 @@ Create personal library of films (such as "IMDb" or "Кинопоиск")
   - Poster
 - Possibility to export database to file
 - Possibility to share your mark/review in popular social networks (facebook)
-
-## **Frameworks are going to be used**
-
-- .NET Core
--	ASP.NET Core
--	Entity Framework Core
--	DotRas
--	Angular 2
-
-## **Several issues in depth**
-
-As you might know "Kinopoisk.ru" is blocked within territory of Ukraine thus sort of necessity appears to create a virtual private network (VPN) through DotRas library. Besides "Kinopoisk.ru" doesn't give an access to it's API so there is another necessity to use 3rd party services such as (getmovie.cc/api-kinopoisk.html).
